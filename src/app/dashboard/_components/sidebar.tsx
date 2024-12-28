@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { UserButton } from "@clerk/nextjs";
-import { Gem, Home, Key, LucideIcon, Settings } from "lucide-react";
-import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { UserButton } from "@clerk/nextjs"
+import { Gem, Home, Key, LucideIcon, Settings } from "lucide-react"
+import Link from "next/link"
 
 interface SidebarItem {
   href: string
@@ -44,7 +44,7 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
     <div className="space-y-4 md:space-y-6 relative z-20 flex flex-col h-full">
       {/* logo */}
       <p className="hidden sm:block text-lg/7 font-semibold text-brand-900">
-        Ping<span className="text-brand-700">Panda</span>
+        Form<span className="text-brand-700">Press</span>
       </p>
 
       {/* navigation items */}

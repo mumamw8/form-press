@@ -6,6 +6,7 @@ import { cn } from "@/utils"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { ClerkProvider } from "@clerk/nextjs"
+import { Provider } from "@/components/chakra-ui/provider"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 const eb_garamond = EB_Garamond({
@@ -28,9 +29,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={cn(inter.variable, eb_garamond.variable)}>
         <body className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-brand-50 text-brand-950 antialiased">
-          <main className="relative flex-1 flex flex-col">
-            <Providers>{children}</Providers>
-          </main>
+          <Provider>
+            <main className="relative flex-1 flex flex-col">
+              <Providers>{children}</Providers>
+            </main>
+          </Provider>
         </body>
       </html>
     </ClerkProvider>

@@ -37,13 +37,14 @@ model User {
 }
 
 model Form {
-  id          String  @id @default(cuid())
-  published   Boolean @default(false)
-  name        String
-  description String  @default("")
-  content     Json    @default("[]") // form JSONStringified form
-  visits      Int     @default(0)
-  submissions Int     @default(0)
+  id                String  @id @default(cuid())
+  title             String
+  description       String  @default("")
+  fields            Json    @default("[]") // Stores field definitions as JSON
+  settings          Json // Optional, for themes or additional configurations
+  isPublished       Boolean @default(false)
+  visits            Int     @default(0)
+  submissions_count Int     @default(0)
 
   shareURL String @unique @default(uuid())
 
@@ -53,18 +54,16 @@ model Form {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  formSubmissions FormSubmission[]
+  submissions Submission[]
 }
 
-model FormSubmission {
-  id   String @id @default(cuid())
-  data Json   @default("{}") // Contains the JSONStringified form submission
+model Submission {
+  id          String   @id @default(cuid())
+  data        Json     @default("{}") // Contains the JSONStringified form submission
+  submittedAt DateTime @default(now())
 
   formId String
   form   Form   @relation(fields: [formId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 // model Field {

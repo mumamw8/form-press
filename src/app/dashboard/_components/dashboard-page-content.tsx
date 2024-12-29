@@ -15,8 +15,8 @@ export const DashboardPageContent = () => {
   const [deletingForm, setDeletingForm] = useState<string | null>(null)
   const queryClient = useQueryClient()
 
-  const { data: forms, isPending: isProjectFormsLoading } = useQuery({
-    queryKey: ["user-project-forms"],
+  const { data: forms, isPending: isFormsLoading } = useQuery({
+    queryKey: ["get-user-forms"],
     queryFn: async () => {
       const res = await client.form.getAllForms.$get()
       const { data } = await res.json()
@@ -34,7 +34,7 @@ export const DashboardPageContent = () => {
     },
   })
 
-  if (isProjectFormsLoading) {
+  if (isFormsLoading) {
     return (
       <div className="flex items-center justify-center flex-1 h-full w-full">
         <LoadingSpinner />
@@ -74,7 +74,7 @@ export const DashboardPageContent = () => {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <Link
-                  href={`/dashboard/form/${form.shareURL}`}
+                  href={`/builder/${form.id}`}
                   className={buttonVariants({
                     variant: "outline",
                     size: "sm",

@@ -3,6 +3,9 @@
 import { client } from "@/lib/client"
 import { useQuery } from "@tanstack/react-query"
 import { LoadingSpinner } from "@/components/loading-spinner"
+import { Designer } from "./Designer"
+import { DndContext } from "@dnd-kit/core"
+import { DragOverlayWrapper } from "./DragOverlayWrapper"
 
 export default function FormBuilder({ id }: { id: string }) {
   const { data: form, isPending: isFormLoading } = useQuery({
@@ -30,18 +33,24 @@ export default function FormBuilder({ id }: { id: string }) {
   }
 
   return (
-    <main className="flex flex-col w-full">
-      {/* Header */}
-      <nav className="flex justify-between border-b p-2 px-8 gap-3 items-center">
-        <div>Back</div>
-        <h3 className="text-xl text-red-300">{form.title}</h3>
-        <div className="flex items-center gap-2">
-          <div>Preview</div>
-          <div>Save</div>
-          <div>Publish/Unpublish</div>
+    <DndContext>
+      <main className="flex flex-col w-full">
+        {/* Header */}
+        <nav className="flex justify-between border-b p-2 px-8 gap-3 items-center">
+          <div>Back</div>
+          <h3 className="">{form.title}</h3>
+          <div className="flex items-center gap-2">
+            <span>Preview</span>
+            <span>Save</span>
+            <span>Publish/Unpublish</span>
+          </div>
+        </nav>
+        <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-blue-300">
+          {/* Designer */}
+          <Designer />
         </div>
-      </nav>
-      <div className="flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-blue-300"></div>
-    </main>
+      </main>
+      <DragOverlayWrapper />
+    </DndContext>
   )
 }

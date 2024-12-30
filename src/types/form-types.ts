@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { FORBIDDEN_IDS } from "@/lib/types/constants"
+import { FORBIDDEN_IDS } from "@/lib/constants"
 
 export const ZFormFieldId = z.string().superRefine((id, ctx) => {
   if (FORBIDDEN_IDS.includes(id)) {
@@ -30,10 +30,8 @@ export const ZFormFieldBase = z.object({
   id: ZFormFieldId,
   type: z.string(),
   label: z.string(),
-  description: z.string(), // Defined by creeator of a component to describe what the component is or how it is used
-  helper_text: z.string(), // user defined
-  imageUrl: z.string().optional(),
-  videoUrl: z.string().optional(),
+  helper_text: z.string().optional(), // user defined
+  embedUrl: z.string().optional(),
   required: z.boolean(),
   position: z.number(),
 })
@@ -135,15 +133,15 @@ export type TRankingField = z.infer<typeof ZRankingField>
 export const ZFormField = z.union([
   ZOpenTextField,
   ZPhoneField,
-  ZEmailField,
-  ZUrlField,
-  ZDateField,
-  ZSelectField,
-  ZFileUploadField,
-  ZCheckboxField,
-  ZNumberField,
-  ZRatingField,
-  ZRankingField,
+  // ZEmailField,
+  // ZUrlField,
+  // ZDateField,
+  // ZSelectField,
+  // ZFileUploadField,
+  // ZCheckboxField,
+  // ZNumberField,
+  // ZRatingField,
+  // ZRankingField,
 ])
 export type TFormField = z.infer<typeof ZFormField>
 
@@ -164,37 +162,3 @@ export const ZForm = z.object({
   // submissions: z.array(z.lazy(() => SubmissionSchema)).optional(),
 })
 export type TForm = z.infer<typeof ZForm>
-
-// export const FormSchema = z.object({
-//   FormID: z.number().int().optional(), // Optional for creation
-//   UserID: z.number().int(),
-//   Title: z.string().min(1, "Title is required"),
-//   Description: z.string().optional(),
-//   Fields: z.array(
-//     z.object({
-//       name: z.string().min(1, "Field name is required"),
-//       type: z.enum([
-//         "text",
-//         "number",
-//         "checkbox",
-//         "dropdown",
-//         "date",
-//         "textarea",
-//       ]),
-//       label: z.string().min(1, "Field label is required"),
-//       isRequired: z.boolean().default(false),
-//       validation: z
-//         .object({
-//           regex: z.string().optional(),
-//           min: z.number().optional(),
-//           max: z.number().optional(),
-//         })
-//         .optional(),
-//       options: z.array(z.string()).optional(), // Only for dropdowns and checkboxes
-//     })
-//   ),
-//   Metadata: z.record(z.any()).optional(), // Flexible schema for themes or other metadata
-//   IsPublic: z.boolean().default(false),
-//   CreatedAt: z.string().datetime().optional(), // Optional, usually auto-generated
-//   UpdatedAt: z.string().datetime().optional(), // Optional, usually auto-generated
-// })

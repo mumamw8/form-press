@@ -18,7 +18,7 @@ export type FormElement<T extends { type: string }> = {
   // When we submit the form we need to save the answer for the specific field Id
   construct: (id: string) => T // ReturnType FormElementInstance // The constructor returns a type within TFormField
   designerComponent: React.FC<{ elementInstance: FormElementInstance }>
-  formComponent: React.FC<T>
+  formComponent: React.FC<{ elementInstance: FormElementInstance }>
   designerBtnElement: { icon: React.ElementType; label: string }
   propertiesComponent: React.FC<{ elementInstance: FormElementInstance }>
 }

@@ -107,6 +107,10 @@ export const Designer = (props: {}) => {
           newIndex += 1
         }
 
+        if (newIndex > activeIndex) {
+          newIndex -= 1
+        }
+
         addElement(newIndex, activeElement)
         return
       }

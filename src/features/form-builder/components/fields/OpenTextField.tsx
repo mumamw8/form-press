@@ -18,7 +18,9 @@ import {
 } from "@/components/ui/form"
 import { Switch } from "@/components/ui/switch"
 
-export const OpenTextField: React.FC<TOpenTextField> = (props) => {
+export const OpenTextField: React.FC<{
+  elementInstance: FormElementInstance
+}> = (props) => {
   return <div>OpenTextField Component</div>
 }
 

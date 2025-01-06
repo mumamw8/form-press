@@ -12,6 +12,7 @@ import {
   useSensors,
 } from "@dnd-kit/core"
 import { DragOverlayWrapper } from "./DragOverlayWrapper"
+import { PreviewDialogBtn } from "@/components/buttons/PreviewDialogBtn"
 
 export default function FormBuilder({ id }: { id: string }) {
   const { data: form, isPending: isFormLoading } = useQuery({
@@ -61,7 +62,7 @@ export default function FormBuilder({ id }: { id: string }) {
           <div>Back</div>
           <h3 className="">{form.title}</h3>
           <div className="flex items-center gap-2">
-            <span>Preview</span>
+            <PreviewDialogBtn />
             <span>Save</span>
             <span>Publish/Unpublish</span>
           </div>

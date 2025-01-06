@@ -1,7 +1,9 @@
 import { TPhoneField } from "@/types/form-types"
 import { FormElementInstance } from "../fieldComponents"
 
-export const PhoneField: React.FC<TPhoneField> = (props) => {
+export const PhoneField: React.FC<{ elementInstance: FormElementInstance }> = (
+  props
+) => {
   return <div>PhoneTextField Component</div>
 }
 

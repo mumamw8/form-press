@@ -29,7 +29,7 @@ export const DashboardPageContent = () => {
       await client.form.deleteForm.$post({ shareUrl })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-project-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
       setDeletingForm(null)
     },
   })

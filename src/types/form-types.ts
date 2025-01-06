@@ -32,7 +32,7 @@ export const ZFormFieldBase = z.object({
   label: z.string(),
   helper_text: z.string().optional(), // user defined
   embedUrl: z.string().optional(),
-  required: z.boolean(),
+  required: z.boolean().default(false),
   position: z.number(),
 })
 
@@ -46,6 +46,7 @@ export const ZFormFieldBase = z.object({
 // Ranking (Used to rank a number of options in order of preference or importance)
 export const ZOpenTextField = ZFormFieldBase.extend({
   type: z.literal("open_text"),
+  placeholder: z.string().optional(),
   rules: z
     .object({
       minLength: z.number().optional(),

@@ -4,7 +4,13 @@ import { client } from "@/lib/client"
 import { useQuery } from "@tanstack/react-query"
 import { LoadingSpinner } from "@/components/loading-spinner"
 import { Designer } from "./Designer"
-import { DndContext } from "@dnd-kit/core"
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
 import { DragOverlayWrapper } from "./DragOverlayWrapper"
 
 export default function FormBuilder({ id }: { id: string }) {
@@ -16,9 +22,24 @@ export default function FormBuilder({ id }: { id: string }) {
     queryKey: ["get-form-by-id"],
   })
 
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10, // in px
+    },
+  })
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300, // in ms
+      tolerance: 5, // in px
+    },
+  })
+
+  const sensors = useSensors(mouseSensor, touchSensor)
+
   if (isFormLoading) {
     return (
-      <div className="flex items-center justify-center flex-1 h-full w-full">
+      <div className="flex items-center justify-center flex-1 min-h-screen w-full">
         <LoadingSpinner />
       </div>
     )
@@ -33,7 +54,7 @@ export default function FormBuilder({ id }: { id: string }) {
   }
 
   return (
-    <DndContext>
+    <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
         {/* Header */}
         <nav className="flex justify-between border-b p-2 px-8 gap-3 items-center">

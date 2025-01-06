@@ -44,7 +44,8 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
     <div className="space-y-4 md:space-y-6 relative z-20 flex flex-col h-full">
       {/* logo */}
       <p className="hidden sm:block text-lg/7 font-semibold text-brand-900">
-        Form<span className="text-brand-700">Press</span>
+        <span className="text-xl font-bold">Form</span>
+        <span className="text-xl font-bold text-brand-700">Press.</span>
       </p>
 
       {/* navigation items */}

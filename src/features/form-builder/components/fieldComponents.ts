@@ -12,15 +12,15 @@ import {
 import { MdTextFields, MdPhone } from "react-icons/md"
 
 export type FormElement<T extends { type: string }> = {
-  type: T["type"]
+  type: T["type"] // Generic type is extracted from TFormField union type
   // Way to create an instance of the FormElement object
   // For each instance of the FormElement object we need a unqiue Id
   // When we submit the form we need to save the answer for the specific field Id
-  construct: (id: string, position: number) => FormElementInstance
-  designerComponent: React.FC<T>
+  construct: (id: string) => T // ReturnType FormElementInstance // The constructor returns a type within TFormField
+  designerComponent: React.FC<{ elementInstance: FormElementInstance }>
   formComponent: React.FC<T>
   designerBtnElement: { icon: React.ElementType; label: string }
-  propertiesComponent: React.FC<T>
+  propertiesComponent: React.FC<{ elementInstance: FormElementInstance }>
 }
 
 export type FormElementInstance = TFormField
@@ -32,12 +32,12 @@ type FormElementsType = {
 export const FormElements: FormElementsType = {
   open_text: {
     type: "open_text",
-    construct: (id: string, position: number) => ({
+    construct: (id: string) => ({
       id,
       type: "open_text",
-      label: "",
+      label: "Text",
       required: false,
-      position,
+      position: 0,
     }),
     designerBtnElement: { icon: MdTextFields, label: "Text" },
     designerComponent: OpenTextFieldDesigner,
@@ -46,16 +46,16 @@ export const FormElements: FormElementsType = {
   },
   phone: {
     type: "phone",
-    construct: (id: string, position: number) => ({
+    construct: (id: string) => ({
       id,
       type: "phone",
-      label: "",
+      label: "Phone",
       required: false,
-      position,
+      position: 0,
     }),
     designerBtnElement: { icon: MdPhone, label: "Phone No." },
-    designerComponent: PhoneField,
-    formComponent: PhoneFieldDesigner,
+    designerComponent: PhoneFieldDesigner,
+    formComponent: PhoneField,
     propertiesComponent: PhoneFieldProperties,
   },
 }

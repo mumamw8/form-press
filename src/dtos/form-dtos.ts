@@ -2,7 +2,8 @@ import { z } from "zod"
 
 // Create Form DTO
 export const ZCreateForm = z.object({
-  title: z.string(),
+  // title: z.string(),
+  title: z.string().min(1, "A form title is required"),
   description: z.string().optional(),
   fields: z.array(z.any()).default([]), // JSON for field definitions
   settings: z.record(z.any()).optional(), // JSON for additional configurations

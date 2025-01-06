@@ -36,7 +36,7 @@ export const CreateFormModal = ({
       await client.form.createForm.$post(data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-project-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
       setIsOpen(false)
     },
   })

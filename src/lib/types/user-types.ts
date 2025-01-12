@@ -4,7 +4,7 @@ export const PlanEnum = z.enum(["FREE", "PRO"]) // Updated enum values
 
 export const UserSchema = z.object({
   id: z.string().cuid(),
-  externalId: z.string().optional().nullable(),
+  user_id: z.string().optional().nullable(),
   quotaLimit: z.number(),
   plan: PlanEnum.default("FREE"), // Updated to match the new enum values
   email: z.string().email(),
@@ -18,7 +18,7 @@ export const UserSchema = z.object({
 // DTOs
 // Create User DTO
 export const CreateUserDto = z.object({
-  externalId: z.string().optional(),
+  user_id: z.string().optional(),
   quotaLimit: z.number(),
   plan: PlanEnum.default("FREE"),
   email: z.string().email(),
@@ -29,7 +29,7 @@ export type CreateUserDto = z.infer<typeof CreateUserDto>
 
 // Update User DTO
 export const UpdateUserDto = z.object({
-  externalId: z.string().optional(),
+  user_id: z.string().optional(),
   quotaLimit: z.number().optional(),
   plan: PlanEnum.optional(),
   email: z.string().email().optional(),

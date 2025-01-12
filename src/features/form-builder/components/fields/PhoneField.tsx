@@ -1,4 +1,4 @@
-import { TPhoneField } from "@/types/form-types"
+import { TPhoneField } from "@/lib/types/form-types"
 import { FormElementInstance } from "../fieldComponents"
 
 export const PhoneField: React.FC<{ elementInstance: FormElementInstance }> = (

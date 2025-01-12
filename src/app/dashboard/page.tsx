@@ -13,7 +13,7 @@ export default async function Page() {
   if (!auth) redirect("/sign-in")
 
   const user = await db.user.findUnique({
-    where: { externalId: auth.id },
+    where: { user_id: auth.id },
   })
 
   if (!user) redirect("/sign-in")

@@ -22,7 +22,7 @@ export abstract class BaseRepository<
   WhereInput,
   OrderByInput,
 > {
-  constructor(protected modelClient: PrismaClient) {}
+  constructor(protected modelClient: PrismaClient) { }
 
   getAll(options?: QueryParams<WhereInput, OrderByInput>): Promise<T[]> {
     return this.modelClient.findMany(options)
@@ -42,9 +42,7 @@ export abstract class BaseRepository<
 
   update(id: string, data: UpdateInput): Promise<T> {
     return this.modelClient.update({
-      where: {
-        id,
-      },
+      where: { id },
       data,
     })
   }

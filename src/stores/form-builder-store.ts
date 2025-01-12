@@ -11,6 +11,7 @@ export type FormBuilderActions = {
   removeElement: (id: string) => void
   selectElement: (element: FormElementInstance | null) => void
   updateElement: (id: string, element: FormElementInstance) => void
+  setElements: (elements: FormElementInstance[]) => void
 }
 
 export type FormBuilderStore = FormBuilderState & FormBuilderActions
@@ -56,5 +57,8 @@ export const createFormBuilderStore = (initState: FormBuilderState = defaultInit
         return { ...state, elements: newElements }
       })
     },
+    setElements: (elements: FormElementInstance[]) => {
+      set({ elements })
+    }
   }))
 }

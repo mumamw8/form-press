@@ -28,7 +28,7 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   }
 
   const user = await db.user.findUnique({
-    where: { externalId: auth.id },
+    where: { user_id: auth.id },
   })
 
   if (!user) {

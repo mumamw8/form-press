@@ -12,9 +12,19 @@ import {
   useSensors,
 } from "@dnd-kit/core"
 import { DragOverlayWrapper } from "./DragOverlayWrapper"
-import { PreviewDialogBtn } from "@/components/buttons/PreviewDialogBtn"
+import { PreviewDialogButton } from "@/components/buttons/PreviewDialogButton"
+import { SaveFormButton } from "@/components/buttons/SaveFormButton"
+import { useEffect, useState } from "react"
+import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { PublishFormButton } from "@/components/buttons/PublishFormButton"
+import { Button } from "@/components/ui/button"
+import { ArrowLeftIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function FormBuilder({ id }: { id: string }) {
+  const router = useRouter()
+  const { setElements } = useFormBuilderStore((state) => state)
+  const [isReady, setIsReady] = useState<boolean>(false)
   const { data: form, isPending: isFormLoading } = useQuery({
     queryFn: async () => {
       const res = await client.form.getSingleForm.$get({ id })
@@ -35,6 +45,19 @@ export default function FormBuilder({ id }: { id: string }) {
       tolerance: 5, // in px
     },
   })
+
+  useEffect(() => {
+    // if (isReady) return
+    if (
+      form?.fields &&
+      typeof form.fields === "object" &&
+      Array.isArray(form.fields)
+    ) {
+      setElements(form.fields)
+    }
+    const isReadyTimeout = setTimeout(() => setIsReady(true), 500)
+    return () => clearTimeout(isReadyTimeout)
+  }, [form, setElements, isReady])
 
   const sensors = useSensors(mouseSensor, touchSensor)
 
@@ -59,17 +82,23 @@ export default function FormBuilder({ id }: { id: string }) {
       <main className="flex flex-col w-full">
         {/* Header */}
         <nav className="flex justify-between border-b p-2 px-8 gap-3 items-center">
-          <div>Back</div>
-          <h3 className="">{form.title}</h3>
+          <Button
+            onClick={() => router.back()}
+            className="w-fit bg-white"
+            variant={"outline"}
+          >
+            <ArrowLeftIcon className="size-4" />
+          </Button>
+          <h3 className="">{isReady && form.title}</h3>
           <div className="flex items-center gap-2">
-            <PreviewDialogBtn />
-            <span>Save</span>
-            <span>Publish/Unpublish</span>
+            <PreviewDialogButton />
+            <SaveFormButton id={id} />
+            <PublishFormButton id={id} isPublished={form.isPublished} />
           </div>
         </nav>
         <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-blue-300">
           {/* Designer */}
-          <Designer />
+          {isReady ? <Designer /> : <LoadingSpinner />}
         </div>
       </main>
       <DragOverlayWrapper />

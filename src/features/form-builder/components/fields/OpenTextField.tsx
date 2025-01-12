@@ -1,4 +1,4 @@
-import { TOpenTextField, ZOpenTextField } from "@/types/form-types"
+import { TOpenTextField, ZOpenTextField } from "@/lib/types/form-types"
 import { FormElementInstance } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -20,8 +20,23 @@ import { Switch } from "@/components/ui/switch"
 
 export const OpenTextField: React.FC<{
   elementInstance: FormElementInstance
-}> = (props) => {
-  return <div>OpenTextField Component</div>
+}> = ({ elementInstance }) => {
+  const { label, required, placeholder, helper_text } =
+    elementInstance as TOpenTextField
+
+  return (
+    <div className="flex flex-col w-full gap-2">
+      <Label>
+        {label}
+        {required && <span className="text-lg">{" " + "*"}</span>}
+      </Label>
+      <Input placeholder={placeholder} />
+      {helper_text && (
+        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
+      )}
+      {}
+    </div>
+  )
 }
 
 export const OpenTextFieldDesigner: React.FC<{

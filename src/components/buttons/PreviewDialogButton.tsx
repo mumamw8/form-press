@@ -5,7 +5,7 @@ import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
 import { FormElements } from "@/features/form-builder/components/fieldComponents"
 
-export const PreviewDialogBtn = () => {
+export const PreviewDialogButton = () => {
   const { elements } = useFormBuilderStore((state) => state)
   return (
     <Dialog>

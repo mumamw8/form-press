@@ -7,31 +7,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum Plan {
-  FREE
-  PRO
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id         String  @id @default(cuid())
-  externalId String? @unique
-
-  quotaLimit Int
-  plan       Plan @default(FREE)
-
-  email     String   @unique
-  apiKey    String   @unique @default(cuid())
-  discordId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  user_id      String   @unique
+  email        String   @unique
+  apiKey       String   @unique @default(cuid())
+  subscription String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   forms Form[]
-  // events           Event[]
-  // Quota           Quota[]
 
   @@index([email, apiKey])
 }
@@ -40,8 +30,8 @@ model Form {
   id                String  @id @default(cuid())
   title             String
   description       String  @default("")
-  fields            Json    @default("[]") // Stores field definitions as JSON
-  settings          Json // Optional, for themes or additional configurations
+  fields            Json? // Stores field definitions as JSON
+  settings          Json? // Optional, for themes or additional configurations
   isPublished       Boolean @default(false)
   visits            Int     @default(0)
   submissions_count Int     @default(0)
@@ -65,25 +55,3 @@ model Submission {
   formId String
   form   Form   @relation(fields: [formId], references: [id])
 }
-
-// model Field {
-//   id        String    @id @default(uuid())
-//   name      String
-//   type      FieldType // e.g., "text", "number", "date", etc.
-//   tableId   String    @map("table_id")
-//   options   String?
-//   cells     Cell[]
-//   createdAt DateTime  @default(now()) @map("created_at")
-//   updatedAt DateTime  @updatedAt @map("updated_at")
-//
-//   table Table @relation(fields: [tableId], references: [id], onDelete: Cascade)
-// }
-//
-// model Record {
-//   id        String   @id @default(uuid())
-//   tableId   String   @map("table_id")
-//   cells     Cell[]
-//   createdAt DateTime @default(now()) @map("created_at")
-//
-//   table Table @relation(fields: [tableId], references: [id], onDelete: Cascade)
-// }

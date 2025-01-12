@@ -1,4 +1,4 @@
-import { TFormField } from "@/types/form-types"
+import { TFormField } from "@/lib/types/form-types"
 import {
   OpenTextField,
   OpenTextFieldDesigner,

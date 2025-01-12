@@ -12,7 +12,7 @@ export const authRouter = router({
     }
 
     const user = await db.user.findFirst({
-      where: { externalId: auth.id },
+      where: { user_id: auth.id },
     })
 
     console.log('USER IN DB:', user);
@@ -20,11 +20,17 @@ export const authRouter = router({
     if (!user) {
       await db.user.create({
         data: {
-          quotaLimit: 100,
-          externalId: auth.id,
+          user_id: auth.id,
           email: auth.primaryEmailAddress?.emailAddress ?? auth.emailAddresses[0].emailAddress,
         },
       })
+    } else {
+      // await db.user.update({
+      //   where: { user_id: auth.id },
+      //   data: {
+      //     email: auth.primaryEmailAddress?.emailAddress ?? auth.emailAddresses[0].emailAddress,
+      //   },
+      // })
     }
 
     return c.json({ isSynced: true })

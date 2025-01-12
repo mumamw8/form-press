@@ -3,7 +3,7 @@ import { router } from "../__internals/router"
 import { privateProcedure } from "../procedures"
 import { z } from "zod"
 import { FormRepository } from "../repositories/prisma/FormRepository"
-import { ZCreateForm, ZUpdateForm } from "@/dtos/form-dtos"
+import { ZCreateForm, ZUpdateForm } from "@/lib/dtos/form-dtos"
 
 const formRepository = new FormRepository()
 
@@ -48,12 +48,12 @@ export const formRouter = router({
   updateForm: privateProcedure
     .input(ZUpdateForm.extend({ id: z.string() }))
     .mutation(async ({ c, input }) => {
-      // const form = await db.form.update({
-      //   where: { id: input.id },
-      //   data: { name: input.name },
-      // })
       const { id, ...data } = input
-      const form = formRepository.update(input.id, data)
+      const form = await db.form.update({
+        where: { id },
+        data,
+      })
+      // const form = formRepository.update(input.id, data)
       return c.json({ sucess: true, data: form })
     }),
   // delete form

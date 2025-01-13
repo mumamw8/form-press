@@ -71,7 +71,7 @@ export default function FormBuilder({ id }: { id: string }) {
 
   if (!form) {
     return (
-      <div className="flex items-center justify-center flex-1 h-full w-full">
+      <div className="flex items-center justify-center flex-1 min-h-screen h-full w-full">
         <h3 className="text-lg">Oops!! Something went wrong.</h3>
       </div>
     )
@@ -92,7 +92,7 @@ export default function FormBuilder({ id }: { id: string }) {
           <h3 className="">{isReady && form.title}</h3>
           <div className="flex items-center gap-2">
             <PreviewDialogButton />
-            <SaveFormButton id={id} />
+            <SaveFormButton id={id} isPublished={form.isPublished} />
             <PublishFormButton id={id} isPublished={form.isPublished} />
           </div>
         </nav>

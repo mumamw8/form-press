@@ -6,6 +6,8 @@ import { cn } from "@/utils"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { ClerkProvider } from "@clerk/nextjs"
+import NextTopLoader from "nextjs-toploader"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 // const eb_garamond = EB_Garamond({
@@ -35,8 +37,10 @@ export default function RootLayout({
       <html lang="en" className={cn(inter.variable, barlow.variable)}>
         <body className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-brand-50 text-brand-950 antialiased">
           <main className="relative flex-1 flex flex-col">
+            <NextTopLoader />
             <Providers>{children}</Providers>
           </main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

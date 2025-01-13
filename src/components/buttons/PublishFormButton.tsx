@@ -5,6 +5,7 @@ import { client } from "@/lib/client"
 import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
+import { toast } from "sonner"
 
 export const PublishFormButton = ({
   id,
@@ -27,9 +28,11 @@ export const PublishFormButton = ({
       console.log("Form saved")
       queryClient.invalidateQueries({ queryKey: ["get-form-by-id"] })
       setIsOpen(false)
+      toast.success("Form published")
     },
     onError: (error) => {
       console.error(error)
+      toast.error("Publish form failed")
     },
   })
 
@@ -67,7 +70,7 @@ export const PublishFormButton = ({
           >
             Cancel
           </Button>
-          <Button onClick={() => updateForm()}>
+          <Button variant={"destructive"} onClick={() => updateForm()}>
             {isUpdatingForm ? (
               <>
                 {"Publishing..."} <LoadingSpinner />

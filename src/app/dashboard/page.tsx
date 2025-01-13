@@ -6,6 +6,11 @@ import { DashboardPageContent } from "./_components/dashboard-page-content"
 import { CreateFormModal } from "@/components/create-form-modal"
 import { Button } from "@/components/ui/button"
 import { PlusIcon } from "lucide-react"
+import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
+
+const breadcrumbs: BreadcrumbListItem[] = [
+  { title: "Dashboard", href: "/dashboard" },
+]
 
 export default async function Page() {
   const auth = await currentUser()
@@ -20,6 +25,7 @@ export default async function Page() {
 
   return (
     <DashboardPage
+      breadcrumbs={breadcrumbs}
       cta={
         <CreateFormModal>
           <Button className="w-full sm:w-fit">

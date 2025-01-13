@@ -1,12 +1,31 @@
-"use client";
+"use client"
 
-import { PropsWithChildren, useState } from "react";
-import { Sidebar } from "./_components/sidebar";
-import { Menu, X } from "lucide-react";
-import { Modal } from "@/components/modal";
+import { PropsWithChildren, useState } from "react"
+import { Sidebar } from "./_components/sidebar"
+import { Menu, X } from "lucide-react"
+import { Modal } from "@/components/modal"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 
 export default function Layout({ children }: PropsWithChildren) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  return (
+    <div className="relative h-screen flex flex-col md:flex-row bg-white overflow-hidden">
+      <SidebarProvider>
+        <AppSidebar />
+        {/* main content area */}
+        <div className="flex-1 overflow-y-auto bg-gray-50 shadow-md p-4 md:p-6 relative z-10">
+          <div className="relative min-h-full flex flex-col">
+            <div className="h-full flex flex-col flex-1 space-y-4">
+              <SidebarTrigger />
+              {children}
+            </div>
+          </div>
+        </div>
+      </SidebarProvider>
+    </div>
+  )
 
   return (
     <div className="relative h-screen flex flex-col md:flex-row bg-white overflow-hidden">

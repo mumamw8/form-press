@@ -10,6 +10,7 @@ import { useState } from "react"
 import { format } from "date-fns"
 import { Modal } from "@/components/modal"
 import { DashboardEmptyState } from "./dashboard-empty-state"
+import { toast } from "sonner"
 
 export const DashboardPageContent = () => {
   const [deletingForm, setDeletingForm] = useState<string | null>(null)
@@ -31,6 +32,11 @@ export const DashboardPageContent = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
       setDeletingForm(null)
+      toast.success("Form deleted")
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error("Delete form failed")
     },
   })
 
@@ -74,7 +80,7 @@ export const DashboardPageContent = () => {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <Link
-                  href={`/builder/${form.id}`}
+                  href={`/dashboard/forms/${form.id}`}
                   className={buttonVariants({
                     variant: "outline",
                     size: "sm",

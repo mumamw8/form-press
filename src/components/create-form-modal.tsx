@@ -11,6 +11,7 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { client } from "@/lib/client"
 import { CreateFormDto, ZCreateForm } from "@/lib/dtos/form-dtos"
+import { toast } from "sonner"
 
 interface CreateFormModalProps extends PropsWithChildren {
   containerClassName?: string
@@ -30,6 +31,10 @@ export const CreateFormModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
       setIsOpen(false)
+      toast.success("Form created")
+    },
+    onError: (error) => {
+      toast.error("Create form failed")
     },
   })
 

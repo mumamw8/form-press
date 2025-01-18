@@ -1,4 +1,4 @@
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { FormElementsSidebar } from "@/features/form-builder/components/FormElementsSidebar"
 import { PropertiesFormSidebar } from "./PropertiesFormSidebar"
 

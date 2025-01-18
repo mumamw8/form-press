@@ -8,7 +8,7 @@ import {
 import { HTTPException } from "hono/http-exception"
 import { PropsWithChildren, useState } from "react"
 import { Provider as ChakraProvider } from "./chakra-ui/provider"
-import { FormBuilderStoreProvider } from "@/providers/form-builder-store-provider"
+import { FormBuilderStoreProvider } from "@/components/providers/form-builder-store-provider"
 
 export const Providers = ({ children }: PropsWithChildren) => {
   const [queryClient] = useState(

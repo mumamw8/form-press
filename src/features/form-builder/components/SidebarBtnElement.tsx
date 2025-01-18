@@ -1,6 +1,6 @@
 import { FormElements } from "./fieldComponents"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/utils"
+import { cn } from "@/lib/utils"
 import { useDraggable } from "@dnd-kit/core"
 
 export const SidebarBtnElement = ({

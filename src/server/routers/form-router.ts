@@ -3,16 +3,15 @@ import { router } from "../__internals/router"
 import { privateProcedure } from "../procedures"
 import { z } from "zod"
 import { FormRepository } from "../repositories/prisma/FormRepository"
-import { ZCreateForm, ZUpdateForm } from "@/lib/dtos/form-dtos"
+import { CreateFormSchema, UpdateFormSchema } from "@/lib/types"
 
 const formRepository = new FormRepository()
 
 export const formRouter = router({
   // get all forms
   getAllForms: privateProcedure.query(async ({ ctx, c }) => {
-    // const forms = await db.form.findMany()
     const forms = await formRepository.getAll({
-      where: { userId: ctx.user.id },
+      where: { createdById: ctx.user.id },
       orderBy: { updatedAt: "desc" },
     })
 
@@ -29,24 +28,22 @@ export const formRouter = router({
     }),
   // create form
   createForm: privateProcedure
-    .input(ZCreateForm)
+    .input(CreateFormSchema)
     .mutation(async ({ ctx, c, input }) => {
       const { user } = ctx
-      const { title, ...rest } = input
-      // const form = await db.form.create({
-      //   data: { name: name, userId: user.id },
-      // })
+      const parsedData = CreateFormSchema.parse(input)
+      const { title, ...restOfData } = parsedData
       const form = await formRepository.create({
         title,
-        userId: user.id,
+        createdById: user.id,
         settings: {},
-        ...rest,
+        ...restOfData,
       })
       return c.json({ success: true, data: form })
     }),
   // update form
   updateForm: privateProcedure
-    .input(ZUpdateForm.extend({ id: z.string() }))
+    .input(UpdateFormSchema.extend({ id: z.string() }))
     .mutation(async ({ c, input }) => {
       const { id, ...data } = input
       const form = await db.form.update({

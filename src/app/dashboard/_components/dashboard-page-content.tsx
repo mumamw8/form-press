@@ -11,6 +11,8 @@ import { format } from "date-fns"
 import { Modal } from "@/components/modal"
 import { DashboardEmptyState } from "./dashboard-empty-state"
 import { toast } from "sonner"
+import { useSession, useUser } from "@clerk/nextjs"
+import { createClient } from "@supabase/supabase-js"
 
 export const DashboardPageContent = () => {
   const [deletingForm, setDeletingForm] = useState<string | null>(null)

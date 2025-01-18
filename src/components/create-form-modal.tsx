@@ -4,14 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { PropsWithChildren, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { Modal } from "./modal"
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { client } from "@/lib/client"
-import { CreateFormDto, ZCreateForm } from "@/lib/dtos/form-dtos"
 import { toast } from "sonner"
+import { CreateFormSchema, CreateFormType } from "@/lib/types"
 
 interface CreateFormModalProps extends PropsWithChildren {
   containerClassName?: string
@@ -25,7 +24,7 @@ export const CreateFormModal = ({
   const queryClient = useQueryClient()
 
   const { mutate: createForm, isPending: isCreatingForm } = useMutation({
-    mutationFn: async (data: CreateFormDto) => {
+    mutationFn: async (data: CreateFormType) => {
       await client.form.createForm.$post(data)
     },
     onSuccess: () => {
@@ -42,11 +41,11 @@ export const CreateFormModal = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateFormDto>({
-    resolver: zodResolver(ZCreateForm),
+  } = useForm<CreateFormType>({
+    resolver: zodResolver(CreateFormSchema),
   })
 
-  const onSubmit = (data: CreateFormDto) => {
+  const onSubmit = (data: CreateFormType) => {
     createForm(data)
   }
 

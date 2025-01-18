@@ -12,46 +12,139 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id           String   @id @default(cuid())
-  user_id      String   @unique
-  email        String   @unique
-  apiKey       String   @unique @default(cuid())
-  subscription String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Workspace {
+  id         String   @id @default(cuid())
+  name       String   @db.VarChar(255)
+  desc       String?
+  ownerId    String
+  owner      User     @relation(fields: [ownerId], references: [id])
+  inviteCode String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  forms Form[]
+  projects Project[]
+  members  WorkspaceMembership[]
+  forms    Form[]
+
+  @@map("workspaces")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(255)
+  desc        String?
+  icon        String?
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  forms       Form[]
+
+  @@map("projects")
+}
+
+model WorkspaceMembership {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  joinedAt    DateTime  @default(now())
+  roleId      String
+  role        Role      @relation(fields: [roleId], references: [id])
+
+  @@map("workspace_memberships")
+}
+
+model Role {
+  id          String                @id @default(cuid())
+  name        RoleType              @unique
+  // roleType    RoleType
+  permissions PermissionType[]
+  memberships WorkspaceMembership[]
+
+  @@index([name])
+  @@map("roles")
+}
+
+enum RoleType {
+  OWNER
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+enum PermissionType {
+  CREATE_WORKSPACE
+  DELETE_WORKSPACE
+  UPDATE_WORKSPACE
+  VIEW_WORKSPACE
+  CREATE_PROJECT
+  DELETE_PROJECT
+  UPDATE_PROJECT
+  VIEW_PROJECT
+  ADD_MEMBER
+  REMOVE_MEMBER
+  UPDATE_MEMBER
+  VIEW_MEMBER
+  CREATE_FORM
+  DELETE_FORM
+  UPDATE_FORM
+  VIEW_FORM
+  SUBMIT_FORM
+}
+
+model User {
+  id                   String                @id @default(cuid())
+  user_id              String                @unique
+  email                String                @unique
+  apiKey               String                @unique @default(cuid())
+  subscription         String?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  projects             Project[]
+  forms                Form[]
+  workspaces           Workspace[]
+  workspaceMemberships WorkspaceMembership[]
 
   @@index([email, apiKey])
+  @@map("users")
 }
 
 model Form {
-  id                String  @id @default(cuid())
-  title             String
-  description       String  @default("")
-  fields            Json? // Stores field definitions as JSON
+  id                String    @id @default(cuid())
+  title             String    @default("Untitled")
+  description       String    @default("")
+  fields            Json?     @default("[]") // Stores field definitions as JSON
   settings          Json? // Optional, for themes or additional configurations
-  isPublished       Boolean @default(false)
-  visits            Int     @default(0)
-  submissions_count Int     @default(0)
+  isPublished       Boolean   @default(false)
+  visits            Int       @default(0)
+  submissions_count Int       @default(0)
+  shareURL          String    @unique @default(uuid())
+  createdById       String
+  createdBy         User      @relation(fields: [createdById], references: [id])
+  workspaceId       String
+  workspace         Workspace @relation(fields: [workspaceId], references: [id])
+  projectId         String
+  project           Project   @relation(fields: [projectId], references: [id])
+  isArchived        Boolean   @default(false)
+  closeFormDate     DateTime?
 
-  shareURL String @unique @default(uuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   submissions Submission[]
+
+  @@map("forms")
 }
 
 model Submission {
   id          String   @id @default(cuid())
   data        Json     @default("{}") // Contains the JSONStringified form submission
   submittedAt DateTime @default(now())
+  formId      String
+  form        Form     @relation(fields: [formId], references: [id])
 
-  formId String
-  form   Form   @relation(fields: [formId], references: [id])
+  @@map("submissions")
 }

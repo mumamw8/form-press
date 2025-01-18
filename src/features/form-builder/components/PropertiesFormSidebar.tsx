@@ -1,4 +1,4 @@
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { FormElements } from "./fieldComponents"
 import { Button } from "@/components/ui/button"
 import { AiOutlineClose } from "react-icons/ai"

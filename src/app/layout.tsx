@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { EB_Garamond, Barlow } from "next/font/google"
-import { cn } from "@/utils"
 
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { ClerkProvider } from "@clerk/nextjs"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/sonner"
+import { cn } from "@/lib/utils"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 // const eb_garamond = EB_Garamond({

@@ -8,8 +8,8 @@ import {
 } from "@dnd-kit/core"
 import { useState } from "react"
 import { FormElementInstance, FormElements } from "./fieldComponents"
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
-import { generateFieldId } from "@/lib/idGenerator"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
+import { generateFieldId } from "@/lib/utils/generate-field-id"
 import { Button } from "@/components/ui/button"
 import { BiSolidTrash } from "react-icons/bi"
 

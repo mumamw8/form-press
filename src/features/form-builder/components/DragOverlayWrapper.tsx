@@ -3,7 +3,7 @@ import { useState } from "react"
 import { SidebarBtnElementDragOverlay } from "./SidebarBtnElement"
 import { FormElements } from "./fieldComponents"
 import { TFormField } from "@/lib/types/form-types"
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 
 export const DragOverlayWrapper = () => {
   const { elements } = useFormBuilderStore((state) => state)

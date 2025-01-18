@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import {
   Form,
   FormControl,

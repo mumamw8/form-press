@@ -1,7 +1,7 @@
 "use client"
 import { MdPreview } from "react-icons/md"
 import { Button } from "../ui/button"
-import { useFormBuilderStore } from "@/providers/form-builder-store-provider"
+import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
 import { FormElements } from "@/features/form-builder/components/fieldComponents"
 

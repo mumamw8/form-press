@@ -145,21 +145,3 @@ export const ZFormField = z.union([
   // ZRankingField,
 ])
 export type TFormField = z.infer<typeof ZFormField>
-
-export const ZForm = z.object({
-  id: z.string().cuid(),
-  title: z.string(),
-  description: z.string().default(""),
-  fields: z.array(ZFormField).default([]), // Use z.any() for JSON content
-  settings: z.record(z.any()).optional(), // Optional JSON object
-  isPublished: z.boolean().default(false),
-  visits: z.number().default(0),
-  submissions_count: z.number().default(0),
-  shareURL: z.string().uuid(),
-  userId: z.string(),
-  // user: z.lazy(() => UserSchema), // Lazily load UserSchema
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  // submissions: z.array(z.lazy(() => SubmissionSchema)).optional(),
-})
-export type TForm = z.infer<typeof ZForm>

@@ -9,19 +9,25 @@ import { ArrowRight, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { format } from "date-fns"
 import { Modal } from "@/components/modal"
-import { DashboardEmptyState } from "./dashboard-empty-state"
 import { toast } from "sonner"
-import { useSession, useUser } from "@clerk/nextjs"
-import { createClient } from "@supabase/supabase-js"
+import { ProjectEmptyState } from "./project-empty-state"
 
-export const DashboardPageContent = () => {
+export const ProjectPageContent = ({
+  projectId,
+  workspaceId,
+}: {
+  projectId: string
+  workspaceId: string
+}) => {
   const [deletingForm, setDeletingForm] = useState<string | null>(null)
   const queryClient = useQueryClient()
 
   const { data: forms, isPending: isFormsLoading } = useQuery({
-    queryKey: ["get-user-forms"],
+    queryKey: ["get-project-forms"],
     queryFn: async () => {
-      const res = await client.form.getAllForms.$get()
+      const res = await client.form.getProjectForms.$get({
+        projectId: projectId,
+      })
       const { data } = await res.json()
       return data
     },
@@ -32,7 +38,7 @@ export const DashboardPageContent = () => {
       await client.form.deleteForm.$post({ shareUrl })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-project-forms"] })
       setDeletingForm(null)
       toast.success("Form deleted")
     },
@@ -51,7 +57,7 @@ export const DashboardPageContent = () => {
   }
 
   if (!forms || forms.length === 0) {
-    return <DashboardEmptyState />
+    return <ProjectEmptyState workspaceId={workspaceId} projectId={projectId} />
   }
 
   return (
@@ -60,11 +66,11 @@ export const DashboardPageContent = () => {
         {forms.map((form, index) => (
           <li
             key={index}
-            className="relative group z-10 transition-all duration-200 hover:-translate-y-0.5"
+            className="relative group transition-all duration-200 hover:-translate-y-0.5"
           >
             <div className="absolute z-0 inset-px rounded-lg bg-white" />
             <div className="pointer-events-none z-0 absolute inset-px rounded-lg shadow-sm transition-all duration-300 group-hover:shadow-md ring-1 ring-black/5" />
-            <div className="relative p-6 z-10">
+            <div className="relative p-6">
               <div className="flex items-center gap-4 mb-6">
                 <div
                   className="size-12 rounded-full"
@@ -82,7 +88,7 @@ export const DashboardPageContent = () => {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <Link
-                  href={`/dashboard/forms/${form.id}`}
+                  href={`/dashboard/${workspaceId}/${projectId}/${form.id}`}
                   className={buttonVariants({
                     variant: "outline",
                     size: "sm",

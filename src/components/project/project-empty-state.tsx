@@ -4,7 +4,15 @@ import { CreateFormModal } from "@/components/create-form-modal"
 // import { client } from "@/lib/client"
 // import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const DashboardEmptyState = () => {
+interface ProjectEmptyStateProps {
+  workspaceId: string
+  projectId: string
+}
+
+export const ProjectEmptyState = ({
+  workspaceId,
+  projectId,
+}: ProjectEmptyStateProps) => {
   // const queryClient = useQueryClient()
 
   // const { mutate: insertQuickstartCategories, isPending } = useMutation({
@@ -38,15 +46,19 @@ export const DashboardEmptyState = () => {
         <Button
           variant="outline"
           className="flex items-center space-x-2 w-full sm:w-auto"
-        // onClick={() => insertQuickstartCategories()}
-        // disabled={isPending}
+          // onClick={() => insertQuickstartCategories()}
+          // disabled={isPending}
         >
           <span className="size-5">🚀</span>
           <span>{false ? "Creating..." : "Quickstart"}</span>
         </Button>
 
-        <CreateFormModal containerClassName="w-full sm:w-auto">
-          <Button className="flex items-center space-x-2 w-full sm:w-auto">
+        <CreateFormModal
+          workspaceId={workspaceId}
+          projectId={projectId}
+          containerClassName="w-full sm:w-auto"
+        >
+          <Button className="flex items-center space-x-2 w-full">
             <span>Add Form</span>
           </Button>
         </CreateFormModal>

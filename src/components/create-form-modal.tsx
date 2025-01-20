@@ -1,7 +1,7 @@
 "use client"
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import React, { PropsWithChildren, useState } from "react"
+import React, { PropsWithChildren, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Modal } from "./modal"
@@ -14,11 +14,15 @@ import { CreateFormSchema, CreateFormType } from "@/lib/types"
 
 interface CreateFormModalProps extends PropsWithChildren {
   containerClassName?: string
+  workspaceId: string
+  projectId: string
 }
 
 export const CreateFormModal = ({
   children,
   containerClassName,
+  workspaceId,
+  projectId,
 }: CreateFormModalProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
@@ -28,7 +32,7 @@ export const CreateFormModal = ({
       await client.form.createForm.$post(data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-user-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-project-forms"] })
       setIsOpen(false)
       toast.success("Form created")
     },
@@ -43,6 +47,12 @@ export const CreateFormModal = ({
     formState: { errors },
   } = useForm<CreateFormType>({
     resolver: zodResolver(CreateFormSchema),
+    defaultValues: {
+      workspaceId: workspaceId,
+      projectId: projectId,
+      closeFormDate: null,
+      title: "Untitled",
+    },
   })
 
   const onSubmit = (data: CreateFormType) => {
@@ -77,8 +87,8 @@ export const CreateFormModal = ({
                 autoFocus
                 id="title"
                 {...register("title")}
-                placeholder="e.g Join Team Waitlist"
-                className="w-full"
+                placeholder="Untitled"
+                className="w-full placeholder:italic"
               />
               {errors.title ? (
                 <p className="mt-1 text-sm text-red-500">

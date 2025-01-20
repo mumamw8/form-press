@@ -23,7 +23,7 @@ export const SaveFormButton = ({
 
   const { mutate: updateForm, isPending: isUpdatingForm } = useMutation({
     mutationFn: async (data: FormElementInstance[]) => {
-      const jsonElements = data as Prisma.JsonArray
+      const jsonElements = data
       await client.form.updateForm.$post({
         id: id,
         fields: jsonElements,

@@ -1,12 +1,12 @@
 import { FormElementInstance } from "@/features/form-builder/components/fieldComponents"
 import { createStore } from "zustand/vanilla";
 
-export type FormBuilderState = {
+type FormBuilderState = {
   elements: FormElementInstance[]
   selectedElement: FormElementInstance | null
 }
 
-export type FormBuilderActions = {
+type FormBuilderActions = {
   addElement: (index: number, element: FormElementInstance) => void
   removeElement: (id: string) => void
   selectElement: (element: FormElementInstance | null) => void
@@ -16,7 +16,7 @@ export type FormBuilderActions = {
 
 export type FormBuilderStore = FormBuilderState & FormBuilderActions
 
-export const defaultInitialState: FormBuilderState = {
+const defaultInitialState: FormBuilderState = {
   elements: [],
   selectedElement: null,
 }

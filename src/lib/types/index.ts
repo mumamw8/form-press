@@ -4,7 +4,7 @@ import { ZFormField } from "./form-types"
 
 export const WorkspaceSchema = z.object({
   id: z.string().cuid(),
-  name: z.string().max(255),
+  name: z.string().max(255).min(1, "A workspace name is required"),
   desc: z.string().nullable(),
   ownerId: z.string(),
   inviteCode: z.string().uuid(),
@@ -15,7 +15,7 @@ export const WorkspaceSchema = z.object({
 
 export const ProjectSchema = z.object({
   id: z.string().cuid(),
-  name: z.string().max(255),
+  name: z.string().max(255).min(1, "A project name is required"),
   desc: z.string().nullable(),
   icon: z.string().nullable(),
   workspaceId: z.string(),
@@ -152,6 +152,7 @@ export const CreateFormSchema = FormSchema.omit({
   visits: true,
   shareURL: true,
   createdById: true,
+  fields: true,
 })
 
 export const UpdateFormSchema = FormSchema.partial().omit({

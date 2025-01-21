@@ -1,9 +1,9 @@
 "use client"
-import { MdPreview } from "react-icons/md"
 import { Button } from "../ui/button"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
 import { FormElements } from "@/features/form-builder/components/fieldComponents"
+import { EyeIcon, Fullscreen } from "lucide-react"
 
 export const PreviewDialogButton = () => {
   const { elements } = useFormBuilderStore((state) => state)
@@ -11,7 +11,7 @@ export const PreviewDialogButton = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant={"outline"} className="gap-2">
-          <MdPreview className="h-6 w-6" />
+          <Fullscreen className="h-6 w-6" />
           Preview
         </Button>
       </DialogTrigger>

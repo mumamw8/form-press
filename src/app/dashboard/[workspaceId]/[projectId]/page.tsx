@@ -26,27 +26,12 @@ export default async function Page({
   ]
 
   return (
-    <WorkspacePage
-      breadcrumbs={breadcrumbs}
-      title={project.name}
-      cta={
-        <CreateFormModal
-          workspaceId={project.workspaceId}
-          projectId={project.id}
-        >
-          <Button className="w-full">
-            <PlusCircle className="size-4 mr-2" />
-            Add Form
-          </Button>
-        </CreateFormModal>
-      }
-    >
-      <div className="p-6 sm:p-8">
-        <ProjectPageContent
-          workspaceId={project.workspaceId}
-          projectId={project.id}
-        />
-      </div>
+    <WorkspacePage breadcrumbs={breadcrumbs} title={project.name}>
+      <ProjectPageContent
+        workspaceId={project.workspaceId}
+        projectId={project.id}
+        projectName={project.name}
+      />
     </WorkspacePage>
   )
 }

@@ -1,14 +1,13 @@
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
-import { HiSaveAs } from "react-icons/hi"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { FormElementInstance } from "@/features/form-builder/components/fieldComponents"
 import { client } from "@/lib/client"
 import { LoadingSpinner } from "../loading-spinner"
-import { Prisma } from "@prisma/client"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
+import { SaveIcon } from "lucide-react"
 
 export const SaveFormButton = ({
   id,
@@ -51,7 +50,7 @@ export const SaveFormButton = ({
           // disabled={isPublished}
           onClick={() => setIsOpen(true)}
         >
-          <HiSaveAs className="h-4 w-4" /> {"Save"}
+          <SaveIcon className="h-4 w-4" /> {"Save"}
         </Button>
         <Modal
           className="max-w-xl p-8"
@@ -64,7 +63,8 @@ export const SaveFormButton = ({
             </h2>
             <p className="text-sm/6 text-gray-600">
               Saving changes to an already published form will unpublish the
-              form and all instances of the form will become unreachable.
+              form. All instances of the form will become unreachable. Are you
+              want to save these changes?
             </p>
           </div>
 
@@ -86,7 +86,7 @@ export const SaveFormButton = ({
                   {"Saving..."} <LoadingSpinner />
                 </>
               ) : (
-                "Proceed"
+                "Yes"
               )}
             </Button>
           </div>
@@ -105,7 +105,7 @@ export const SaveFormButton = ({
         <LoadingSpinner />
       ) : (
         <>
-          <HiSaveAs className="h-4 w-4" /> {"Save"}
+          <SaveIcon className="h-4 w-4" /> {"Save"}
         </>
       )}
     </Button>

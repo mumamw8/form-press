@@ -20,6 +20,7 @@ import { PublishFormButton } from "@/components/buttons/PublishFormButton"
 import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { UnpublishFormButton } from "@/components/buttons/UnpublishFormButton"
 
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()
@@ -92,8 +93,15 @@ export default function FormBuilder({ id }: { id: string }) {
           <h3 className="">{isReady && form.title}</h3>
           <div className="flex items-center gap-2">
             <PreviewDialogButton />
-            <SaveFormButton id={id} isPublished={form.isPublished} />
-            <PublishFormButton id={id} isPublished={form.isPublished} />
+            <SaveFormButton id={form.id} isPublished={form.isPublished} />
+            {!form.isPublished ? (
+              <PublishFormButton id={form.id} isPublished={form.isPublished} />
+            ) : (
+              <UnpublishFormButton
+                id={form.id}
+                isPublished={form.isPublished}
+              />
+            )}
           </div>
         </nav>
         <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-blue-300">

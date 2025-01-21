@@ -5,9 +5,9 @@ import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
-import { CircleCheck } from "lucide-react"
+import { CircleSlash } from "lucide-react"
 
-export const PublishFormButton = ({
+export const UnpublishFormButton = ({
   id,
   isPublished,
 }: {
@@ -21,29 +21,30 @@ export const PublishFormButton = ({
     mutationFn: async () => {
       await client.form.updateForm.$post({
         id: id,
-        isPublished: true,
+        isPublished: false,
       })
     },
     onSuccess: () => {
-      console.log("Form saved")
+      console.log("Form unpublished")
       queryClient.invalidateQueries({ queryKey: ["get-form-by-id"] })
       setIsOpen(false)
-      toast.success("Form published")
+      toast.success("Form unpublished")
     },
     onError: (error) => {
       console.error(error)
-      toast.error("Publish form failed")
+      toast.error("Unpublish form failed")
     },
   })
 
   return (
     <>
       <Button
-        className="gap-2"
-        disabled={isPublished}
+        className="gap-2 bg-black"
+        variant={"destructive"}
+        disabled={!isPublished}
         onClick={() => setIsOpen(true)}
       >
-        <CircleCheck className="h-4 w-4" /> {"Publish"}
+        <CircleSlash className="h-4 w-4" /> {"Unpublish"}
       </Button>
       <Modal
         className="max-w-xl p-8"
@@ -55,9 +56,9 @@ export const PublishFormButton = ({
             Are you sure you want to proceed?
           </h2>
           <p className="text-sm/6 text-gray-600">
-            Publishing this form will change all instances of this form to the
-            new version and archive any previous submissions. Are you sure you
-            want to publish this form?
+            Unpublishing this form will revert it to a draft state. All public
+            instances of the form will become unavalable. Are you sure you want
+            to unpublish this form?
           </p>
         </div>
 
@@ -73,7 +74,7 @@ export const PublishFormButton = ({
           <Button variant={"destructive"} onClick={() => updateForm()}>
             {isUpdatingForm ? (
               <>
-                {"Publishing..."} <LoadingSpinner />
+                {"Unpublishing..."} <LoadingSpinner />
               </>
             ) : (
               "Yes"

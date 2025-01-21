@@ -24,7 +24,7 @@ export function NavMain({ items }: { items: NavMainItem[] }) {
         {items.map((item: NavMainItem) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
-              <Link href={item.href}>
+              <Link className="font-medium leading-4" href={item.href}>
                 <item.icon />
                 <span>{item.title}</span>
               </Link>

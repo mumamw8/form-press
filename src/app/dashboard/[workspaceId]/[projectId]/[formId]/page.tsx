@@ -46,45 +46,47 @@ export default async function Page({ params }: { params: { formId: string } }) {
   ]
 
   return (
-    <WorkspacePage
-      title={form.title}
-      breadcrumbs={breadcrumbs}
-      cta={
-        <Link
-          href={`/builder/${form.id}`}
-          className={buttonVariants({
-            variant: "default",
-            size: "lg",
-            className: "",
-          })}
-        >
-          <Edit2 className="size-4" />
-          Edit
-        </Link>
-      }
-    >
-      <div className="mt-12">
-        <Tabs defaultValue="overview">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="submissions">Submissions</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          </TabsList>
-          <TabsContent value="overview">
-            <FormOverview />
-          </TabsContent>
-          <TabsContent value="submissions">
-            <FormSubmissions />
-          </TabsContent>
-          <TabsContent value="settings">
-            <FormSettings />
-          </TabsContent>
-          <TabsContent value="integrations">
-            <FormIntegrations />
-          </TabsContent>
-        </Tabs>
-      </div>
+    <WorkspacePage title={form.title} breadcrumbs={breadcrumbs}>
+      <main className="px-18 sm:px-20 py-4">
+        <header className="border-b mx-4 my-4 py-4 flex justify-between items-center">
+          <h2 className="text-3xl font-extrabold tracking-tight">
+            {form.title.length > 0 ? form.title : "(Untitled)"}
+          </h2>
+          <Link
+            href={`/builder/${form.id}`}
+            className={buttonVariants({
+              variant: "default",
+              size: "lg",
+              className: "",
+            })}
+          >
+            <Edit2 className="size-4" />
+            Edit
+          </Link>
+        </header>
+        <div className="p-4">
+          <Tabs defaultValue="overview">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="submissions">Submissions</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="integrations">Integrations</TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview">
+              <FormOverview />
+            </TabsContent>
+            <TabsContent value="submissions">
+              <FormSubmissions />
+            </TabsContent>
+            <TabsContent value="settings">
+              <FormSettings />
+            </TabsContent>
+            <TabsContent value="integrations">
+              <FormIntegrations />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </main>
     </WorkspacePage>
   )
 }

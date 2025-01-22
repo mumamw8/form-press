@@ -1,18 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { CreateFormModal } from "@/components/create-form-modal"
+import { CreateFormModal } from "@/components/app-form/create-form-modal"
+import useCreateFormModal from "@/hooks/use-create-form-modal"
 // import { client } from "@/lib/client"
 // import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-interface ProjectEmptyStateProps {
-  workspaceId: string
-  projectId: string
-}
+interface ProjectEmptyStateProps {}
 
-export const ProjectEmptyState = ({
-  workspaceId,
-  projectId,
-}: ProjectEmptyStateProps) => {
+export const ProjectEmptyState = ({}: ProjectEmptyStateProps) => {
+  const { onOpen } = useCreateFormModal()
   // const queryClient = useQueryClient()
 
   // const { mutate: insertQuickstartCategories, isPending } = useMutation({
@@ -52,16 +48,9 @@ export const ProjectEmptyState = ({
           <span className="size-5">🚀</span>
           <span>{false ? "Creating..." : "Quickstart"}</span>
         </Button>
-
-        <CreateFormModal
-          workspaceId={workspaceId}
-          projectId={projectId}
-          containerClassName="w-full sm:w-auto"
-        >
-          <Button className="flex items-center space-x-2 w-full">
-            <span>Add Form</span>
-          </Button>
-        </CreateFormModal>
+        <Button onClick={onOpen} className="flex items-center space-x-2 w-full">
+          <span>Add Form</span>
+        </Button>
       </div>
     </Card>
   )

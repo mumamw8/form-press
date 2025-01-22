@@ -1,10 +1,8 @@
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
-import { CreateFormModal } from "@/components/create-form-modal"
+import { CreateFormModal } from "@/components/app-form/create-form-modal"
 import { ProjectPageContent } from "@/components/project/project-page-content"
-import { Button } from "@/components/ui/button"
 import { WorkspacePage } from "@/components/workspace-page"
 import { db } from "@/db"
-import { PlusCircle } from "lucide-react"
 import { redirect } from "next/navigation"
 
 export default async function Page({
@@ -21,7 +19,7 @@ export default async function Page({
     { title: "Dashboard", href: `/dashboard/${project.workspaceId}` },
     {
       title: project.name,
-      href: `/dashboard/${project.workspaceId}/${project.id}`,
+      href: `/dashboard/${project.workspaceId}/p/${project.id}`,
     },
   ]
 
@@ -31,6 +29,10 @@ export default async function Page({
         workspaceId={project.workspaceId}
         projectId={project.id}
         projectName={project.name}
+      />
+      <CreateFormModal
+        workspaceId={project.workspaceId}
+        projectId={project.id}
       />
     </WorkspacePage>
   )

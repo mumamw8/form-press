@@ -10,19 +10,7 @@ export default async function Page({
     { title: "Dashboard", href: `/dashboard/${params.workspaceId}` },
   ]
   return (
-    <WorkspacePage
-      breadcrumbs={breadcrumbs}
-      // cta={
-      //   <CreateFormModal>
-      //     <Button className="w-full">
-      //       <PlusIcon className="size-4 mr-2" />
-      //       Add Form
-      //     </Button>
-      //   </CreateFormModal>
-      // }
-      title={"Dashboard"}
-    >
-      <p>{params.workspaceId}</p>
+    <WorkspacePage breadcrumbs={breadcrumbs} title={"Dashboard"}>
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <div className="aspect-video rounded-xl bg-muted/50" />
         <div className="aspect-video rounded-xl bg-muted/50" />

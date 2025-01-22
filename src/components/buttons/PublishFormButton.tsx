@@ -47,8 +47,8 @@ export const PublishFormButton = ({
       </Button>
       <Modal
         className="max-w-xl p-8"
-        showModal={isOpen}
-        setShowModal={setIsOpen}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
       >
         <div>
           <h2 className="text-lg/7 font-medium tracking-tight text-gray-950">

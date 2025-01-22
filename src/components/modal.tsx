@@ -7,11 +7,9 @@ import { cn } from "@/lib/utils"
 interface ModalProps {
   children?: ReactNode
   className?: string
-  showModal?: boolean
-  setShowModal?: Dispatch<SetStateAction<boolean>>
-  onClose?: () => void
+  onClose: () => void
+  open: boolean
   desktopOnly?: boolean
-  preventDefaultClose?: boolean
 }
 
 export const Modal = ({
@@ -19,34 +17,13 @@ export const Modal = ({
   className,
   desktopOnly,
   onClose,
-  preventDefaultClose,
-  setShowModal,
-  showModal,
+  open,
 }: ModalProps) => {
-  const closeModal = ({ dragged }: { dragged?: boolean }) => {
-    if (preventDefaultClose && !dragged) {
-      return
-    }
-
-    onClose && onClose()
-
-    if (setShowModal) {
-      setShowModal(false)
-    }
-  }
-
   const { isMobile } = useMediaQuery()
 
   if (isMobile && !desktopOnly) {
     return (
-      <Drawer.Root
-        open={setShowModal ? showModal : true}
-        onOpenChange={(open) => {
-          if (!open) {
-            closeModal({ dragged: true })
-          }
-        }}
-      >
+      <Drawer.Root open={open} onOpenChange={onClose}>
         <Drawer.Overlay className="fixed inset-0 z-40 bg-gray-100 bg-opacity-10 backdrop-blur" />
         <Drawer.Portal>
           <Drawer.Content
@@ -67,14 +44,7 @@ export const Modal = ({
   }
 
   return (
-    <Dialog
-      open={setShowModal ? showModal : true}
-      onOpenChange={(open) => {
-        if (!open) {
-          closeModal({ dragged: true })
-        }
-      }}
-    >
+    <Dialog modal={true} open={open} onOpenChange={onClose}>
       <DialogTitle className="sr-only">Dialog</DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>

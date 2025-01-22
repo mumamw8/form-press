@@ -5,6 +5,8 @@ import { currentUser } from "@clerk/nextjs/server"
 import { db } from "@/db"
 import { redirect } from "next/navigation"
 import { createClerkSupabaseClientSsr } from "@/app/ssr/supabase-client"
+import CreateWorkspaceDialog from "@/components/workspace/create-workspace-dialog"
+import { CreateProjectModal } from "@/components/project/create-project-modal"
 
 interface LayoutProps extends PropsWithChildren {
   params: { workspaceId: string }
@@ -57,14 +59,9 @@ export default async function Layout({ children, params }: LayoutProps) {
           projects={projects}
         />
         {/* main content area */}
-        {/* <div className="flex-1 overflow-y-auto bg-gray-50 shadow-md p-4 md:p-6 relative z-10"> */}
-        {/* <div className="relative min-h-full flex flex-col"> */}
-        {/* <div className="h-full flex flex-col flex-1 space-y-4"> */}
-        {/* <SidebarTrigger /> */}
         {children}
-        {/* </div> */}
-        {/* </div> */}
-        {/* </div> */}
+        <CreateWorkspaceDialog />
+        <CreateProjectModal workspaceId={workspace.id} />
       </SidebarProvider>
     </div>
   )

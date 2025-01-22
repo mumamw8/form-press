@@ -37,11 +37,11 @@ export default async function Page({ params }: { params: { formId: string } }) {
     { title: "Dashboard", href: `/dashboard/${form.workspaceId}` },
     {
       title: "forms",
-      href: `/dashboard/${form.workspaceId}/${form.projectId}`,
+      href: `/dashboard/${form.workspaceId}/p/${form.projectId}`,
     },
     {
       title: form.title.length > 0 ? form.title : "(untitled)",
-      href: `/dashboard/${form.workspaceId}/${form.projectId}/${form.id}`,
+      href: `/dashboard/${form.workspaceId}/p/${form.projectId}/${form.id}`,
     },
   ]
 

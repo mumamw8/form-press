@@ -1,24 +1,22 @@
 "use client"
 
 import { useMutation } from "@tanstack/react-query"
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
 import { client } from "@/lib/client"
 import { toast } from "sonner"
 import { CreateWorkspaceSchema, CreateWorkspaceType } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import { Textarea } from "./ui/textarea"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
+import { Button } from "../ui/button"
 
 interface CreateWorkspaceFormProps {
-  containerClassName?: string
+  onClose: () => void
 }
 
-export const CreateWorkspaceForm = ({
-  containerClassName,
-}: CreateWorkspaceFormProps) => {
+export const CreateWorkspaceForm = ({ onClose }: CreateWorkspaceFormProps) => {
   const router = useRouter()
 
   const {
@@ -34,7 +32,10 @@ export const CreateWorkspaceForm = ({
       toast.success("Workspace created", {
         description: `${data.data.name} has been created successfully.`,
       })
-      router.replace(`/dashboard/${data.data.id}`)
+      // onClose() // causes router.push to not work
+      const redirectUrl = `/dashboard/${data.data.id}`
+      console.log("Redirecting to:", redirectUrl) // Add logging
+      router.push(redirectUrl)
     },
     onError: (error) => {
       console.log(error)
@@ -53,7 +54,7 @@ export const CreateWorkspaceForm = ({
     resolver: zodResolver(CreateWorkspaceSchema),
   })
 
-  const onSubmit = (data: CreateWorkspaceType) => {
+  const onSubmit: SubmitHandler<CreateWorkspaceType> = (data, e) => {
     createWorkspace(data)
   }
 

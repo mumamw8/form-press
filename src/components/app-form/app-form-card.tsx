@@ -1,7 +1,7 @@
 import { TForm } from "@/lib/types"
 import { formatDistance } from "date-fns"
 import Link from "next/link"
-import { ChevronRight, MoveRight, PencilLine, Trash2 } from "lucide-react"
+import { ChevronRight, PencilLine, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { Button, buttonVariants } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -63,7 +63,7 @@ export function AppFormCard({ form }: AppFormCardProps) {
         <div className="hidden group-hover:flex gap-2">
           {/* Navigate to form details */}
           <Link
-            href={`/dashboard/${form.workspaceId}/${form.projectId}/${form.id}`}
+            href={`/dashboard/${form.workspaceId}/p/${form.projectId}/${form.id}`}
             className={buttonVariants({
               variant: "ghost",
               size: "default",
@@ -102,8 +102,8 @@ export function AppFormCard({ form }: AppFormCardProps) {
       </li>
 
       <Modal
-        showModal={!!deletingForm}
-        setShowModal={() => setDeletingForm(false)}
+        open={!!deletingForm}
+        onClose={() => setDeletingForm(false)}
         className="max-w-md p-8"
       >
         <div className="space-y-6">

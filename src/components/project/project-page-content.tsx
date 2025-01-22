@@ -1,19 +1,13 @@
 "use client"
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
 import { LoadingSpinner } from "@/components/loading-spinner"
-import Link from "next/link"
-import { buttonVariants, Button } from "@/components/ui/button"
-import { ArrowRight, PlusCircle, Trash2 } from "lucide-react"
-import { useState } from "react"
-import { format } from "date-fns"
-import { Modal } from "@/components/modal"
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { PlusCircle } from "lucide-react"
 import { ProjectEmptyState } from "./project-empty-state"
 import { AppFormCard } from "../app-form/app-form-card"
-import { Heading } from "../heading"
-import { CreateFormModal } from "../create-form-modal"
+import useCreateFormModal from "@/hooks/use-create-form-modal"
 
 export const ProjectPageContent = ({
   projectId,
@@ -24,6 +18,8 @@ export const ProjectPageContent = ({
   workspaceId: string
   projectName: string
 }) => {
+  const { onOpen } = useCreateFormModal()
+
   const { data: forms, isPending: isFormsLoading } = useQuery({
     queryKey: ["get-project-forms"],
     queryFn: async () => {
@@ -48,7 +44,7 @@ export const ProjectPageContent = ({
   }
 
   if (!forms || forms.length === 0) {
-    return <ProjectEmptyState workspaceId={workspaceId} projectId={projectId} />
+    return <ProjectEmptyState />
   }
 
   return (
@@ -57,16 +53,14 @@ export const ProjectPageContent = ({
         <h2 className="text-3xl font-extrabold tracking-tight">
           {projectName}
         </h2>
-        <CreateFormModal workspaceId={workspaceId} projectId={projectId}>
-          <Button className="w-full">
-            <PlusCircle className="size-4 mr-2" />
-            Add Form
-          </Button>
-        </CreateFormModal>
+        <Button onClick={onOpen} className="">
+          <PlusCircle className="size-4 mr-2" />
+          Add Form
+        </Button>
       </header>
       <ul className="flex flex-col">
         {forms.map((form) => (
-          <AppFormCard form={form} />
+          <AppFormCard key={form.id} form={form} />
         ))}
       </ul>
     </main>

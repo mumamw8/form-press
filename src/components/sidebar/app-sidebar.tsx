@@ -7,7 +7,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar"
 import { UserButton } from "@clerk/nextjs"
-import { LayoutDashboardIcon, Settings2 } from "lucide-react"
+import { LayoutDashboardIcon, Rows4, Settings2, Users } from "lucide-react"
 import { NavMain, NavMainItem } from "./nav-main"
 import { TProject, TWorkspace } from "@/lib/types"
 import { WorkspaceSwitcher } from "./workspace-switcher"
@@ -35,8 +35,18 @@ export function AppSidebar({
       icon: LayoutDashboardIcon,
     },
     {
+      title: "Forms",
+      href: `/dashboard/${workspaceId}/forms`,
+      icon: Rows4,
+    },
+    {
+      title: "Members",
+      href: `/dashboard/${workspaceId}/members`,
+      icon: Users,
+    },
+    {
       title: "Settings",
-      href: "#",
+      href: `/dashboard/${workspaceId}/settings`,
       icon: Settings2,
     },
   ]

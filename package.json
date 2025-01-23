@@ -9,7 +9,8 @@
     "lint": "next lint",
     "deploy": "wrangler deploy",
     "postinstall": "prisma generate",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "prisma:seed": "tsx ./prisma/seed.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.2.3",
@@ -69,12 +70,15 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "dotenv": "^16.4.7",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.15",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8",
     "prisma": "^6.1.0",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@9.8.0+sha1.33f415ae4331f9b29a92dd9bbef959b916d65535"
+  "packageManager": "pnpm@9.15.4+sha256.9bee59c7313a216722c079c1e22160dea7f88df4e0c3450b1d7b01b882336c6a"
 }

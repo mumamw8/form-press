@@ -1,8 +1,8 @@
 import { parseAsBoolean, useQueryState } from "nuqs"
 
-const useCreateProjectModal = () => {
+const useCreateTeamDialog = () => {
   const [open, setOpen] = useQueryState(
-    "new-project",
+    "new-team",
     parseAsBoolean.withDefault(false)
   )
 
@@ -15,4 +15,4 @@ const useCreateProjectModal = () => {
   }
 }
 
-export default useCreateProjectModal
+export default useCreateTeamDialog

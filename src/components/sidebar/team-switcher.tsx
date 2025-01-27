@@ -18,33 +18,23 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { TWorkspace } from "@/lib/types"
+import { TTeam } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import CustomDialogTrigger from "../custom-dialog-trigger"
-import { cn } from "@/lib/utils"
-import { CreateWorkspaceForm } from "../workspace/create-workspace-form"
-import { Button } from "../ui/button"
-import useCreateWorkspaceDialog from "@/hooks/use-create-workspace-dialog"
+import useCreateTeamDialog from "@/hooks/use-create-team-dialog"
 
-interface WorkspaceSwitcherProps {
-  ownedWorkspaces: TWorkspace[]
-  membershipWorkspaces: TWorkspace[]
-  defaultWorkspace: TWorkspace
+interface TeamSwitcherProps {
+  userTeams: TTeam[]
+  defaultTeam: TTeam
 }
 
-export function WorkspaceSwitcher({
-  ownedWorkspaces,
-  membershipWorkspaces,
-  defaultWorkspace,
-}: WorkspaceSwitcherProps) {
+export function TeamSwitcher({ userTeams, defaultTeam }: TeamSwitcherProps) {
   const { isMobile } = useSidebar()
   const router = useRouter()
-  const [activeWorkspace, setActiveWorkspace] = React.useState(defaultWorkspace)
-  const [isOpen, setIsOpen] = React.useState<boolean>(false)
-  const { onOpen } = useCreateWorkspaceDialog()
+  const [activeTeam, setActiveTeam] = React.useState(defaultTeam)
+  const { onOpen } = useCreateTeamDialog()
 
-  const handleWorkspaceSelect = (workspaceId: string) => {
-    router.replace(`/dashboard/${workspaceId}`)
+  const handleWorkspaceSelect = (teamId: string) => {
+    router.replace(`/dashboard/${teamId}`)
   }
 
   return (
@@ -61,11 +51,11 @@ export function WorkspaceSwitcher({
               </div> */}
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {activeWorkspace.name}
+                  {activeTeam.name}
                 </span>
-                <span className="truncate text-xs">
-                  {activeWorkspace.desc?.substring(0, 20)}
-                </span>
+                {/* <span className="truncate text-xs">
+                  {activeTeam.desc?.substring(0, 20)}
+                </span> */}
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -79,36 +69,21 @@ export function WorkspaceSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Workspaces
             </DropdownMenuLabel>
-            {ownedWorkspaces.map((workspace, index) => (
-              <DropdownMenuItem
-                key={workspace.name}
-                onClick={() => {
-                  handleWorkspaceSelect(workspace.id)
-                }}
-                className="gap-2 p-2"
-              >
-                {/* <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <team.logo className="size-4 shrink-0" />
-                </div> */}
-                {workspace.name}
-                {/* <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut> */}
-              </DropdownMenuItem>
-            ))}
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Shared
             </DropdownMenuLabel>
-            {membershipWorkspaces.map((workspace, index) => (
+            {userTeams.map((team, index) => (
               <DropdownMenuItem
-                key={workspace.name}
+                key={team.name}
                 onClick={() => {
-                  handleWorkspaceSelect(workspace.id)
+                  handleWorkspaceSelect(team.id)
                 }}
                 className="gap-2 p-2"
               >
                 {/* <div className="flex size-6 items-center justify-center rounded-sm border">
                   <team.logo className="size-4 shrink-0" />
                 </div> */}
-                {workspace.name}
+                {team.name}
                 {/* <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut> */}
               </DropdownMenuItem>
             ))}
@@ -117,12 +92,10 @@ export function WorkspaceSwitcher({
               onClick={onOpen}
               className="gap-2 p-2 cursor-pointer"
             >
-              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                <Plus className="size-4" />
+              <div className="flex size-6 items-center justify-center rounded-full border hover:border-blue-600 bg-background">
+                <Plus className="size-4 hover:text-blue-600" />
               </div>
-              <div className="font-medium text-muted-foreground">
-                Add Workspace
-              </div>
+              <div className="font-medium text-muted-foreground">Add Team</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

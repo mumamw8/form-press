@@ -15,13 +15,9 @@ import useCreateFormModal from "@/hooks/use-create-form-modal"
 
 interface CreateFormModalProps extends PropsWithChildren {
   workspaceId: string
-  projectId: string
 }
 
-export const CreateFormModal = ({
-  workspaceId,
-  projectId,
-}: CreateFormModalProps) => {
+export const CreateFormModal = ({ workspaceId }: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
   const queryClient = useQueryClient()
 
@@ -30,7 +26,7 @@ export const CreateFormModal = ({
       await client.form.createForm.$post(data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-project-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-workspace-forms"] })
       onClose()
       toast.success("Form created")
     },
@@ -47,7 +43,6 @@ export const CreateFormModal = ({
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {
       workspaceId: workspaceId,
-      projectId: projectId,
       closeFormDate: null,
     },
   })

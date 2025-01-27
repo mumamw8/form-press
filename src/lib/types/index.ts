@@ -2,35 +2,22 @@ import { z } from "zod"
 import { PermissionTypeEnum } from "../../../prisma/constants"
 import { ZFormField } from "./form-types"
 
+export const TeamSchema = z.object({
+  id: z.string().cuid(),
+  name: z.string().max(255).min(1, "A team name is required"),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  // Add nested schemas for related models if needed
+})
+
 export const WorkspaceSchema = z.object({
   id: z.string().cuid(),
   name: z.string().max(255).min(1, "A workspace name is required"),
   desc: z.string().nullable(),
-  ownerId: z.string(),
+  teamId: z.string(),
   inviteCode: z.string().uuid(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  // Add nested schemas for related models if needed
-})
-
-export const ProjectSchema = z.object({
-  id: z.string().cuid(),
-  name: z.string().max(255).min(1, "A project name is required"),
-  desc: z.string().nullable(),
-  icon: z.string().nullable(),
-  workspaceId: z.string(),
-  createdById: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  // Add nested schemas for related models if needed
-})
-
-export const WorkspaceMembershipSchema = z.object({
-  id: z.string().cuid(),
-  userId: z.string(),
-  workspaceId: z.string(),
-  joinedAt: z.date(),
-  roleId: z.string(),
   // Add nested schemas for related models if needed
 })
 
@@ -64,7 +51,7 @@ export const FormSchema = z.object({
   shareURL: z.string().uuid(),
   createdById: z.string(),
   workspaceId: z.string(),
-  projectId: z.string(),
+  teamId: z.string(),
   isArchived: z.boolean().default(false),
   closeFormDate: z.date().nullable(),
   createdAt: z.date(),
@@ -80,46 +67,40 @@ export const SubmissionSchema = z.object({
   // Add nested schemas for related models if needed
 })
 
+export const TeamMembershipSchema = z.object({
+  id: z.string().cuid(),
+  userId: z.string(),
+  teamId: z.string(),
+  joinedAt: z.date(),
+  roleId: z.string(),
+  // Add nested schemas for related models if needed
+})
+
+export const CreateTeamSchema = TeamSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export const UpdateTeamSchema = TeamSchema.partial().omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
 export const CreateWorkspaceSchema = WorkspaceSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  inviteCode: true,
-  ownerId: true,
+  // inviteCode: true,
 })
 
 export const UpdateWorkspaceSchema = WorkspaceSchema.partial().omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  inviteCode: true,
-  ownerId: true,
-})
-
-export const CreateProjectSchema = ProjectSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  createdById: true,
-})
-
-export const UpdateProjectSchema = ProjectSchema.partial().omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  createdById: true,
-})
-
-export const CreateWorkspaceMembershipSchema = WorkspaceMembershipSchema.omit({
-  id: true,
-  joinedAt: true,
-})
-
-export const UpdateWorkspaceMembershipSchema = WorkspaceMembershipSchema.partial().omit({
-  id: true,
-  joinedAt: true,
-  workspaceId: true,
-  userId: true,
+  // inviteCode: true,
+  teamId: true,
 })
 
 export const CreateRoleSchema = RoleSchema.omit({
@@ -176,14 +157,23 @@ export const UpdateSubmissionSchema = SubmissionSchema.partial().omit({
   formId: true,
 })
 
+export const CreateTeamMembershipSchema = TeamMembershipSchema.omit({
+  id: true,
+  joinedAt: true,
+})
+
+export const UpdateTeamMembershipSchema = TeamMembershipSchema.partial().omit({
+  id: true,
+  joinedAt: true,
+  teamId: true,
+  userId: true,
+})
+
+export type CreateTeamType = z.infer<typeof CreateTeamSchema>
+export type UpdateTeamType = z.infer<typeof UpdateTeamSchema>
+
 export type CreateWorkspaceType = z.infer<typeof CreateWorkspaceSchema>
 export type UpdateWorkspaceType = z.infer<typeof UpdateWorkspaceSchema>
-
-export type CreateProjectType = z.infer<typeof CreateProjectSchema>
-export type UpdateProjectType = z.infer<typeof UpdateProjectSchema>
-
-export type CreateWorkspaceMembershipType = z.infer<typeof CreateWorkspaceMembershipSchema>
-export type UpdateWorkspaceMembershipType = z.infer<typeof UpdateWorkspaceMembershipSchema>
 
 export type CreateRoleType = z.infer<typeof CreateRoleSchema>
 export type UpdateRoleType = z.infer<typeof UpdateRoleSchema>
@@ -197,9 +187,13 @@ export type UpdateFormType = z.infer<typeof UpdateFormSchema>
 export type CreateSubmissionType = z.infer<typeof CreateSubmissionSchema>
 export type UpdateSubmissionType = z.infer<typeof UpdateSubmissionSchema>
 
+export type CreateTeamMembershipType = z.infer<typeof CreateTeamMembershipSchema>
+export type UpdateTeamMembershipType = z.infer<typeof UpdateTeamMembershipSchema>
+
+export type TTeamMembership = z.infer<typeof TeamMembershipSchema>
+
+export type TTeam = z.infer<typeof TeamSchema>
 export type TWorkspace = z.infer<typeof WorkspaceSchema>
-export type TProject = z.infer<typeof ProjectSchema>
-export type TWorkspaceMembership = z.infer<typeof WorkspaceMembershipSchema>
 export type TRole = z.infer<typeof RoleSchema>
 export type TUser = z.infer<typeof UserSchema>
 export type TForm = z.infer<typeof FormSchema>

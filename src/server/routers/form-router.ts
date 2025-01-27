@@ -7,17 +7,13 @@ import { CreateFormSchema, UpdateFormSchema } from "@/lib/types"
 
 const formRepository = new FormRepository()
 
-const projectIdQueryParam = z.object({ projectId: z.string() })
+const workspaceIdQueryParam = z.object({ workspaceId: z.string() })
 
 export const formRouter = router({
-  // get forms by project
-  getProjectForms: privateProcedure.input(projectIdQueryParam).query(async ({ input, ctx, c }) => {
-    // const forms = await formRepository.getAll({
-    //   where: { projectId: input.projectId },
-    //   orderBy: { updatedAt: "desc" },
-    // })
+  // get workspace forms
+  getWorkspaceForms: privateProcedure.input(workspaceIdQueryParam).query(async ({ input, ctx, c }) => {
     const forms = await db.form.findMany({
-      where: { projectId: input.projectId },
+      where: { workspaceId: input.workspaceId },
       orderBy: { updatedAt: "desc" },
     })
 

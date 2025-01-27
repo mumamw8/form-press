@@ -9,44 +9,37 @@ import {
 import { UserButton } from "@clerk/nextjs"
 import { LayoutDashboardIcon, Rows4, Settings2, Users } from "lucide-react"
 import { NavMain, NavMainItem } from "./nav-main"
-import { TProject, TWorkspace } from "@/lib/types"
-import { WorkspaceSwitcher } from "./workspace-switcher"
-import { NavProjects } from "./nav-projects"
+import { TTeam, TWorkspace } from "@/lib/types"
+import { TeamSwitcher } from "./team-switcher"
+import { NavWorkspaces } from "./nav-workspaces"
 
 interface AppSidebarProps {
-  workspaceId: string
-  ownedWorkspaces: TWorkspace[]
-  membershipWorkspaces: TWorkspace[]
-  projects: TProject[]
+  teamId: string
+  userTeams: TTeam[]
+  workspaces: TWorkspace[]
 }
 
-export function AppSidebar({
-  workspaceId,
-  ownedWorkspaces,
-  membershipWorkspaces,
-  projects,
-}: AppSidebarProps) {
-  // get workspace projects
+export function AppSidebar({ teamId, userTeams, workspaces }: AppSidebarProps) {
   // Menu items.
   const navMain: NavMainItem[] = [
     {
       title: "Dashboard",
-      href: `/dashboard/${workspaceId}`,
+      href: `/dashboard/${teamId}`,
       icon: LayoutDashboardIcon,
     },
     {
       title: "Forms",
-      href: `/dashboard/${workspaceId}/forms`,
+      href: `/dashboard/${teamId}/forms`,
       icon: Rows4,
     },
     {
       title: "Members",
-      href: `/dashboard/${workspaceId}/members`,
+      href: `/dashboard/${teamId}/members`,
       icon: Users,
     },
     {
       title: "Settings",
-      href: `/dashboard/${workspaceId}/settings`,
+      href: `/dashboard/${teamId}/settings`,
       icon: Settings2,
     },
   ]
@@ -57,19 +50,16 @@ export function AppSidebar({
         <p className="hidden sm:block text-lg/7 font-semibold">
           <span className="text-2xl font-bold">forma.</span>
         </p>
-        <WorkspaceSwitcher
-          ownedWorkspaces={ownedWorkspaces}
-          membershipWorkspaces={membershipWorkspaces}
-          defaultWorkspace={
-            [...ownedWorkspaces, ...membershipWorkspaces].find(
-              (workspace) => workspace.id === workspaceId
-            ) as TWorkspace
+        <TeamSwitcher
+          userTeams={userTeams}
+          defaultTeam={
+            [...userTeams].find((team) => team.id === teamId) as TTeam
           }
         />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
-        <NavProjects projects={projects} workspaceId={workspaceId} />
+        <NavWorkspaces workspaces={workspaces} />
       </SidebarContent>
       <SidebarFooter>
         <div className="pb-2 pl-2">

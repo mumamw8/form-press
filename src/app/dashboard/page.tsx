@@ -14,17 +14,24 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/sign-in")
 
-  const workspace = await db.workspace.findFirst({
-    where: { ownerId: user.id },
+  // Find one team current user is a member of
+  const team = await db.team.findFirst({
+    where: {
+      members: {
+        some: {
+          userId: user.id,
+        },
+      },
+    },
   })
 
-  if (!workspace) {
+  if (!team) {
     return (
       <div className="bg-background h-screen w-screen flex justify-center items-center">
-        <DashboardSetup user={user} />
+        <DashboardSetup />
       </div>
     )
   }
 
-  redirect(`/dashboard/${workspace.id}`)
+  redirect(`/dashboard/${team.id}`)
 }

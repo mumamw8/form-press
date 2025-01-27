@@ -7,12 +7,13 @@ import { generateInviteCode } from "@/lib/utils/generate-invite-code";
 import { RoleTypeEnum } from "../../../prisma/constants"
 
 const idQueryParamsSchema = z.object({ id: z.string() })
+const teamIdQueryParamsSchema = z.object({ teamId: z.string() })
 
 export const workspaceRouter = router({
   // get workspaces by owner (current user)
-  getWorkspacesByOwner: privateProcedure.query(async ({ ctx, c }) => {
+  getTeamWorkspaces: privateProcedure.input(teamIdQueryParamsSchema).query(async ({ input, c }) => {
     const workspaces = await db.workspace.findMany({
-      where: { ownerId: ctx.user.id }
+      where: { teamId: input.teamId }
     })
     return c.json({ data: workspaces })
   }),
@@ -26,36 +27,11 @@ export const workspaceRouter = router({
   }),
   // create
   createWorkspace: privateProcedure.input(CreateWorkspaceSchema).mutation(async ({ ctx, c, input }) => {
-    const ownerRole = await db.role.findUnique({ where: { name: RoleTypeEnum.Values.OWNER } })
-
-    if (!ownerRole) {
-      throw new Error("Owner role not found")
-    }
-
-    // create new workspace and owner workspace membership
     const newWorkspace = await db.workspace.create({
       data: {
-        ownerId: ctx.user.id,
-        inviteCode: generateInviteCode(),
         ...input,
-        members: {
-          create: [
-            {
-              userId: ctx.user.id,
-              roleId: ownerRole.id,
-            }
-          ]
-        }
       },
     });
-
-    // await db.workspaceMembership.create({
-    //   data: {
-    //     userId: ctx.user.id,
-    //     workspaceId: newWorkspace.id,
-    //     roleId: ownerRole.id
-    //   },
-    // });
 
     return c.json({ data: newWorkspace });
   }),

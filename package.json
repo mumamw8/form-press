@@ -10,7 +10,9 @@
     "deploy": "wrangler deploy",
     "postinstall": "prisma generate",
     "preinstall": "npx only-allow pnpm",
-    "prisma:seed": "tsx ./prisma/seed.ts"
+    "prisma:seed": "tsx ./prisma/seed.ts",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:wipe": "npx prisma migrate reset --force && npx prisma db push"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.2.3",

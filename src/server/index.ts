@@ -4,7 +4,7 @@ import { handle } from "hono/vercel"
 import { authRouter } from "./routers/auth-router"
 import { formRouter } from "./routers/form-router"
 import { workspaceRouter } from "./routers/workspace-router"
-import { projectRouter } from "./routers/project-router"
+import { teamRouter } from "./routers/team-router"
 
 const app = new Hono().basePath("/api").use(cors())
 
@@ -17,7 +17,7 @@ const appRouter = app
   .route("/auth", authRouter)
   .route("/form", formRouter)
   .route("workspace", workspaceRouter)
-  .route("/project", projectRouter)
+  .route("/team", teamRouter)
 
 // The handler Next.js uses to answer API requests
 export const httpHandler = handle(app)

@@ -12,102 +12,69 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Team {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspaces Workspace[]
+  members    TeamMembership[]
+  forms      Form[]
+
+  @@map("teams")
+}
+
 model Workspace {
   id         String   @id @default(cuid())
   name       String   @db.VarChar(255)
   desc       String?
-  ownerId    String
-  owner      User     @relation(fields: [ownerId], references: [id])
+  teamId     String
+  team       Team     @relation(fields: [teamId], references: [id])
   inviteCode String   @unique
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  projects Project[]
-  members  WorkspaceMembership[]
-  forms    Form[]
+  // projects Project[]
+  forms Form[]
 
   @@map("workspaces")
 }
 
-model Project {
-  id          String    @id @default(cuid())
-  name        String    @db.VarChar(255)
-  desc        String?
-  icon        String?
-  workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  createdById String
-  createdBy   User      @relation(fields: [createdById], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  forms       Form[]
-
-  @@map("projects")
-}
-
-model WorkspaceMembership {
-  id          String    @id @default(cuid())
-  userId      String
-  user        User      @relation(fields: [userId], references: [id])
-  workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  joinedAt    DateTime  @default(now())
-  roleId      String
-  role        Role      @relation(fields: [roleId], references: [id])
-
-  @@map("workspace_memberships")
-}
-
 model Role {
-  id          String                @id @default(cuid())
-  name        RoleType              @unique
-  // roleType    RoleType
-  permissions PermissionType[]
-  memberships WorkspaceMembership[]
+  id          String           @id @default(cuid())
+  name        String           @unique
+  // permissions PermissionType[]
+  memberships TeamMembership[] // Update to use TeamMembership
 
   @@index([name])
   @@map("roles")
 }
 
-enum RoleType {
-  OWNER
-  ADMIN
-  MEMBER
-  GUEST
-}
+model TeamMembership {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id])
+  joinedAt DateTime @default(now())
+  roleId   String
+  role     Role     @relation(fields: [roleId], references: [id])
 
-enum PermissionType {
-  CREATE_WORKSPACE
-  DELETE_WORKSPACE
-  UPDATE_WORKSPACE
-  VIEW_WORKSPACE
-  CREATE_PROJECT
-  DELETE_PROJECT
-  UPDATE_PROJECT
-  VIEW_PROJECT
-  ADD_MEMBER
-  REMOVE_MEMBER
-  UPDATE_MEMBER
-  VIEW_MEMBER
-  CREATE_FORM
-  DELETE_FORM
-  UPDATE_FORM
-  VIEW_FORM
-  SUBMIT_FORM
+  @@map("team_memberships")
 }
 
 model User {
-  id                   String                @id @default(cuid())
-  user_id              String                @unique
-  email                String                @unique
-  apiKey               String                @unique @default(cuid())
-  subscription         String?
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  projects             Project[]
-  forms                Form[]
-  workspaces           Workspace[]
-  workspaceMemberships WorkspaceMembership[]
+  id              String           @id @default(cuid())
+  user_id         String           @unique
+  email           String           @unique
+  apiKey          String           @unique @default(cuid())
+  subscription    String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  // projects        Project[]
+  forms           Form[]
+  teamMemberships TeamMembership[] // Update to use TeamMembership
 
   @@index([email, apiKey])
   @@map("users")
@@ -127,8 +94,8 @@ model Form {
   createdBy         User      @relation(fields: [createdById], references: [id])
   workspaceId       String
   workspace         Workspace @relation(fields: [workspaceId], references: [id])
-  projectId         String
-  project           Project   @relation(fields: [projectId], references: [id])
+  teamId            String
+  team              Team      @relation(fields: [teamId], references: [id])
   isArchived        Boolean   @default(false)
   closeFormDate     DateTime?
 

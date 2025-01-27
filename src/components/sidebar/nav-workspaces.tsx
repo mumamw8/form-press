@@ -9,18 +9,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { TProject } from "@/lib/types"
+import useCreateWorkspaceDialog from "@/hooks/use-create-workspace-dialog"
+import { TWorkspace } from "@/lib/types"
 import { PlusCircle } from "lucide-react"
-import useCreateProjectModal from "@/hooks/use-create-project-modal"
 
-interface NavProjectsProps {
-  workspaceId: string
-  projects: TProject[]
+interface NavWorkspacesProps {
+  workspaces: TWorkspace[]
 }
 
-export function NavProjects({ workspaceId, projects }: NavProjectsProps) {
+export function NavWorkspaces({ workspaces }: NavWorkspacesProps) {
   const { isMobile } = useSidebar()
-  const { onOpen } = useCreateProjectModal()
+  const { onOpen } = useCreateWorkspaceDialog()
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -31,12 +30,12 @@ export function NavProjects({ workspaceId, projects }: NavProjectsProps) {
         </div>
       </SidebarGroupLabel>
       <SidebarMenu>
-        {projects &&
-          projects.map((item) => (
+        {workspaces &&
+          workspaces.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild>
-                <a href={`/dashboard/${item.workspaceId}/p/${item.id}`}>
-                  <span>{item.icon}</span>
+                <a href={`/dashboard/${item.teamId}/p/${item.id}`}>
+                  {/* <span>{item.icon}</span> */}
                   <span>{item.name}</span>
                 </a>
               </SidebarMenuButton>

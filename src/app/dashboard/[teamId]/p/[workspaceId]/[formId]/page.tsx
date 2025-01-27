@@ -1,7 +1,7 @@
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
 import { buttonVariants } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { WorkspacePage } from "@/components/workspace-page"
+import { TeamPage } from "@/components/team-page"
 import { db } from "@/db"
 import { FormIntegrations } from "@/features/form-details/components/form-integrations"
 import { FormOverview } from "@/features/form-details/components/form-overview"
@@ -34,19 +34,19 @@ export default async function Page({ params }: { params: { formId: string } }) {
   }
 
   const breadcrumbs: BreadcrumbListItem[] = [
-    { title: "Dashboard", href: `/dashboard/${form.workspaceId}` },
+    { title: "Dashboard", href: `/dashboard/${form.teamId}` },
     {
       title: "forms",
-      href: `/dashboard/${form.workspaceId}/p/${form.projectId}`,
+      href: `/dashboard/${form.teamId}/p/${form.workspaceId}`,
     },
     {
       title: form.title.length > 0 ? form.title : "(untitled)",
-      href: `/dashboard/${form.workspaceId}/p/${form.projectId}/${form.id}`,
+      href: `/dashboard/${form.teamId}/p/${form.workspaceId}/${form.id}`,
     },
   ]
 
   return (
-    <WorkspacePage title={form.title} breadcrumbs={breadcrumbs}>
+    <TeamPage title={form.title} breadcrumbs={breadcrumbs}>
       <main className="px-18 sm:px-20 py-4">
         <header className="border-b mx-4 my-4 py-4 flex justify-between items-center">
           <h2 className="text-3xl font-extrabold tracking-tight">
@@ -87,6 +87,6 @@ export default async function Page({ params }: { params: { formId: string } }) {
           </Tabs>
         </div>
       </main>
-    </WorkspacePage>
+    </TeamPage>
   )
 }

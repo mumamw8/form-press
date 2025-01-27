@@ -5,9 +5,9 @@ import useCreateFormModal from "@/hooks/use-create-form-modal"
 // import { client } from "@/lib/client"
 // import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-interface ProjectEmptyStateProps {}
+interface WorkspaceEmptyStateProps {}
 
-export const ProjectEmptyState = ({}: ProjectEmptyStateProps) => {
+export const WorkspaceEmptyState = ({}: WorkspaceEmptyStateProps) => {
   const { onOpen } = useCreateFormModal()
   // const queryClient = useQueryClient()
 

@@ -1,4 +1,4 @@
-import { WorkspacePage } from "@/components/workspace-page"
+import { TeamPage } from "@/components/team-page"
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
 
 export default async function Page({
@@ -11,13 +11,13 @@ export default async function Page({
     { title: "Settings", href: `/dashboard/${params.workspaceId}/settings` },
   ]
   return (
-    <WorkspacePage breadcrumbs={breadcrumbs} title={"Settings"}>
+    <TeamPage breadcrumbs={breadcrumbs} title={"Settings"}>
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <div className="aspect-video rounded-xl bg-muted/50" />
         <div className="aspect-video rounded-xl bg-muted/50" />
         <div className="aspect-video rounded-xl bg-muted/50" />
       </div>
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-    </WorkspacePage>
+    </TeamPage>
   )
 }

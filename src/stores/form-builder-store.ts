@@ -1,5 +1,5 @@
-import { FormElementInstance } from "@/features/form-builder/components/fieldComponents"
-import { createStore } from "zustand/vanilla";
+import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
+import { createStore } from "zustand/vanilla"
 
 type FormBuilderState = {
   elements: FormElementInstance[]
@@ -21,19 +21,23 @@ const defaultInitialState: FormBuilderState = {
   selectedElement: null,
 }
 
-export const createFormBuilderStore = (initState: FormBuilderState = defaultInitialState) => {
-  return createStore<FormBuilderStore>()(set => ({
+export const createFormBuilderStore = (
+  initState: FormBuilderState = defaultInitialState
+) => {
+  return createStore<FormBuilderStore>()((set) => ({
     ...initState,
     addElement: (index: number, element: FormElementInstance) => {
-      set(state => {
+      set((state) => {
         const newElements = [...state.elements]
         newElements.splice(index, 0, element)
         return { ...state, elements: newElements }
       })
     },
     removeElement: (id: string) => {
-      set(state => {
-        const newElements = state.elements.filter(element => element.id !== id)
+      set((state) => {
+        const newElements = state.elements.filter(
+          (element) => element.id !== id
+        )
         if (state.selectedElement?.id === id) {
           return { ...state, elements: newElements, selectedElement: null }
         }
@@ -44,7 +48,7 @@ export const createFormBuilderStore = (initState: FormBuilderState = defaultInit
       set({ selectedElement: element })
     },
     updateElement: (id: string, updatedElement: FormElementInstance) => {
-      set(state => {
+      set((state) => {
         // const newElements = state.elements.map(e => {
         //   if (e.id === id) {
         //     return updatedElement
@@ -52,13 +56,13 @@ export const createFormBuilderStore = (initState: FormBuilderState = defaultInit
         //   return e
         // })
         const newElements = state.elements
-        const index = newElements.findIndex(e => e.id === id)
+        const index = newElements.findIndex((e) => e.id === id)
         newElements[index] = updatedElement
         return { ...state, elements: newElements }
       })
     },
     setElements: (elements: FormElementInstance[]) => {
       set({ elements })
-    }
+    },
   }))
 }

@@ -1,7 +1,7 @@
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { FormElementInstance } from "@/features/form-builder/components/fieldComponents"
+import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
 import { client } from "@/lib/client"
 import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"

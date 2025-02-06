@@ -54,7 +54,7 @@ export const baseClient = hc<AppType>(getBaseUrl(), {
 
     return response
   },
-})["api"]
+})["api"]["jstack"]
 
 function getHandler(obj: Object, ...keys: string[]) {
   let current = obj

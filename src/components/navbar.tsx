@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
 import { MaxWidthWrapper } from "./max-width-wrapper"
 import { SignOutButton } from "@clerk/nextjs"
@@ -13,8 +14,8 @@ export const Navbar = async () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex z-40 font-semibold">
-            <span className="text-xl font-bold">Form</span>
-            <span className="text-xl font-bold text-brand-700">Press.</span>
+            <img src="/logo.svg" height={50} width={50} alt="logo" />
+            <p className="text-xl font-semibold tracking-tight">Gist</p>
           </Link>
 
           <div className="h-full flex items-center space-x-4">

@@ -2,7 +2,7 @@
 import { Button } from "../ui/button"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
-import { FormElements } from "@/features/form-builder/components/fieldComponents"
+import { FormElements } from "@/modules/form-builder/components/fieldComponents"
 import { EyeIcon, Fullscreen } from "lucide-react"
 
 export const PreviewDialogButton = () => {

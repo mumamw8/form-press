@@ -1,5 +1,5 @@
-import { SidebarBtnElement } from "@/features/form-builder/components/SidebarBtnElement"
-import { FormElements } from "@/features/form-builder/components/fieldComponents"
+import { SidebarBtnElement } from "@/modules/form-builder/components/SidebarBtnElement"
+import { FormElements } from "@/modules/form-builder/components/fieldComponents"
 
 export const FormElementsSidebar = () => {
   return (

@@ -3,15 +3,19 @@ import { buttonVariants } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { WorkspacePage } from "@/components/workspace-page"
 import { db } from "@/db"
-import { FormIntegrations } from "@/features/form-details/components/form-integrations"
-import { FormOverview } from "@/features/form-details/components/form-overview"
-import { FormSettings } from "@/features/form-details/components/form-settings"
-import { FormSubmissions } from "@/features/form-details/components/form-submissions"
+import { FormIntegrations } from "@/modules/form-details/components/form-integrations"
+import { FormOverview } from "@/modules/form-details/components/form-overview"
+import { FormSettings } from "@/modules/form-details/components/form-settings"
+import { FormSubmissions } from "@/modules/form-details/components/form-submissions"
 import { Edit2 } from "lucide-react"
 import Link from "next/link"
 
-export default async function Page({ params }: { params: { formId: string } }) {
-  const { formId } = params
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ formId: string }>
+}) {
+  const { formId } = await params
 
   const form = await db.form.findUnique({
     where: { id: formId },

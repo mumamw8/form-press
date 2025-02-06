@@ -4,7 +4,7 @@ import { handle } from "hono/vercel"
 import { authRouter } from "./routers/auth-router"
 import { formRouter } from "./routers/form-router"
 
-const app = new Hono().basePath("/api").use(cors())
+const app = new Hono().basePath("/api/jstack").use(cors())
 
 /**
  * This is the primary router for your server.

@@ -1,4 +1,4 @@
-import FormBuilder from "@/features/form-builder/components/FormBuilder"
+import FormBuilder from "@/modules/form-builder/components/FormBuilder"
 
 export default function BuilderPage({ params }: { params: { id: string } }) {
   const { id } = params

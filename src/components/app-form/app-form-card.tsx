@@ -23,7 +23,7 @@ export function AppFormCard({ form }: AppFormCardProps) {
       await client.form.deleteForm.$post({ shareUrl })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-workspace-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-organization-forms"] })
       toast.success("Form deleted")
       setDeletingForm(false)
     },
@@ -63,7 +63,7 @@ export function AppFormCard({ form }: AppFormCardProps) {
         <div className="hidden group-hover:flex gap-2">
           {/* Navigate to form details */}
           <Link
-            href={`/dashboard/${form.teamId}/p/${form.workspaceId}/${form.id}`}
+            href={`/dashboard/forms/${form.id}`}
             className={buttonVariants({
               variant: "ghost",
               size: "default",

@@ -12,69 +12,16 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Team {
-  id        String   @id @default(cuid())
-  name      String   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  workspaces Workspace[]
-  members    TeamMembership[]
-  forms      Form[]
-
-  @@map("teams")
-}
-
-model Workspace {
-  id         String   @id @default(cuid())
-  name       String   @db.VarChar(255)
-  desc       String?
-  teamId     String
-  team       Team     @relation(fields: [teamId], references: [id])
-  inviteCode String   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  // projects Project[]
-  forms Form[]
-
-  @@map("workspaces")
-}
-
-model Role {
-  id          String           @id @default(cuid())
-  name        String           @unique
-  // permissions PermissionType[]
-  memberships TeamMembership[] // Update to use TeamMembership
-
-  @@index([name])
-  @@map("roles")
-}
-
-model TeamMembership {
-  id       String   @id @default(cuid())
-  userId   String
-  user     User     @relation(fields: [userId], references: [id])
-  teamId   String
-  team     Team     @relation(fields: [teamId], references: [id])
-  joinedAt DateTime @default(now())
-  roleId   String
-  role     Role     @relation(fields: [roleId], references: [id])
-
-  @@map("team_memberships")
-}
-
 model User {
-  id              String           @id @default(cuid())
-  user_id         String           @unique
-  email           String           @unique
-  apiKey          String           @unique @default(cuid())
-  subscription    String?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id           String   @id @default(cuid())
+  user_id      String   @unique
+  email        String   @unique
+  apiKey       String   @unique @default(cuid())
+  subscription String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   // projects        Project[]
-  forms           Form[]
-  teamMemberships TeamMembership[] // Update to use TeamMembership
+  forms        Form[]
 
   @@index([email, apiKey])
   @@map("users")
@@ -92,15 +39,13 @@ model Form {
   shareURL          String    @unique @default(uuid())
   createdById       String
   createdBy         User      @relation(fields: [createdById], references: [id])
-  workspaceId       String
-  workspace         Workspace @relation(fields: [workspaceId], references: [id])
-  teamId            String
-  team              Team      @relation(fields: [teamId], references: [id])
   isArchived        Boolean   @default(false)
   closeFormDate     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  organizationId String
+
   submissions Submission[]
 
   @@map("forms")

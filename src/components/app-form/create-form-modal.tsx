@@ -12,21 +12,24 @@ import { client } from "@/lib/client"
 import { toast } from "sonner"
 import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
+import { useOrganization, useUser } from "@clerk/nextjs"
 
-interface CreateFormModalProps extends PropsWithChildren {
-  workspaceId: string
-}
+interface CreateFormModalProps extends PropsWithChildren {}
 
-export const CreateFormModal = ({ workspaceId }: CreateFormModalProps) => {
+export const CreateFormModal = ({}: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
+  const { organization } = useOrganization()
+  const { user } = useUser()
   const queryClient = useQueryClient()
+
+  console.log("CreateFormModal open state:", open) // Debug log
 
   const { mutate: createForm, isPending: isCreatingForm } = useMutation({
     mutationFn: async (data: CreateFormType) => {
       await client.form.createForm.$post(data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-workspace-forms"] })
+      queryClient.invalidateQueries({ queryKey: ["get-organization-forms"] })
       onClose()
       toast.success("Form created")
     },
@@ -42,7 +45,7 @@ export const CreateFormModal = ({ workspaceId }: CreateFormModalProps) => {
   } = useForm<CreateFormType>({
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {
-      workspaceId: workspaceId,
+      organizationId: organization?.id ?? user?.id ?? "",
       closeFormDate: null,
     },
   })
@@ -50,6 +53,10 @@ export const CreateFormModal = ({ workspaceId }: CreateFormModalProps) => {
   const onSubmit = (data: CreateFormType) => {
     createForm(data)
   }
+
+  // if (!organization) {
+  //   return <div>No Organization Selected!</div>
+  // }
 
   return (
     <Modal className="max-w-xl p-8" onClose={onClose} open={open}>

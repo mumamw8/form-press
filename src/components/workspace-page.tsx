@@ -2,7 +2,7 @@ import { AppBreadcrumbList, BreadcrumbListItem } from "./app-breadcrumb-list"
 import { SidebarInset, SidebarTrigger } from "./ui/sidebar"
 import { Separator } from "./ui/separator"
 
-interface TeamPageProps {
+interface WorkspacePageProps {
   title: string
   children?: React.ReactNode
   hideBackButton?: boolean
@@ -10,13 +10,13 @@ interface TeamPageProps {
   breadcrumbs?: BreadcrumbListItem[]
 }
 
-export const TeamPage = ({
+export const WorkspacePage = ({
   title,
   children,
   hideBackButton,
   cta,
   breadcrumbs,
-}: TeamPageProps) => {
+}: WorkspacePageProps) => {
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

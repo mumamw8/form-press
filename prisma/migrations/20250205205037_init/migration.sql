@@ -1,26 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Form` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Submission` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Form" DROP CONSTRAINT "Form_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Submission" DROP CONSTRAINT "Submission_formId_fkey";
-
--- DropTable
-DROP TABLE "Form";
-
--- DropTable
-DROP TABLE "Submission";
-
--- DropTable
-DROP TABLE "User";
-
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -37,17 +14,20 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "forms" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
+    "title" TEXT NOT NULL DEFAULT 'Untitled',
     "description" TEXT NOT NULL DEFAULT '',
-    "fields" JSONB,
+    "fields" JSONB DEFAULT '[]',
     "settings" JSONB,
     "isPublished" BOOLEAN NOT NULL DEFAULT false,
     "visits" INTEGER NOT NULL DEFAULT 0,
     "submissions_count" INTEGER NOT NULL DEFAULT 0,
     "shareURL" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "createdById" TEXT NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
+    "closeFormDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "organizationId" TEXT NOT NULL,
 
     CONSTRAINT "forms_pkey" PRIMARY KEY ("id")
 );
@@ -78,7 +58,7 @@ CREATE INDEX "users_email_apiKey_idx" ON "users"("email", "apiKey");
 CREATE UNIQUE INDEX "forms_shareURL_key" ON "forms"("shareURL");
 
 -- AddForeignKey
-ALTER TABLE "forms" ADD CONSTRAINT "forms_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "forms" ADD CONSTRAINT "forms_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "submissions" ADD CONSTRAINT "submissions_formId_fkey" FOREIGN KEY ("formId") REFERENCES "forms"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

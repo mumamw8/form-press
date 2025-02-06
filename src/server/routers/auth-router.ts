@@ -1,7 +1,7 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { router } from "../__internals/router";
-import { publicProcedure } from "../procedures";
-import { db } from "@/db";
+import { currentUser } from "@clerk/nextjs/server"
+import { router } from "../__internals/router"
+import { publicProcedure } from "../procedures"
+import { db } from "@/db"
 
 export const authRouter = router({
   getDatabaseSyncStatus: publicProcedure.query(async ({ c, ctx }) => {
@@ -15,15 +15,18 @@ export const authRouter = router({
       where: { user_id: auth.id },
     })
 
-    console.log('USER IN DB:', user);
+    console.log("USER IN DB:", user)
 
     if (!user) {
-      await db.user.create({
+      const res = await db.user.create({
         data: {
           user_id: auth.id,
-          email: auth.primaryEmailAddress?.emailAddress ?? auth.emailAddresses[0].emailAddress,
+          email:
+            auth.primaryEmailAddress?.emailAddress ??
+            auth.emailAddresses[0].emailAddress,
         },
       })
+      console.log("User Created: ", res)
     } else {
       // await db.user.update({
       //   where: { user_id: auth.id },

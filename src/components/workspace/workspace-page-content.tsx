@@ -8,21 +8,21 @@ import { PlusCircle } from "lucide-react"
 import { WorkspaceEmptyState } from "./workspace-empty-state"
 import { AppFormCard } from "../app-form/app-form-card"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
+import { useOrganization } from "@clerk/nextjs"
 
 export const WorkspacePageContent = ({
-  workspaceId,
   workspaceName,
 }: {
-  workspaceId: string
   workspaceName: string
 }) => {
   const { onOpen } = useCreateFormModal()
+  const { organization } = useOrganization()
 
   const { data: forms, isPending: isFormsLoading } = useQuery({
-    queryKey: ["get-workspace-forms"],
+    queryKey: ["get-organization-forms"],
     queryFn: async () => {
-      const res = await client.form.getWorkspaceForms.$get({
-        workspaceId: workspaceId,
+      const res = await client.form.getOrganizationForms.$get({
+        organizationId: organization?.id ?? "",
       })
       const { data } = await res.json()
       return data.map((form: any) => ({

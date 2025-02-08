@@ -1,5 +1,5 @@
-import { CreateFormModal } from "@/components/app-form/create-form-modal"
 import { Navbar } from "@/components/navbar"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -7,8 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { db } from "@/db"
 import { OrganizationList } from "@clerk/nextjs"
 import { auth } from "@clerk/nextjs/server"
+import Link from "next/link"
 import { PropsWithChildren } from "react"
 
 export default async function RequiredActiveOrgLayout({
@@ -17,8 +19,26 @@ export default async function RequiredActiveOrgLayout({
   // Get the organization ID from the session
   const { orgId, userId } = await auth()
 
+  if (!userId) {
+    return
+  }
+  const dbUser = await db.user.findFirst({ where: { user_id: userId } })
+
+  if (!dbUser) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <div>
+          <p>Oops something went wrong!</p>
+          <Link href={"/welcome"}>
+            <Button>Go to Dashboard</Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   // If the user has an active organization, render the children
-  if (orgId || userId) {
+  if (orgId) {
     return <>{children}</>
   }
 
@@ -38,7 +58,7 @@ export default async function RequiredActiveOrgLayout({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <OrganizationList />
+            <OrganizationList hidePersonal={true} />
           </CardContent>
         </Card>
       </section>

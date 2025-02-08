@@ -21,7 +21,6 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   // projects        Project[]
-  forms        Form[]
 
   @@index([email, apiKey])
   @@map("users")
@@ -37,8 +36,7 @@ model Form {
   visits            Int       @default(0)
   submissions_count Int       @default(0)
   shareURL          String    @unique @default(uuid())
-  createdById       String
-  createdBy         User      @relation(fields: [createdById], references: [id])
+  createdById       String?
   isArchived        Boolean   @default(false)
   closeFormDate     DateTime?
   createdAt         DateTime  @default(now())

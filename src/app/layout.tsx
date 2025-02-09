@@ -18,8 +18,8 @@ const barlow = Barlow({
 })
 
 export const metadata: Metadata = {
-  title: "jStack App",
-  description: "Created using jStack",
+  title: "forma",
+  description: "Forms for business",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 

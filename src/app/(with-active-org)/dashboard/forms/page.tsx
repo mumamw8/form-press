@@ -1,20 +1,10 @@
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
-import { CreateFormModal } from "@/components/app-form/create-form-modal"
 import { WorkspacePage } from "@/components/workspace-page"
 import { WorkspacePageContent } from "@/components/workspace/workspace-page-content"
-import { db } from "@/db"
-import { redirect } from "next/navigation"
+import { auth } from "@clerk/nextjs/server"
 
-export default async function Page({
-  params,
-}: {
-  params: { workspaceId: string }
-}) {
-  // const workspace = await db.workspace.findUnique({
-  //   where: { id: params.workspaceId },
-  // })
-  // if (!workspace) redirect("/dashboard")
-
+export default async function Page() {
+  const { orgId } = await auth()
   const breadcrumbs: BreadcrumbListItem[] = [
     { title: "Dashboard", href: `/dashboard` },
     {
@@ -25,7 +15,7 @@ export default async function Page({
 
   return (
     <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}>
-      <WorkspacePageContent workspaceName="" />
+      <WorkspacePageContent orgId={orgId ?? ""} />
     </WorkspacePage>
   )
 }

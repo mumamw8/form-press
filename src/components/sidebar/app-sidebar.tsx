@@ -35,10 +35,10 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <p className="hidden sm:block text-lg/7 font-semibold">
+        <div className="hidden sm:block text-lg/7 font-semibold">
           <span className="text-2xl font-bold">forma.</span>
-        </p>
-        <OrganizationSwitcher />
+        </div>
+        <OrganizationSwitcher hidePersonal={true} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />

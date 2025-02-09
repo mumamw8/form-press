@@ -20,7 +20,7 @@ export default async function RequiredActiveOrgLayout({
   const { orgId, userId } = await auth()
 
   if (!userId) {
-    return
+    return null
   }
   const dbUser = await db.user.findFirst({ where: { user_id: userId } })
 
@@ -39,7 +39,7 @@ export default async function RequiredActiveOrgLayout({
 
   // If the user has an active organization, render the children
   if (orgId) {
-    return <>{children}</>
+    return children
   }
 
   // If the user does not have an active organization, render the organization selection page

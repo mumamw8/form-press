@@ -14,12 +14,12 @@ import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
 import { useOrganization, useUser } from "@clerk/nextjs"
 
-interface CreateFormModalProps extends PropsWithChildren {}
+interface CreateFormModalProps extends PropsWithChildren {
+  orgId: string
+}
 
-export const CreateFormModal = ({}: CreateFormModalProps) => {
+export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
-  const { organization } = useOrganization()
-  const { user } = useUser()
   const queryClient = useQueryClient()
 
   console.log("CreateFormModal open state:", open) // Debug log
@@ -45,7 +45,7 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
   } = useForm<CreateFormType>({
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {
-      organizationId: organization?.id ?? user?.id ?? "",
+      organizationId: orgId,
       closeFormDate: null,
     },
   })

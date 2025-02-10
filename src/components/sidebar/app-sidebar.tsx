@@ -45,7 +45,7 @@ export function AppSidebar() {
         {/* <NavWorkspaces workspaces={workspaces} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <div className="pb-2 pl-2">
+        {/* <div className="pb-2 pl-2">
           <UserButton
             showName
             appearance={{
@@ -54,7 +54,7 @@ export function AppSidebar() {
               },
             }}
           />
-        </div>
+        </div> */}
       </SidebarFooter>
     </Sidebar>
   )

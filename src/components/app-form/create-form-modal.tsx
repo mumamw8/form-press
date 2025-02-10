@@ -12,7 +12,6 @@ import { client } from "@/lib/client"
 import { toast } from "sonner"
 import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
-import { useOrganization, useUser } from "@clerk/nextjs"
 
 interface CreateFormModalProps extends PropsWithChildren {
   orgId: string
@@ -22,9 +21,9 @@ export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
   const queryClient = useQueryClient()
 
-  console.log("CreateFormModal open state:", open) // Debug log
+  // console.log("CreateFormModal open state:", open) // Debug log
 
-  const { mutate: createForm, isPending: isCreatingForm } = useMutation({
+  const { mutate: createForm, isPending } = useMutation({
     mutationFn: async (data: CreateFormType) => {
       await client.form.createForm.$post(data)
     },
@@ -93,12 +92,12 @@ export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
             type="button"
             variant={"outline"}
             onClick={onClose}
-            disabled={isCreatingForm}
+            disabled={isPending}
           >
             Cancel
           </Button>
-          <Button type="submit">
-            {isCreatingForm ? "Creating..." : "Create Form"}
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Creating..." : "Create Form"}
           </Button>
         </div>
       </form>

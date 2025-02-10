@@ -123,7 +123,11 @@ export function AppFormCard({ form }: AppFormCardProps) {
           </div>
 
           <div className="flex justify-end space-x-3 pt-4 border-t">
-            <Button variant="outline" onClick={() => setDeletingForm(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeletingForm(false)}
+              disabled={isDeletingForm}
+            >
               Cancel
             </Button>
             <Button

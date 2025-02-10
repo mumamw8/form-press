@@ -1,4 +1,4 @@
-import { TFormField } from "@/lib/types/form-types"
+import { TFormField, TLayoutElement } from "@/lib/types/form-types"
 import {
   OpenTextField,
   OpenTextFieldDesigner,
@@ -9,7 +9,18 @@ import {
   PhoneFieldDesigner,
   PhoneFieldProperties,
 } from "./fields/PhoneField"
-import { MdTextFields, MdPhone } from "react-icons/md"
+import { MdTextFields, MdPhone, MdTitle } from "react-icons/md"
+import { ImParagraphJustify } from "react-icons/im"
+import {
+  TitleElement,
+  TitleElementDesigner,
+  TitleElementProperties,
+} from "./layout-elements/title-element"
+import {
+  ParagraphElement,
+  ParagraphElementDesigner,
+  ParagraphElementProperties,
+} from "./layout-elements/paragraph-element"
 
 export type FormElement<T extends { type: string }> = {
   type: T["type"] // Generic type is extracted from TFormField union type
@@ -23,10 +34,12 @@ export type FormElement<T extends { type: string }> = {
   propertiesComponent: React.FC<{ elementInstance: FormElementInstance }>
 }
 
-export type FormElementInstance = TFormField
+export type FormElementInstance = TFormField | TLayoutElement
 
 type FormElementsType = {
-  [key in TFormField["type"]]: FormElement<Extract<TFormField, { type: key }>>
+  [key in FormElementInstance["type"]]: FormElement<
+    Extract<FormElementInstance, { type: key }>
+  >
 }
 
 export const FormElements: FormElementsType = {
@@ -37,7 +50,6 @@ export const FormElements: FormElementsType = {
       type: "open_text",
       label: "Text",
       required: false,
-      position: 0,
     }),
     designerBtnElement: { icon: MdTextFields, label: "Text" },
     designerComponent: OpenTextFieldDesigner,
@@ -51,11 +63,38 @@ export const FormElements: FormElementsType = {
       type: "phone",
       label: "Phone",
       required: false,
-      position: 0,
     }),
     designerBtnElement: { icon: MdPhone, label: "Phone No." },
     designerComponent: PhoneFieldDesigner,
     formComponent: PhoneField,
     propertiesComponent: PhoneFieldProperties,
+  },
+  title_element: {
+    type: "title_element",
+    construct: (id: string) => ({
+      id,
+      type: "title_element",
+    }),
+    designerBtnElement: {
+      icon: MdTitle,
+      label: "Title",
+    },
+    designerComponent: TitleElementDesigner,
+    formComponent: TitleElement,
+    propertiesComponent: TitleElementProperties,
+  },
+  paragraph_element: {
+    type: "paragraph_element",
+    construct: (id: string) => ({
+      id,
+      type: "paragraph_element",
+    }),
+    designerBtnElement: {
+      icon: ImParagraphJustify,
+      label: "Paragraph",
+    },
+    designerComponent: ParagraphElementDesigner,
+    formComponent: ParagraphElement,
+    propertiesComponent: ParagraphElementProperties,
   },
 }

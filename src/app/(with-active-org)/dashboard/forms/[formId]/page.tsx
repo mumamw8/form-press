@@ -4,11 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { WorkspacePage } from "@/components/workspace-page"
 import { db } from "@/db"
 import { FormIntegrations } from "@/modules/form-details/components/form-integrations"
-import { FormOverview } from "@/modules/form-details/components/form-overview"
+import { FormShare } from "@/modules/form-details/components/form-share"
 import { FormSettings } from "@/modules/form-details/components/form-settings"
 import { FormSubmissions } from "@/modules/form-details/components/form-submissions"
-import { Edit2 } from "lucide-react"
+import { Edit2, EyeIcon } from "lucide-react"
 import Link from "next/link"
+import { FormAnalytics } from "@/modules/form-details/components/form-analytics"
 
 export default async function Page({
   params,
@@ -48,31 +49,48 @@ export default async function Page({
           <h2 className="text-3xl font-extrabold tracking-tight">
             {form.title.length > 0 ? form.title : "(Untitled)"}
           </h2>
-          <Link
-            href={`/builder/${form.id}`}
-            className={buttonVariants({
-              variant: "default",
-              size: "lg",
-              className: "",
-            })}
-          >
-            <Edit2 className="size-4" />
-            Edit
-          </Link>
+          <div className="flex gap-4">
+            <Link
+              href={`/form/${form.shareURL}`}
+              className={buttonVariants({
+                variant: "secondary",
+                size: "lg",
+                className: "border border-gray-300",
+              })}
+            >
+              <EyeIcon className="size-4" />
+              Visit
+            </Link>
+            <Link
+              href={`/builder/${form.id}`}
+              className={buttonVariants({
+                variant: "default",
+                size: "lg",
+                className: "",
+              })}
+            >
+              <Edit2 className="size-4" />
+              Edit
+            </Link>
+          </div>
         </header>
         <div className="p-4">
-          <Tabs defaultValue="overview">
+          <Tabs defaultValue="share">
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="share">Share</TabsTrigger>
               <TabsTrigger value="submissions">Submissions</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
               <TabsTrigger value="integrations">Integrations</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview">
-              <FormOverview />
+            <TabsContent value="share">
+              <FormShare shareCode={form.shareURL} />
             </TabsContent>
             <TabsContent value="submissions">
               <FormSubmissions />
+            </TabsContent>
+            <TabsContent value="analytics">
+              <FormAnalytics />
             </TabsContent>
             <TabsContent value="settings">
               <FormSettings />

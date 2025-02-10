@@ -1,7 +1,7 @@
 import { Active, DragOverlay, useDndMonitor } from "@dnd-kit/core"
 import { useState } from "react"
 import { SidebarBtnElementDragOverlay } from "./SidebarBtnElement"
-import { FormElements } from "./fieldComponents"
+import { FormElementInstance, FormElements } from "./fieldComponents"
 import { TFormField } from "@/lib/types/form-types"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 
@@ -27,7 +27,7 @@ export const DragOverlayWrapper = () => {
   const isSidebarBtnElement = draggedItem.data?.current?.isDesignerBtnElement
 
   if (isSidebarBtnElement) {
-    const type = draggedItem.data?.current?.type as TFormField["type"]
+    const type = draggedItem.data?.current?.type as FormElementInstance["type"]
     node = <SidebarBtnElementDragOverlay formElement={FormElements[type]} />
   }
 

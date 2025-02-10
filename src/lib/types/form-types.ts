@@ -25,6 +25,22 @@ export const ZFormFieldId = z.string().superRefine((id, ctx) => {
   }
 })
 
+// Base Form Layout Element type
+export const ZLayoutElementBase = z.object({
+  id: ZFormFieldId,
+  type: z.string(),
+})
+
+export const ZTitleElement = ZLayoutElementBase.extend({
+  type: z.literal("title_element"),
+})
+export type TTitleElement = z.infer<typeof ZTitleElement>
+
+export const ZParagraphElement = ZLayoutElementBase.extend({
+  type: z.literal("paragraph_element"),
+})
+export type TParagraphElement = z.infer<typeof ZParagraphElement>
+
 // Base Field Type
 export const ZFormFieldBase = z.object({
   id: ZFormFieldId,
@@ -33,7 +49,6 @@ export const ZFormFieldBase = z.object({
   helper_text: z.string().optional(), // user defined
   embedUrl: z.string().optional(),
   required: z.boolean().default(false),
-  position: z.number(),
 })
 
 // Open Text (Long, Short, Phone, Url, Email, Custom(with user specified rules e.g asset code for a company))
@@ -145,3 +160,7 @@ export const ZFormField = z.union([
   // ZRankingField,
 ])
 export type TFormField = z.infer<typeof ZFormField>
+
+// layout element type
+export const ZLayoutElement = z.union([ZTitleElement, ZParagraphElement])
+export type TLayoutElement = z.infer<typeof ZLayoutElement>

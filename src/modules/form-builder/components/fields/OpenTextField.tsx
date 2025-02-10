@@ -62,7 +62,6 @@ export const OpenTextFieldDesigner: React.FC<{
 const propertiesSchema = ZOpenTextField.omit({
   type: true,
   id: true,
-  position: true,
 })
 type propertiesSchemaType = z.infer<typeof propertiesSchema>
 export const OpenTextFieldProperties: React.FC<{

@@ -1,7 +1,5 @@
 "use client"
 
-import { client } from "@/lib/client"
-import { useQuery } from "@tanstack/react-query"
 import { LoadingSpinner } from "@/components/loading-spinner"
 import { Designer } from "./Designer"
 import {
@@ -21,18 +19,16 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { UnpublishFormButton } from "@/components/buttons/UnpublishFormButton"
+import { trpc } from "@/trpc/client"
+import { FormElementInstance } from "./fieldComponents"
 
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()
   const { setElements } = useFormBuilderStore((state) => state)
   const [isReady, setIsReady] = useState<boolean>(false)
-  const { data: form, isPending: isFormLoading } = useQuery({
-    queryFn: async () => {
-      const res = await client.form.getSingleForm.$get({ id })
-      return res.json()
-    },
-    queryKey: ["get-form-by-id"],
-  })
+
+  const { data: form, isPending: isFormLoading } =
+    trpc.form.getSingleForm.useQuery({ id: id })
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -54,7 +50,7 @@ export default function FormBuilder({ id }: { id: string }) {
       typeof form.fields === "object" &&
       Array.isArray(form.fields)
     ) {
-      setElements(form.fields)
+      setElements(form.fields as FormElementInstance[])
     }
     const isReadyTimeout = setTimeout(() => setIsReady(true), 500)
     return () => clearTimeout(isReadyTimeout)

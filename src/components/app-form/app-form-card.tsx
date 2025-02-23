@@ -4,11 +4,10 @@ import Link from "next/link"
 import { ChevronRight, PencilLine, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { Button, buttonVariants } from "../ui/button"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { client } from "@/lib/client"
 import { toast } from "sonner"
 import { Modal } from "../modal"
 import { cn } from "@/lib/utils"
+import { trpc } from "@/trpc/client"
 
 interface AppFormCardProps {
   form: TForm
@@ -16,22 +15,20 @@ interface AppFormCardProps {
 
 export function AppFormCard({ form }: AppFormCardProps) {
   const [deletingForm, setDeletingForm] = useState<boolean>(false)
-  const queryClient = useQueryClient()
+  const utils = trpc.useUtils()
 
-  const { mutate: deleteForm, isPending: isDeletingForm } = useMutation({
-    mutationFn: async (shareUrl: string) => {
-      await client.form.deleteForm.$post({ shareUrl })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-organization-forms"] })
-      toast.success("Form deleted")
-      setDeletingForm(false)
-    },
-    onError: (error) => {
-      console.error(error)
-      toast.error("Delete form failed")
-    },
-  })
+  const { mutate: deleteForm, isPending: isDeletingForm } =
+    trpc.form.deleteForm.useMutation({
+      onSuccess: () => {
+        utils.form.getOrganizationForms.invalidate()
+        toast.success("Form deleted")
+        setDeletingForm(false)
+      },
+      onError: (error) => {
+        console.error(error)
+        toast.error("Delete form failed")
+      },
+    })
 
   return (
     <>
@@ -132,7 +129,9 @@ export function AppFormCard({ form }: AppFormCardProps) {
             </Button>
             <Button
               variant="destructive"
-              onClick={() => deletingForm && deleteForm(form.shareURL)}
+              onClick={() =>
+                deletingForm && deleteForm({ shareUrl: form.shareURL })
+              }
               disabled={isDeletingForm}
             >
               {isDeletingForm ? "Deleting..." : "Delete"}

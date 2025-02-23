@@ -1,6 +1,5 @@
 "use client"
 
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,31 +7,24 @@ import { Modal } from "../modal"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import { client } from "@/lib/client"
 import { toast } from "sonner"
 import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
+import { trpc } from "@/trpc/client"
 
-interface CreateFormModalProps extends PropsWithChildren {
-  orgId: string
-}
+interface CreateFormModalProps extends PropsWithChildren {}
 
-export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
+export const CreateFormModal = ({}: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
-  const queryClient = useQueryClient()
+  const utils = trpc.useUtils()
 
-  // console.log("CreateFormModal open state:", open) // Debug log
-
-  const { mutate: createForm, isPending } = useMutation({
-    mutationFn: async (data: CreateFormType) => {
-      await client.form.createForm.$post(data)
-    },
+  const { mutate: createForm, isPending } = trpc.form.createForm.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-organization-forms"] })
+      utils.form.getOrganizationForms.invalidate()
       onClose()
       toast.success("Form created")
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Create form failed")
     },
   })
@@ -44,7 +36,6 @@ export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
   } = useForm<CreateFormType>({
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {
-      organizationId: orgId,
       closeFormDate: null,
     },
   })
@@ -52,10 +43,6 @@ export const CreateFormModal = ({ orgId }: CreateFormModalProps) => {
   const onSubmit = (data: CreateFormType) => {
     createForm(data)
   }
-
-  // if (!organization) {
-  //   return <div>No Organization Selected!</div>
-  // }
 
   return (
     <Modal className="max-w-xl p-8" onClose={onClose} open={open}>

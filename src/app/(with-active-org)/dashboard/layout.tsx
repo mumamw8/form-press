@@ -7,14 +7,12 @@ import { auth } from "@clerk/nextjs/server"
 interface LayoutProps extends PropsWithChildren {}
 
 export default async function Layout({ children }: LayoutProps) {
-  const { orgId } = await auth()
-
   return (
     <SidebarProvider>
       <>
         <AppSidebar />
         {children}
-        <CreateFormModal orgId={orgId ?? ""} />
+        <CreateFormModal />
       </>
     </SidebarProvider>
   )

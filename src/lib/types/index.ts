@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { ZFormField } from "./form-types"
+import { ZFormField, ZLayoutElement } from "./form-types"
 
 export const UserSchema = z.object({
   id: z.string().cuid(),
@@ -16,7 +16,7 @@ export const FormSchema = z.object({
   id: z.string().cuid(),
   title: z.string(),
   description: z.string().default(""),
-  fields: z.array(ZFormField).default([]), // Use z.any() for JSON content
+  fields: z.array(z.union([ZFormField, ZLayoutElement])).default([]), // Use z.any() for JSON content
   settings: z.record(z.any()).optional(), // JSON object
   isPublished: z.boolean().default(false),
   visits: z.number().default(0),
@@ -62,6 +62,7 @@ export const CreateFormSchema = FormSchema.omit({
   shareURL: true,
   createdById: true,
   fields: true,
+  organizationId: true,
 })
 
 export const UpdateFormSchema = FormSchema.partial().omit({

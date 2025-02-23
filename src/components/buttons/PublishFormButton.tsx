@@ -1,11 +1,10 @@
 import { Button } from "../ui/button"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { client } from "@/lib/client"
 import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
 import { CircleCheck } from "lucide-react"
+import { trpc } from "@/trpc/client"
 
 export const PublishFormButton = ({
   id,
@@ -15,26 +14,21 @@ export const PublishFormButton = ({
   isPublished: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
+  const utils = trpc.useUtils()
 
-  const { mutate: updateForm, isPending: isUpdatingForm } = useMutation({
-    mutationFn: async () => {
-      await client.form.updateForm.$post({
-        id: id,
-        isPublished: true,
-      })
-    },
-    onSuccess: () => {
-      console.log("Form saved")
-      queryClient.invalidateQueries({ queryKey: ["get-form-by-id"] })
-      setIsOpen(false)
-      toast.success("Form published")
-    },
-    onError: (error) => {
-      console.error(error)
-      toast.error("Publish form failed")
-    },
-  })
+  const { mutate: updateForm, isPending: isUpdatingForm } =
+    trpc.form.updateForm.useMutation({
+      onSuccess: () => {
+        console.log("Form saved")
+        utils.form.getSingleForm.invalidate()
+        setIsOpen(false)
+        toast.success("Form published")
+      },
+      onError: (error) => {
+        console.error(error)
+        toast.error("Publish form failed")
+      },
+    })
 
   return (
     <>
@@ -70,7 +64,10 @@ export const PublishFormButton = ({
           >
             Cancel
           </Button>
-          <Button variant={"destructive"} onClick={() => updateForm()}>
+          <Button
+            variant={"destructive"}
+            onClick={() => updateForm({ id: id, isPublished: true })}
+          >
             {isUpdatingForm ? (
               <>
                 {"Publishing..."} <LoadingSpinner />

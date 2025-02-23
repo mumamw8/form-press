@@ -1,10 +1,11 @@
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
 import { WorkspacePage } from "@/components/workspace-page"
 import { WorkspacePageContent } from "@/components/workspace/workspace-page-content"
-import { auth } from "@clerk/nextjs/server"
+import { HydrateClient, trpc } from "@/trpc/server"
 
 export default async function Page() {
-  const { orgId } = await auth()
+  void trpc.form.getOrganizationForms.prefetch()
+
   const breadcrumbs: BreadcrumbListItem[] = [
     { title: "Dashboard", href: `/dashboard` },
     {
@@ -14,8 +15,10 @@ export default async function Page() {
   ]
 
   return (
-    <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}>
-      <WorkspacePageContent orgId={orgId ?? ""} />
-    </WorkspacePage>
+    <HydrateClient>
+      <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}>
+        <WorkspacePageContent />
+      </WorkspacePage>
+    </HydrateClient>
   )
 }

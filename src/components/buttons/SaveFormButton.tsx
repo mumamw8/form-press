@@ -1,13 +1,13 @@
+"use client"
+
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
-import { client } from "@/lib/client"
 import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
 import { SaveIcon } from "lucide-react"
+import { trpc } from "@/trpc/client"
 
 export const SaveFormButton = ({
   id,
@@ -18,28 +18,21 @@ export const SaveFormButton = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { elements } = useFormBuilderStore((state) => state)
-  const queryClient = useQueryClient()
+  const utils = trpc.useUtils()
 
-  const { mutate: updateForm, isPending: isUpdatingForm } = useMutation({
-    mutationFn: async (data: FormElementInstance[]) => {
-      const jsonElements = data
-      await client.form.updateForm.$post({
-        id: id,
-        fields: jsonElements,
-        isPublished: false,
-      })
-    },
-    onSuccess: () => {
-      console.log("Form saved")
-      queryClient.invalidateQueries({ queryKey: ["get-form-by-id"] })
-      setIsOpen(false)
-      toast.success("Form saved")
-    },
-    onError: (error) => {
-      console.error(error)
-      toast.error("Save form failed")
-    },
-  })
+  const { mutate: updateForm, isPending: isUpdatingForm } =
+    trpc.form.updateForm.useMutation({
+      onSuccess: () => {
+        console.log("Form saved")
+        utils.form.getSingleForm.invalidate()
+        setIsOpen(false)
+        toast.success("Form saved")
+      },
+      onError: (error) => {
+        console.error(error)
+        toast.error("Save form failed")
+      },
+    })
 
   if (isPublished) {
     return (
@@ -79,7 +72,13 @@ export const SaveFormButton = ({
             </Button>
             <Button
               variant={"destructive"}
-              onClick={() => updateForm(elements)}
+              onClick={() =>
+                updateForm({
+                  id: id,
+                  fields: elements,
+                  isPublished: false,
+                })
+              }
             >
               {isUpdatingForm ? (
                 <>
@@ -99,7 +98,13 @@ export const SaveFormButton = ({
     <Button
       variant={"outline"}
       className="gap-2"
-      onClick={() => updateForm(elements)}
+      onClick={() =>
+        updateForm({
+          id: id,
+          fields: elements,
+          isPublished: false,
+        })
+      }
     >
       {isUpdatingForm ? (
         <LoadingSpinner />

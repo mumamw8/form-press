@@ -1,5 +1,5 @@
-import { auth } from '@clerk/nextjs/server'
-import { createClient } from '@supabase/supabase-js'
+import { auth } from "@clerk/nextjs/server"
+import { createClient } from "@supabase/supabase-js"
 
 export async function createClerkSupabaseClientSsr() {
   // The `useAuth()` hook is used to access the `getToken()` method
@@ -13,12 +13,12 @@ export async function createClerkSupabaseClientSsr() {
         // Get the custom Supabase token from Clerk
         fetch: async (url, options = {}) => {
           const clerkToken = await getToken({
-            template: 'supabase',
+            template: "supabase",
           })
 
           // Insert the Clerk Supabase token into the headers
           const headers = new Headers(options?.headers)
-          headers.set('Authorization', `Bearer ${clerkToken}`)
+          headers.set("Authorization", `Bearer ${clerkToken}`)
 
           // Now call the default fetch
           return fetch(url, {
@@ -27,6 +27,6 @@ export async function createClerkSupabaseClientSsr() {
           })
         },
       },
-    },
+    }
   )
 }

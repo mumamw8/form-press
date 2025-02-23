@@ -1,23 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
-// import { client } from "@/lib/client"
-// import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 interface WorkspaceEmptyStateProps {}
 
 export const WorkspaceEmptyState = ({}: WorkspaceEmptyStateProps) => {
   const { onOpen } = useCreateFormModal()
-  // const queryClient = useQueryClient()
-
-  // const { mutate: insertQuickstartCategories, isPending } = useMutation({
-  //   mutationFn: async () => {
-  //     await client.category.insertQuickstartCategories.$post()
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["user-event-categories"] })
-  //   },
-  // })
 
   return (
     <Card className="flex flex-col items-center justify-center rounded-2xl flex-1 text-center p-6">

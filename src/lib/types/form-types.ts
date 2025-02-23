@@ -31,15 +31,22 @@ export const ZLayoutElementBase = z.object({
   type: z.string(),
 })
 
+// title
 export const ZTitleElement = ZLayoutElementBase.extend({
   type: z.literal("title_element"),
+  title: z.string(),
 })
 export type TTitleElement = z.infer<typeof ZTitleElement>
-
+// subtitle
+// paragraph
 export const ZParagraphElement = ZLayoutElementBase.extend({
   type: z.literal("paragraph_element"),
+  body: z.string(),
 })
 export type TParagraphElement = z.infer<typeof ZParagraphElement>
+// seperator (width, position, height)
+// spacer (height)
+// image
 
 // Base Field Type
 export const ZFormFieldBase = z.object({
@@ -72,9 +79,22 @@ export const ZOpenTextField = ZFormFieldBase.extend({
 })
 export type TOpenTextField = z.infer<typeof ZOpenTextField>
 
+export const ZLongTextField = ZFormFieldBase.extend({
+  type: z.literal("long_text"),
+  placeholder: z.string().optional(),
+  rules: z
+    .object({
+      minLength: z.number().optional(),
+      maxLength: z.number().optional(),
+    })
+    .optional(),
+})
+export type TLongTextField = z.infer<typeof ZLongTextField>
+
 // Preset Text Fields
 export const ZPhoneField = ZFormFieldBase.extend({
   type: z.literal("phone"),
+  placeholder: z.string().optional(),
   countryCode: z.string().optional(), // Optional country code for phone validation
 })
 export type TPhoneField = z.infer<typeof ZPhoneField>
@@ -91,21 +111,20 @@ export type TUrlField = z.infer<typeof ZUrlField>
 
 export const ZDateField = ZFormFieldBase.extend({
   type: z.literal("date"),
-  minDate: z.string().optional(), // ISO date string
-  maxDate: z.string().optional(), // ISO date string
 })
 export type TDateField = z.infer<typeof ZDateField>
 
+// export const ZSelectOption = z.object({
+//   value: z.string(),
+//   label: z.string(),
+// })
 export const ZSelectField = ZFormFieldBase.extend({
   type: z.literal("select"),
-  options: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
+  placeholder: z.string().optional(),
+  options: z.array(z.string()).default([]),
   multiple: z.boolean().default(false), // Single or multiple selection
 })
+// export type TSelectOption = z.infer<typeof ZSelectOption>
 export type TSelectField = z.infer<typeof ZSelectField>
 
 export const ZFileUploadField = ZFormFieldBase.extend({
@@ -117,17 +136,12 @@ export type TFileUploadField = z.infer<typeof ZFileUploadField>
 
 export const ZCheckboxField = ZFormFieldBase.extend({
   type: z.literal("checkbox"),
-  options: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
 })
 export type TCheckboxField = z.infer<typeof ZCheckboxField>
 
 export const ZNumberField = ZFormFieldBase.extend({
   type: z.literal("number"),
+  placeholder: z.string().optional(),
   min: z.number().optional(),
   max: z.number().optional(),
   step: z.number().optional(),
@@ -149,13 +163,14 @@ export type TRankingField = z.infer<typeof ZRankingField>
 export const ZFormField = z.union([
   ZOpenTextField,
   ZPhoneField,
+  ZNumberField,
+  ZLongTextField,
   // ZEmailField,
   // ZUrlField,
-  // ZDateField,
-  // ZSelectField,
+  ZDateField,
+  ZSelectField,
   // ZFileUploadField,
-  // ZCheckboxField,
-  // ZNumberField,
+  ZCheckboxField,
   // ZRatingField,
   // ZRankingField,
 ])

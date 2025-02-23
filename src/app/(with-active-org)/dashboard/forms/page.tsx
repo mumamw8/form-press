@@ -16,9 +16,9 @@ export default async function Page() {
 
   return (
     <HydrateClient>
-      <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}>
-        <WorkspacePageContent />
-      </WorkspacePage>
+      {/* <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}> */}
+      <WorkspacePageContent />
+      {/* </WorkspacePage> */}
     </HydrateClient>
   )
 }

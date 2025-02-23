@@ -14,6 +14,38 @@ export const formRouter = createTRPCRouter({
     return { forms }
   }),
 
+  getPage: protectedProcedure
+    .input(
+      z.object({
+        cursor: z
+          .object({ id: z.string().uuid(), updatedAt: z.date() })
+          .nullish(),
+        limit: z.number().min(1).max(100).nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { cursor, limit } = input
+
+      const take = limit ? limit : 10
+
+      const forms = await db.form.findMany({
+        take: take,
+        skip: cursor ? 1 : 0, // skip cursor
+        cursor: cursor ? cursor : undefined,
+        where: { organizationId: ctx.orgId },
+        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+      })
+
+      const hasMore = forms.length === take
+      // get next cursor
+      const lastItem = forms[forms.length - 1]
+      const nextCursor = hasMore
+        ? { id: lastItem.id, updatedAt: lastItem.updatedAt }
+        : null
+
+      return { items: forms, nextCursor }
+    }),
+
   // get single form
   getSingleForm: protectedProcedure
     .input(z.object({ id: z.string() }))

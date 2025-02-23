@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-query"
 import { HTTPException } from "hono/http-exception"
 import { PropsWithChildren, useState } from "react"
-import { Provider as ChakraProvider } from "./chakra-ui/provider"
 import { FormBuilderStoreProvider } from "@/components/providers/form-builder-store-provider"
 import { TRPCProvider } from "@/trpc/client"
 
@@ -33,12 +32,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
   )
 
   return (
-    <ChakraProvider forcedTheme="light">
-      <TRPCProvider>
-        <QueryClientProvider client={queryClient}>
-          <FormBuilderStoreProvider>{children}</FormBuilderStoreProvider>
-        </QueryClientProvider>
-      </TRPCProvider>
-    </ChakraProvider>
+    <TRPCProvider>
+      <QueryClientProvider client={queryClient}>
+        <FormBuilderStoreProvider>{children}</FormBuilderStoreProvider>
+      </QueryClientProvider>
+    </TRPCProvider>
   )
 }

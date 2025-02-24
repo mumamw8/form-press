@@ -1,10 +1,11 @@
 import { BreadcrumbListItem } from "@/components/app-breadcrumb-list"
+import { FormsSection } from "@/components/sections/forms-section"
 import { WorkspacePage } from "@/components/workspace-page"
 import { WorkspacePageContent } from "@/components/workspace/workspace-page-content"
 import { HydrateClient, trpc } from "@/trpc/server"
 
 export default async function Page() {
-  void trpc.form.getOrganizationForms.prefetch()
+  void trpc.form.getPage.prefetchInfinite({})
 
   const breadcrumbs: BreadcrumbListItem[] = [
     { title: "Dashboard", href: `/dashboard` },
@@ -17,8 +18,9 @@ export default async function Page() {
   return (
     <HydrateClient>
       {/* <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}> */}
-      <WorkspacePageContent />
+      {/* <WorkspacePageContent /> */}
       {/* </WorkspacePage> */}
+      <FormsSection />
     </HydrateClient>
   )
 }

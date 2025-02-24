@@ -43,7 +43,7 @@ export const formRouter = createTRPCRouter({
         ? { id: lastItem.id, updatedAt: lastItem.updatedAt }
         : null
 
-      return { items: forms, nextCursor }
+      return { forms, nextCursor }
     }),
 
   // get single form

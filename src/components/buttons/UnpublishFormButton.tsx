@@ -1,10 +1,10 @@
 import { Button } from "../ui/button"
-import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
 import { CircleSlash } from "lucide-react"
-import { trpc } from "@/trpc/client"
+import { useTRPC } from "@/trpc/client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const UnpublishFormButton = ({
   id,
@@ -15,13 +15,33 @@ export const UnpublishFormButton = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const utils = trpc.useUtils()
+  // const utils = trpc.useUtils()
 
-  const { mutate: updateForm, isPending: isUpdatingForm } =
-    trpc.form.updateForm.useMutation({
+  // const { mutate: updateForm, isPending: isUpdatingForm } =
+  //   trpc.form.updateForm.useMutation({
+  //     onSuccess: () => {
+  //       console.log("Form saved")
+  //       utils.form.getSingleForm.invalidate()
+  //       setIsOpen(false)
+  //       toast.success("Form unpublished")
+  //     },
+  //     onError: (error) => {
+  //       console.error(error)
+  //       toast.error("Unublish form failed")
+  //     },
+  //   })
+
+  const trpc = useTRPC()
+  const queryClient = useQueryClient()
+
+  const getSingleFormQueryKey = trpc.form.getSingleForm.queryKey()
+
+  const formUpdater = useMutation(
+    trpc.form.updateForm.mutationOptions({
       onSuccess: () => {
         console.log("Form saved")
-        utils.form.getSingleForm.invalidate()
+        // utils.form.getSingleForm.invalidate()
+        queryClient.invalidateQueries({ queryKey: getSingleFormQueryKey })
         setIsOpen(false)
         toast.success("Form unpublished")
       },
@@ -30,6 +50,7 @@ export const UnpublishFormButton = ({
         toast.error("Unublish form failed")
       },
     })
+  )
 
   return (
     <>
@@ -62,21 +83,15 @@ export const UnpublishFormButton = ({
             type="button"
             variant={"outline"}
             onClick={() => setIsOpen(false)}
-            disabled={isUpdatingForm}
+            disabled={formUpdater.isPending}
           >
             Cancel
           </Button>
           <Button
             variant={"destructive"}
-            onClick={() => updateForm({ id: id, isPublished: false })}
+            onClick={() => formUpdater.mutate({ id: id, isPublished: false })}
           >
-            {isUpdatingForm ? (
-              <>
-                {"Unpublishing..."} <LoadingSpinner />
-              </>
-            ) : (
-              "Yes"
-            )}
+            {formUpdater.isPending ? <>{"Unpublishing..."}</> : "Yes"}
           </Button>
         </div>
       </Modal>

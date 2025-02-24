@@ -19,16 +19,23 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { UnpublishFormButton } from "@/components/buttons/UnpublishFormButton"
-import { trpc } from "@/trpc/client"
 import { FormElementInstance } from "./fieldComponents"
+import { useTRPC } from "@/trpc/client"
+import { useQuery } from "@tanstack/react-query"
 
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()
   const { setElements } = useFormBuilderStore((state) => state)
   const [isReady, setIsReady] = useState<boolean>(false)
 
-  const { data: form, isPending: isFormLoading } =
-    trpc.form.getSingleForm.useQuery({ id: id })
+  // const { data: form, isPending: isFormLoading } =
+  //   trpc.form.getSingleForm.useQuery({ id: id })
+
+  const trpc = useTRPC()
+
+  const { data: form, isPending: isFormLoading } = useQuery(
+    trpc.form.getSingleForm.queryOptions({ id: id })
+  )
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {

@@ -7,7 +7,8 @@ import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
 import { SaveIcon } from "lucide-react"
-import { trpc } from "@/trpc/client"
+import { useTRPC } from "@/trpc/client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const SaveFormButton = ({
   id,
@@ -18,13 +19,17 @@ export const SaveFormButton = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { elements } = useFormBuilderStore((state) => state)
-  const utils = trpc.useUtils()
+  const trpc = useTRPC()
+  const queryClient = useQueryClient()
 
-  const { mutate: updateForm, isPending: isUpdatingForm } =
-    trpc.form.updateForm.useMutation({
+  const getSingleFormQueryKey = trpc.form.getSingleForm.queryKey()
+
+  const formUpdater = useMutation(
+    trpc.form.updateForm.mutationOptions({
       onSuccess: () => {
         console.log("Form saved")
-        utils.form.getSingleForm.invalidate()
+        // utils.form.getSingleForm.invalidate()
+        queryClient.invalidateQueries({ queryKey: getSingleFormQueryKey })
         setIsOpen(false)
         toast.success("Form saved")
       },
@@ -33,6 +38,7 @@ export const SaveFormButton = ({
         toast.error("Save form failed")
       },
     })
+  )
 
   if (isPublished) {
     return (
@@ -66,21 +72,21 @@ export const SaveFormButton = ({
               type="button"
               variant={"outline"}
               onClick={() => setIsOpen(false)}
-              disabled={isUpdatingForm}
+              disabled={formUpdater.isPending}
             >
               Cancel
             </Button>
             <Button
               variant={"destructive"}
               onClick={() =>
-                updateForm({
+                formUpdater.mutate({
                   id: id,
                   fields: elements,
                   isPublished: false,
                 })
               }
             >
-              {isUpdatingForm ? (
+              {formUpdater.isPending ? (
                 <>
                   {"Saving..."} <LoadingSpinner />
                 </>
@@ -99,14 +105,14 @@ export const SaveFormButton = ({
       variant={"outline"}
       className="gap-2"
       onClick={() =>
-        updateForm({
+        formUpdater.mutate({
           id: id,
           fields: elements,
           isPublished: false,
         })
       }
     >
-      {isUpdatingForm ? (
+      {formUpdater.isPending ? (
         <LoadingSpinner />
       ) : (
         <>

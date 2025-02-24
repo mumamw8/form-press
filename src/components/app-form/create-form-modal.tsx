@@ -10,24 +10,44 @@ import { Button } from "../ui/button"
 import { toast } from "sonner"
 import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
-import { trpc } from "@/trpc/client"
+import { useTRPC } from "@/trpc/client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 interface CreateFormModalProps extends PropsWithChildren {}
 
 export const CreateFormModal = ({}: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
-  const utils = trpc.useUtils()
+  // const utils = trpc.useUtils()
 
-  const { mutate: createForm, isPending } = trpc.form.createForm.useMutation({
-    onSuccess: () => {
-      utils.form.getOrganizationForms.invalidate()
-      onClose()
-      toast.success("Form created")
-    },
-    onError: () => {
-      toast.error("Create form failed")
-    },
-  })
+  // const { mutate: createForm, isPending } = trpc.form.createForm.useMutation({
+  //   onSuccess: () => {
+  //     utils.form.getOrganizationForms.invalidate()
+  //     onClose()
+  //     toast.success("Form created")
+  //   },
+  //   onError: () => {
+  //     toast.error("Create form failed")
+  //   },
+  // })
+
+  const trpc = useTRPC()
+  const queryClient = useQueryClient()
+
+  const getPageQueryKey = trpc.form.getPage.queryKey()
+
+  const formCreator = useMutation(
+    trpc.form.createForm.mutationOptions({
+      onSuccess: () => {
+        // utils.form.getOrganizationForms.invalidate()
+        queryClient.invalidateQueries({ queryKey: getPageQueryKey })
+        onClose()
+        toast.success("Form created")
+      },
+      onError: () => {
+        toast.error("Create form failed")
+      },
+    })
+  )
 
   const {
     register,
@@ -41,7 +61,8 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
   })
 
   const onSubmit = (data: CreateFormType) => {
-    createForm(data)
+    // createForm(data)
+    formCreator.mutate(data)
   }
 
   return (
@@ -79,12 +100,12 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
             type="button"
             variant={"outline"}
             onClick={onClose}
-            disabled={isPending}
+            disabled={formCreator.isPending}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? "Creating..." : "Create Form"}
+          <Button type="submit" disabled={formCreator.isPending}>
+            {formCreator.isPending ? "Creating..." : "Create Form"}
           </Button>
         </div>
       </form>

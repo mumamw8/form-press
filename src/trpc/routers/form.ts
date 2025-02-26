@@ -17,31 +17,35 @@ export const formRouter = createTRPCRouter({
   getPage: protectedProcedure
     .input(
       z.object({
-        cursor: z
-          .object({ id: z.string().uuid(), updatedAt: z.date() })
-          .nullish(),
         limit: z.number().min(1).max(100).nullish(),
+        cursor: z
+          .object({
+            id: z.string(),
+            updatedAt: z.string(),
+          })
+          .nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
       const { cursor, limit } = input
-
-      const take = limit ? limit : 10
+      const take = limit ?? 20
 
       const forms = await db.form.findMany({
-        take: take,
-        skip: cursor ? 1 : 0, // skip cursor
-        cursor: cursor ? cursor : undefined,
+        take: take + 1,
         where: { organizationId: ctx.orgId },
-        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+        cursor: cursor
+          ? { updatedAt: cursor.updatedAt, id: cursor.id }
+          : undefined,
+        orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
       })
 
-      const hasMore = forms.length === take
-      // get next cursor
-      const lastItem = forms[forms.length - 1]
-      const nextCursor = hasMore
-        ? { id: lastItem.id, updatedAt: lastItem.updatedAt }
-        : null
+      let nextCursor: typeof cursor | undefined = undefined
+      if (forms.length > take) {
+        const nextItem = forms.pop()
+        nextCursor = nextItem
+          ? { id: nextItem.id, updatedAt: nextItem.updatedAt.toISOString() }
+          : undefined
+      }
 
       return { forms, nextCursor }
     }),
@@ -89,10 +93,10 @@ export const formRouter = createTRPCRouter({
 
   // delete form
   deleteForm: protectedProcedure
-    .input(z.object({ shareUrl: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       await db.form.delete({
-        where: { shareURL: input.shareUrl },
+        where: { id: input.id },
       })
       return { success: true }
     }),

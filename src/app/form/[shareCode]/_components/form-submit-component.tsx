@@ -2,11 +2,12 @@
 
 import { SubmitForm } from "@/app/actions/form"
 import { Button } from "@/components/ui/button"
-import { client } from "@/lib/client"
 import {
   FormElementInstance,
   FormElements,
 } from "@/modules/form-builder/components/fieldComponents"
+import { useTRPC } from "@/trpc/client"
+import { useMutation } from "@tanstack/react-query"
 import { useCallback, useRef, useState, useTransition } from "react"
 import { toast } from "sonner"
 
@@ -16,12 +17,26 @@ interface Props {
 }
 
 export const FormSubmitComponent = ({ formCode, content }: Props) => {
+  const trpc = useTRPC()
+
   const formValues = useRef<{ [key: string]: string }>({})
   const formErrors = useRef<{ [key: string]: boolean }>({})
   const [renderKey, setRenderKey] = useState(new Date().getTime())
 
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [pending, startTransition] = useTransition()
+
+  const formSubmitter = useMutation(
+    trpc.formPage.submitForm.mutationOptions({
+      onSuccess: (data) => {
+        console.log("SUBMIT SUCCESSFUL", data)
+        setSubmitted(true)
+      },
+      onError: (error) => {
+        console.error(error)
+      },
+    })
+  )
 
   const validateForm: () => boolean = useCallback(() => {
     for (const field of content) {
@@ -61,20 +76,9 @@ export const FormSubmitComponent = ({ formCode, content }: Props) => {
       return
     }
 
-    try {
-      const JsonContent = JSON.stringify(formValues.current)
-      console.log("FORM CODE: ", formCode)
-      // await SubmitForm(formCode, JsonContent)
-      const res = await client.form.submitForm.$post({
-        shareUrl: formCode,
-        content: JsonContent,
-      })
-      console.log("SUBMIT SUCCESSFUL", await res.json())
-      setSubmitted(true)
-    } catch (error) {
-      toast.error("Something went wrong!")
-    }
-    console.log("FORM VALUES 2: ", formValues.current)
+    const JsonContent = JSON.stringify(formValues.current)
+
+    formSubmitter.mutate({ shareUrl: formCode, content: JsonContent })
   }
 
   if (submitted) {
@@ -110,10 +114,15 @@ export const FormSubmitComponent = ({ formCode, content }: Props) => {
           onClick={() => {
             startTransition(submitForm)
           }}
-          disabled={pending}
+          disabled={pending || formSubmitter.isPending}
         >
-          {!pending && <>Submit</>}
-          {pending && <>Submitting...</>}
+          {/* {!pending && <>Submit</>}
+          {pending && <>Submitting...</>} */}
+          {pending || formSubmitter.isPending ? (
+            <>Submitting...</>
+          ) : (
+            <>Submit</>
+          )}
         </Button>
       </div>
     </div>

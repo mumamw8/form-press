@@ -1,6 +1,7 @@
 import { GetFormContentByShareCode } from "@/app/actions/form"
 import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
 import { FormSubmitComponent } from "./_components/form-submit-component"
+import { caller } from "@/trpc/server"
 
 export default async function Page({
   params,
@@ -9,13 +10,17 @@ export default async function Page({
 }) {
   const { shareCode } = await params
 
-  const form = await GetFormContentByShareCode(shareCode)
+  const data = await caller.formPage.getFormContentByShareCode({
+    shareUrl: shareCode,
+  })
 
-  if (!form) {
+  // const form = await GetFormContentByShareCode(shareCode)
+
+  if (!data.form) {
     throw new Error("form not found")
   }
 
-  const formContent = form.fields as FormElementInstance[]
+  const formContent = data.form.fields as FormElementInstance[]
 
   return <FormSubmitComponent formCode={shareCode} content={formContent} />
 }

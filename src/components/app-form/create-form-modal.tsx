@@ -17,18 +17,6 @@ interface CreateFormModalProps extends PropsWithChildren {}
 
 export const CreateFormModal = ({}: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
-  // const utils = trpc.useUtils()
-
-  // const { mutate: createForm, isPending } = trpc.form.createForm.useMutation({
-  //   onSuccess: () => {
-  //     utils.form.getOrganizationForms.invalidate()
-  //     onClose()
-  //     toast.success("Form created")
-  //   },
-  //   onError: () => {
-  //     toast.error("Create form failed")
-  //   },
-  // })
 
   const trpc = useTRPC()
   const queryClient = useQueryClient()
@@ -57,6 +45,7 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {
       closeFormDate: null,
+      title: "Untitled",
     },
   })
 
@@ -68,13 +57,11 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
   return (
     <Modal className="max-w-xl p-8" onClose={onClose} open={open}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <h2 className="text-lg/7 font-medium tracking-tight text-gray-950">
-            New Form
-          </h2>
-          <p className="text-sm/6 text-gray-600">
+        <div className="flex flex-col items-center">
+          <h2 className="text-xl font-semibold">Create Form</h2>
+          {/* <p className="text-sm/6 text-gray-600">
             Create a new form for collecting data.
-          </p>
+          </p> */}
         </div>
 
         <div className="space-y-5">
@@ -95,16 +82,21 @@ export const CreateFormModal = ({}: CreateFormModalProps) => {
           </div>
         </div>
 
-        <div className="flex justify-end space-x-3 pt-4 border-t">
+        <div className="flex items-center justify-center pt-4 space-x-3">
           <Button
             type="button"
             variant={"outline"}
             onClick={onClose}
             disabled={formCreator.isPending}
+            className="w-1/2"
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={formCreator.isPending}>
+          <Button
+            type="submit"
+            disabled={formCreator.isPending}
+            className="w-1/2"
+          >
             {formCreator.isPending ? "Creating..." : "Create Form"}
           </Button>
         </div>

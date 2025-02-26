@@ -62,7 +62,7 @@ const FormsSectionSkeleton = () => {
             {Array.from({ length: 5 }).map((_, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <Skeleton className="h-4 w-[50px]" />
+                  <Skeleton className="h-4 w-[50px] m-3" />
                 </TableCell>
                 <TableCell>
                   <Skeleton className="h-4 w-[40px]" />
@@ -233,30 +233,6 @@ const FormsSectionSuspense = () => {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                      {/* Navigate to form editor
-                      <Link
-                        href={`/builder/${form.id}`}
-                        className={buttonVariants({
-                          variant: "secondary",
-                          size: "icon",
-                          className: "hover:bg-blue-500/50 hover:text-white",
-                        })}
-                      >
-                        <Pencil className="size-5" />
-                      </Link>
-                      Open delete dialog
-                      <Button
-                        aria-label={`Delete ${form.title} form`}
-                        title="Delete form"
-                        size={"icon"}
-                        variant={"secondary"}
-                        onClick={(e) => {
-                          setDeletingForm({ id: form.id, title: form.title })
-                        }}
-                        className="hover:bg-gray-300/50 hover:text-red-600 p-1 rounded-lg"
-                      >
-                        <Trash2 className="size-5" />
-                      </Button> */}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -8,9 +8,9 @@ import { toast } from "sonner"
 export const FormShare = ({ shareCode }: { shareCode: string }) => {
   const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_URL}/form/${shareCode}`
   return (
-    <div>
+    <div className="flex flex-col py-4 gap-2">
       <h2 className="text-xl font-bold">Share</h2>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-xs text-muted-foreground">
         Your form is ready to share. Share the link below directly or embed it
         on any site.
       </p>

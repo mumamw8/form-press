@@ -16,7 +16,7 @@ export const DashboardView = () => {
           onClick={onOpen}
           variant={"ghost"}
           size={"default"}
-          className="text-blue-500 hover:text-blue-500"
+          className="text-blue-600 hover:text-blue-600"
         >
           <PlusCircle className="size-4" />
           Add Form

@@ -1,6 +1,6 @@
 export const FormAnalytics = () => {
   return (
-    <div className="h-full">
+    <div className="h-full flex flex-col py-4 gap-2">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <div className="rounded-xl bg-muted/50 p-4">
           <h2 className="text-gray-400">Views</h2>

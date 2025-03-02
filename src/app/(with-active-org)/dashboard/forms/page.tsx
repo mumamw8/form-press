@@ -4,12 +4,10 @@ import { HydrateClient, prefetch, trpc } from "@/trpc/server"
 
 export default async function Page() {
   prefetch(trpc.form.getPage.infiniteQueryOptions({}))
+  // prefetch(trpc.form.getOrganizationForms.queryOptions())
 
   return (
     <HydrateClient>
-      {/* <WorkspacePage breadcrumbs={breadcrumbs} title={"Forms"}> */}
-      {/* <WorkspacePageContent /> */}
-      {/* </WorkspacePage> */}
       <DashboardView />
     </HydrateClient>
   )

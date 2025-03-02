@@ -25,7 +25,7 @@ export const DashboardView = () => {
       </header>
       <div className="flex flex-col gap-y-6">
         <div className="px-4">
-          <h1 className="text-2xl font-semibold">Recents</h1>
+          <h1 className="text-2xl font-semibold">All forms</h1>
           <p className="text-xs text-muted-foreground">
             All recently modified forms
           </p>

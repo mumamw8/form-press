@@ -6,7 +6,6 @@ import {
   ColumnFiltersState,
   OnChangeFn,
   SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -26,7 +25,6 @@ import {
 } from "../ui/table"
 import { DataTableToolbar } from "./data-table-toolbar"
 // import { DataTablePagination } from "./data-table-pagination"
-// import { DataTableToolbar } from "./data-table-toolbar"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

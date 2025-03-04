@@ -45,6 +45,7 @@ export function DataTableSortOptions<TData>({
             const label = sortLabels.find((x) => x.id === column.id)
             return (
               <DropdownMenuItem
+                key={column.id}
                 className={cn(
                   "capitalize",
                   column.id === sorting[0].id && "font-semibold"

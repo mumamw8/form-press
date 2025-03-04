@@ -27,7 +27,7 @@ export const DashboardView = () => {
         <div className="px-4">
           <h1 className="text-2xl font-semibold">All forms</h1>
           <p className="text-xs text-muted-foreground">
-            All recently modified forms
+            All organization forms
           </p>
         </div>
         <div className="px-4">

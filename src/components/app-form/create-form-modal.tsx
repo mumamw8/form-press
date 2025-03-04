@@ -17,7 +17,6 @@ interface CreateFormModalProps extends PropsWithChildren {}
 
 export const CreateFormModal = ({}: CreateFormModalProps) => {
   const { open, onClose } = useCreateFormModal()
-
   const trpc = useTRPC()
   const queryClient = useQueryClient()
 

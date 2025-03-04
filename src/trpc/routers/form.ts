@@ -2,6 +2,8 @@ import { z } from "zod"
 import { CreateFormSchema, UpdateFormSchema } from "@/lib/types"
 import { createTRPCRouter, protectedProcedure } from "../init"
 import { db } from "@/lib/prisma"
+import { Form } from "@prisma/client"
+import { FormSortKeySchema } from "@/lib/utils/types"
 
 export const formRouter = createTRPCRouter({
   // get organization forms
@@ -13,37 +15,45 @@ export const formRouter = createTRPCRouter({
 
     return { forms }
   }),
-
+  // cursor paginated organization forms
   getPage: protectedProcedure
     .input(
       z.object({
+        sort: z.object({
+          field: FormSortKeySchema,
+          order: z.enum(["asc", "desc"]),
+        }),
         limit: z.number().min(1).max(100).nullish(),
         cursor: z
           .object({
             id: z.string(),
-            updatedAt: z.string(),
+            createdAt: z.string(),
           })
           .nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { cursor, limit } = input
-      const take = limit ?? 5
+      const { cursor, limit, sort } = input
+      const take = limit ?? 50
 
       const forms = await db.form.findMany({
         take: take + 1,
         where: { organizationId: ctx.orgId },
         cursor: cursor
-          ? { updatedAt: cursor.updatedAt, id: cursor.id }
+          ? { createdAt: cursor.createdAt, id: cursor.id }
           : undefined,
-        orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+        orderBy: [
+          { [sort.field]: sort.order },
+          { createdAt: "desc" },
+          { id: "asc" },
+        ],
       })
 
       let nextCursor: typeof cursor | undefined = undefined
       if (forms.length > take) {
         const nextItem = forms.pop()
         nextCursor = nextItem
-          ? { id: nextItem.id, updatedAt: nextItem.updatedAt.toISOString() }
+          ? { id: nextItem.id, createdAt: nextItem.createdAt.toISOString() }
           : undefined
       }
 

@@ -34,7 +34,7 @@ export const formRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { cursor, limit, sort } = input
-      const take = limit ?? 50
+      const take = limit ?? 3
 
       const forms = await db.form.findMany({
         take: take + 1,

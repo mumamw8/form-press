@@ -12,6 +12,7 @@ import { DataTable } from "../data-table/data-table"
 import { formsTableColumns } from "../data-table/columns"
 import useDataTableSorting from "@/hooks/use-data-table-sorting"
 import { FormSortKey } from "@/lib/utils/types"
+import useDataTableFilters from "@/hooks/use-data-table-filters"
 
 export const FormsSection = () => {
   return (
@@ -27,6 +28,7 @@ const FormsSectionSuspense = () => {
   const trpc = useTRPC()
 
   const { sorting, onSortingChange } = useDataTableSorting("updatedAt", "DESC")
+  const { columnFilters, onColumnFiltersChange } = useDataTableFilters()
 
   React.useEffect(() => {
     const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
@@ -63,6 +65,8 @@ const FormsSectionSuspense = () => {
     <>
       <div>
         <DataTable
+          onColumnFiltersChange={onColumnFiltersChange}
+          columnFilters={columnFilters}
           onSortingChange={onSortingChange}
           sorting={sorting}
           data={flatFormsData}

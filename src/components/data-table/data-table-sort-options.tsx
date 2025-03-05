@@ -1,12 +1,12 @@
 "use client"
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
 import { SortingState, Table } from "@tanstack/react-table"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"

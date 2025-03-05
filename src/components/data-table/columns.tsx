@@ -7,22 +7,28 @@ import { cn } from "@/lib/utils"
 import { FormSortKeySchema } from "@/lib/utils/types"
 import { formatDistance } from "date-fns"
 
-const statuses = [
+export const statuses: {
+  label: string
+  value: string
+  icon?: React.ComponentType<{
+    className?: string
+  }>
+}[] = [
   {
-    value: "draft",
+    value: "false",
     label: "Draft",
     icon: Timer,
   },
   {
-    value: "published",
+    value: "true",
     label: "Published",
     icon: CheckCircle,
   },
-  {
-    value: "closed",
-    label: "Closed",
-    icon: CircleOff,
-  },
+  // {
+  //   value: "closed",
+  //   label: "Closed",
+  //   icon: CircleOff,
+  // },
 ]
 
 export const formTableHeaderLabels = [
@@ -52,13 +58,18 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
   {
     id: FormSortKeySchema.Enum.isPublished,
     accessorKey: "isPublished",
+    filterFn: (row, id, filterValue) => {
+      const rowValue: string = String(row.getValue<boolean>(id))
+      // console.log("isPublished Filter fn", id, rowValue, filterValue)
+      return Array.isArray(filterValue) && filterValue.includes(rowValue)
+    },
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: (info) => {
       const status = info.getValue<boolean>()
-        ? statuses.find((x) => x.value === "published")
-        : statuses.find((x) => x.value === "draft")
+        ? statuses.find((x) => x.value === String(true))
+        : statuses.find((x) => x.value === String(false))
 
       return (
         <span

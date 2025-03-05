@@ -5,7 +5,9 @@ import { X } from "lucide-react"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { DataTableSortOptions } from "./data-table-sort-options"
-import { formTableHeaderLabels } from "./columns"
+import { formTableHeaderLabels, statuses } from "./columns"
+import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { FormSortKeySchema } from "@/lib/utils/types"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -22,25 +24,18 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
+          placeholder="Search forms..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {/* {table.getColumn("status") && (
+        {table.getColumn(FormSortKeySchema.Enum.isPublished) && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
+            column={table.getColumn(FormSortKeySchema.Enum.isPublished)}
             title="Status"
             options={statuses}
-          />
-        )}
-        {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
           />
         )}
         {isFiltered && (
@@ -52,7 +47,7 @@ export function DataTableToolbar<TData>({
             Reset
             <X />
           </Button>
-        )} */}
+        )}
       </div>
       <DataTableSortOptions
         sortLabels={formTableHeaderLabels}

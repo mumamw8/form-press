@@ -1,3 +1,6 @@
+import { PaginatedDataTable } from "@/components/paginated-data-table/paginated-data-table"
+import useDataTablePagination from "@/hooks/use-data-table-pagination"
+import useDataTableSorting from "@/hooks/use-data-table-sorting"
 import { TForm } from "@/lib/types"
 import { TResponse } from "@/lib/utils/types"
 import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
@@ -7,15 +10,35 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  PaginationState,
   Row,
+  Updater,
   useReactTable,
 } from "@tanstack/react-table"
-import { useMemo, useState } from "react"
+import React from "react"
 
+export const INITIAL_SUBMISSIONS_FETCH_SIZE = 100
+export const PAGE_SIZE_OPTIONS = [
+  INITIAL_SUBMISSIONS_FETCH_SIZE,
+  200,
+  500,
+  1000,
+]
 export const FormSubmissions = ({ form }: { form: TForm }) => {
   const trpc = useTRPC()
 
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+  // const [pagination, setPagination] = useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize: 10,
+  // })
+  const { pagination, onPaginationChange } = useDataTablePagination(
+    0,
+    INITIAL_SUBMISSIONS_FETCH_SIZE
+  )
+  const { sorting, onSortingChange } = useDataTableSorting(
+    "submittedAt",
+    "DESC"
+  )
 
   const tableDataQuery = useQuery({
     ...trpc.submission.getSubmissions.queryOptions({
@@ -27,13 +50,14 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
 
   const formElements = form.fields as FormElementInstance[]
 
-  const columns: ColumnDef<TResponse>[] = useMemo<ColumnDef<TResponse>[]>(
+  const columns: ColumnDef<TResponse>[] = React.useMemo<ColumnDef<TResponse>[]>(
     () => [
       ...(formElements
         .map((element) => {
           switch (element.type) {
             case "open_text":
               return {
+                id: element.id,
                 accessorKey: element.id,
                 header: element.label,
                 cell: ({ row }: { row: Row<TResponse> }) => (
@@ -46,6 +70,7 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
         })
         .filter(Boolean) as ColumnDef<TResponse>[]),
       {
+        id: "submittedAt",
         accessorKey: "submittedAt",
         header: "Submitted At",
         cell: ({ row }) => (
@@ -56,21 +81,30 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
     [formElements]
   )
 
-  const table = useReactTable({
-    data: tableDataQuery.data?.rows ?? [],
-    columns: columns,
-    rowCount: tableDataQuery.data?.rowCount,
-    state: { pagination },
-    onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    debugTable: true,
-  })
+  // const table = useReactTable({
+  //   data: tableDataQuery.data?.rows ?? [],
+  //   columns: columns,
+  //   rowCount: tableDataQuery.data?.rowCount,
+  //   state: { pagination },
+  //   onPaginationChange: setPagination,
+  //   getCoreRowModel: getCoreRowModel(),
+  //   manualPagination: true,
+  //   debugTable: true,
+  // })
 
   return (
     <div className="p-2">
       <div className="h-2" />
-      <table>
+      <PaginatedDataTable
+        sorting={sorting}
+        onSortingChange={onSortingChange}
+        columns={columns}
+        data={tableDataQuery.data?.rows ?? []}
+        pagination={pagination}
+        onPaginationChange={onPaginationChange}
+        rowCount={tableDataQuery.data?.rowCount}
+      />
+      {/* <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -179,7 +213,7 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
         Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
         {tableDataQuery.data?.rowCount.toLocaleString()} Rows
       </div>
-      <pre>{JSON.stringify(pagination, null, 2)}</pre>
+      <pre>{JSON.stringify(pagination, null, 2)}</pre> */}
     </div>
   )
 

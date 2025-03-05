@@ -2,7 +2,6 @@ import { z } from "zod"
 import { CreateFormSchema, UpdateFormSchema } from "@/lib/types"
 import { createTRPCRouter, protectedProcedure } from "../init"
 import { db } from "@/lib/prisma"
-import { Form } from "@prisma/client"
 import { FormSortKeySchema } from "@/lib/utils/types"
 
 export const formRouter = createTRPCRouter({
@@ -34,7 +33,7 @@ export const formRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { cursor, limit, sort } = input
-      const take = limit ?? 3
+      const take = limit ?? 100
 
       const forms = await db.form.findMany({
         take: take + 1,

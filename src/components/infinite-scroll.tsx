@@ -1,6 +1,7 @@
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
 import { useEffect } from "react"
 import { Button } from "./ui/button"
+import { LoadingSpinner } from "./loading-spinner"
 
 interface InfiniteScrollProps {
   isManual?: boolean
@@ -30,13 +31,17 @@ export const InfiniteScroll = ({
     <div className="flex flex-col items-center gap-4 p-4">
       <div ref={targetRef} className="h-1" />
       {hasNextPage ? (
-        <Button
-          variant={"secondary"}
-          disabled={!hasNextPage || isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-        >
-          {isFetchingNextPage ? "Loading..." : "Load more"}
-        </Button>
+        isFetchingNextPage ? (
+          <LoadingSpinner />
+        ) : (
+          <Button
+            variant={"secondary"}
+            disabled={!hasNextPage || isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+          >
+            {isFetchingNextPage ? "Loading..." : "Load more"}
+          </Button>
+        )
       ) : (
         <p className="text-xl text-muted-foreground">...</p>
       )}

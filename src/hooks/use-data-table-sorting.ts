@@ -1,4 +1,3 @@
-import { FormSortKey } from "@/lib/utils/types"
 import { SortingState } from "@tanstack/react-table"
 import { parseAsJson, useQueryState } from "nuqs"
 import { z } from "zod"
@@ -6,7 +5,7 @@ import { z } from "zod"
 const schema = z.array(z.object({ id: z.string(), desc: z.boolean() }))
 
 const useDataTableSorting = (
-  initialField: FormSortKey,
+  initialField: string,
   initialOrder: "DESC" | "ASC"
 ) => {
   const [sorting, setSorting] = useQueryState<SortingState>(

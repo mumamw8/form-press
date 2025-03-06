@@ -27,7 +27,7 @@ import {
   BsFillCalendar2DateFill,
   BsTextareaResize,
 } from "react-icons/bs"
-import { LuHeading1 } from "react-icons/lu"
+import { LuHeading1, LuHeading2 } from "react-icons/lu"
 import {
   TitleElement,
   TitleElementDesigner,
@@ -63,6 +63,11 @@ import {
   CheckboxFieldDesigner,
   CheckboxFieldProperties,
 } from "./fields/checkbox-field"
+import {
+  SubtitleElement,
+  SubtitleElementDesigner,
+  SubtitleElementProperties,
+} from "./layout-elements/subtitle-element"
 
 export type SubmitFunction = (key: string, value: string) => void
 export type FormElement<T extends { type: string }> = {
@@ -295,5 +300,17 @@ export const FormElements: FormElementsType = {
     designerComponent: ParagraphElementDesigner,
     formComponent: ParagraphElement,
     propertiesComponent: ParagraphElementProperties,
+  },
+  subtitle_element: {
+    type: "subtitle_element",
+    construct: (id: string) => ({
+      id,
+      type: "subtitle_element",
+      title: "",
+    }),
+    designerBtnElement: { icon: LuHeading2, label: "Subtitle" },
+    designerComponent: SubtitleElementDesigner,
+    formComponent: SubtitleElement,
+    propertiesComponent: SubtitleElementProperties,
   },
 }

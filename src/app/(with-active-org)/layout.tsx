@@ -58,7 +58,7 @@ export default async function RequiredActiveOrgLayout({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <OrganizationList hidePersonal={true} />
+            <OrganizationList hideSlug={true} hidePersonal={true} />
           </CardContent>
         </Card>
       </section>

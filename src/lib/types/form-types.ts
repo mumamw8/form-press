@@ -44,6 +44,11 @@ export const ZParagraphElement = ZLayoutElementBase.extend({
   body: z.string(),
 })
 export type TParagraphElement = z.infer<typeof ZParagraphElement>
+export const ZSubtitleElement = ZLayoutElementBase.extend({
+  type: z.literal("subtitle_element"),
+  title: z.string(),
+})
+export type TSubtitleElement = z.infer<typeof ZSubtitleElement>
 // seperator (width, position, height)
 // spacer (height)
 // image
@@ -177,5 +182,9 @@ export const ZFormField = z.union([
 export type TFormField = z.infer<typeof ZFormField>
 
 // layout element type
-export const ZLayoutElement = z.union([ZTitleElement, ZParagraphElement])
+export const ZLayoutElement = z.union([
+  ZTitleElement,
+  ZParagraphElement,
+  ZSubtitleElement,
+])
 export type TLayoutElement = z.infer<typeof ZLayoutElement>

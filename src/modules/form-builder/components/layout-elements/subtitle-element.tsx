@@ -1,8 +1,8 @@
-import { TParagraphElement, ZParagraphElement } from "@/lib/types/form-types"
+import { TSubtitleElement, ZSubtitleElement } from "@/lib/types/form-types"
 import { FormElementInstance } from "../fieldComponents"
-import { z } from "zod"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { useForm } from "react-hook-form"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import {
@@ -13,49 +13,50 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 
-export const ParagraphElement: React.FC<{
+export const SubtitleElement: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
-  const { id, body } = elementInstance as TParagraphElement
+  const { id, title } = elementInstance as TSubtitleElement
   return (
     <div className="w-full flex flex-col gap-2">
-      {body ? <p className="">{body}</p> : null}
+      {title ? <h2 className="text-lg font-medium">{title}</h2> : null}
     </div>
   )
 }
 
-export const ParagraphElementDesigner: React.FC<{
+export const SubtitleElementDesigner: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
-  const { id, body } = elementInstance as TParagraphElement
+  const { id, title } = elementInstance as TSubtitleElement
   return (
     <div className="w-full flex flex-col gap-2">
-      {body ? (
-        <p className="">{body}</p>
+      {title ? (
+        <h2 className="text-lg font-medium">{title}</h2>
       ) : (
-        <p className="italic text-muted-foreground">text...</p>
+        <h2 className="italic text-muted-foreground text-lg font-medium">
+          Subtitle...
+        </h2>
       )}
     </div>
   )
 }
 
-const propertiesSchema = ZParagraphElement.omit({
+const propertiesSchema = ZSubtitleElement.omit({
   type: true,
   id: true,
 })
 type propertiesSchemaType = z.infer<typeof propertiesSchema>
-export const ParagraphElementProperties: React.FC<{
+export const SubtitleElementProperties: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
   const { updateElement } = useFormBuilderStore((state) => state)
-  const element = elementInstance as TParagraphElement
-
+  const element = elementInstance as TSubtitleElement
   const form = useForm<propertiesSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",
-    defaultValues: { body: element.body },
+    defaultValues: { title: element.title },
   })
 
   useEffect(() => {
@@ -64,10 +65,10 @@ export const ParagraphElementProperties: React.FC<{
 
   function applyChanges(values: propertiesSchemaType) {
     console.log("values", values)
-    const { body } = values
+    const { title } = values
     updateElement(element.id, {
       ...element,
-      body,
+      title,
     })
   }
 
@@ -95,12 +96,12 @@ export const ParagraphElementProperties: React.FC<{
       >
         <FormField
           control={form.control}
-          name="body"
+          name="title"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormLabel>Body</FormLabel>
+              <FormLabel>Subtitle</FormLabel>
               <FormControl>
-                <Textarea placeholder="Body..." className="h-8" {...field} />
+                <Input placeholder="Subtitle" className="h-8" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.

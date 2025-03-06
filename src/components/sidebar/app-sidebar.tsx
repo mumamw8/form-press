@@ -6,11 +6,9 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar"
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
-import { LayoutDashboardIcon, Rows4, Settings2, Users } from "lucide-react"
+import { OrganizationSwitcher } from "@clerk/nextjs"
+import { LayoutDashboardIcon, Rows4, Settings2 } from "lucide-react"
 import { NavMain, NavMainItem } from "./nav-main"
-import { TeamSwitcher } from "./team-switcher"
-import { NavWorkspaces } from "./nav-workspaces"
 
 export function AppSidebar() {
   // Menu items.
@@ -38,7 +36,7 @@ export function AppSidebar() {
         <div className="hidden sm:block text-lg/7 font-semibold">
           <span className="text-2xl font-bold">forma.</span>
         </div>
-        <OrganizationSwitcher hidePersonal={true} />
+        <OrganizationSwitcher hideSlug={true} hidePersonal={true} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />

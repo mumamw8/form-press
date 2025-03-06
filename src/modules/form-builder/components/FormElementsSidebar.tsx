@@ -25,6 +25,7 @@ export const FormElementsSidebar = () => {
         </p>
         <SidebarBtnElement formElement={FormElements.title_element} />
         <SidebarBtnElement formElement={FormElements.paragraph_element} />
+        <SidebarBtnElement formElement={FormElements.subtitle_element} />
       </div>
     </div>
   )

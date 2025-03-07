@@ -74,7 +74,7 @@ import {
   DateTimeField,
   DateTimeFieldDesigner,
   DateTimeFieldProperties,
-} from "./fields/date-field-time"
+} from "./fields/date-time-field"
 import {
   FormElementInstance,
   FormElementsType,
@@ -190,6 +190,7 @@ export const FormElements: FormElementsType = {
       type: "date",
       label: "Date Field",
       required: false,
+      placeholder: "Pick a Date",
     }),
     designerBtnElement: { icon: BsFillCalendar2DateFill, label: "Date Field" },
     designerComponent: DateFieldDesigner,
@@ -214,6 +215,7 @@ export const FormElements: FormElementsType = {
       label: "Date/Time Field",
       required: false,
       helper_text: "",
+      placeholder: "Pick a Date and Time",
     }),
     designerBtnElement: {
       icon: BsFillCalendarDateFill,

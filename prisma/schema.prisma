@@ -27,20 +27,21 @@ model User {
 }
 
 model Form {
-  id                String    @id @default(cuid())
-  title             String    @default("Untitled")
-  description       String    @default("")
-  fields            Json?     @default("[]") // Stores field definitions as JSON
+  id                String     @id @default(cuid())
+  title             String     @default("Untitled")
+  description       String     @default("")
+  fields            Json?      @default("[]") // Stores field definitions as JSON
   settings          Json? // Optional, for themes or additional configurations
-  isPublished       Boolean   @default(false)
-  visits            Int       @default(0)
-  submissions_count Int       @default(0)
-  shareURL          String    @unique @default(uuid())
+  isPublished       Boolean    @default(false)
+  visits            Int        @default(0)
+  submissions_count Int        @default(0)
+  shareURL          String     @unique @default(uuid())
   createdById       String?
-  isArchived        Boolean   @default(false)
+  isArchived        Boolean    @default(false)
   closeFormDate     DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  status            FormStatus @default(DRAFT) // New column
 
   organizationId String
 
@@ -58,4 +59,11 @@ model Submission {
   form        Form     @relation(fields: [formId], references: [id])
 
   @@map("submissions")
+}
+
+// New enum definition
+enum FormStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
 }

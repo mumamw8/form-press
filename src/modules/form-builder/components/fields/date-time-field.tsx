@@ -35,7 +35,8 @@ export const DateTimeField: React.FC<{
   isInvalid?: boolean
   defaultValue?: string
 }> = ({ elementInstance, submitValue, isInvalid, defaultValue }) => {
-  const { id, label, required, helper_text } = elementInstance as TDateTimeField
+  const { id, label, required, helper_text, placeholder } =
+    elementInstance as TDateTimeField
 
   // const [dateTime, setDateTime] = useState<Date | undefined>(
   //   defaultValue ? new Date(defaultValue) : undefined
@@ -51,7 +52,7 @@ export const DateTimeField: React.FC<{
 
   const handleSubmitValue = (newDate: Date) => {
     if (!submitValue) return
-    const value = newDate?.toISOString() ?? ""
+    const value = newDate.toISOString()
     const valid =
       FormElements[elementInstance.type]?.validate?.(elementInstance, value) ??
       false
@@ -112,11 +113,7 @@ export const DateTimeField: React.FC<{
             )} // TODO: undefined date value and error value conditional styling
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {selected ? (
-              format(selected, "Pp")
-            ) : (
-              <span>{"Set a Date and Time"}</span>
-            )}
+            {selected ? format(selected, "Pp") : <span>{placeholder}</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-1" align="start">
@@ -148,7 +145,8 @@ export const DateTimeField: React.FC<{
 export const DateTimeFieldDesigner: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
-  const { label, required, helper_text } = elementInstance as TDateTimeField
+  const { label, required, helper_text, placeholder } =
+    elementInstance as TDateTimeField
   return (
     <div className="flex flex-col w-full gap-2">
       <Label>
@@ -160,7 +158,7 @@ export const DateTimeFieldDesigner: React.FC<{
         className="w-full justify-start text-left font-normal"
       >
         <CalendarIcon className="mr-2 h-4 w-4" />
-        <span>{"Set a Date and Time"}</span>
+        <span>{placeholder}</span>
       </Button>
       {helper_text && (
         <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
@@ -188,6 +186,7 @@ export const DateTimeFieldProperties: React.FC<{
       required: element.required,
       helper_text: element.helper_text,
       embedUrl: element.embedUrl,
+      placeholder: element.placeholder,
       // rules: {},
       // ...element,
     },
@@ -199,13 +198,14 @@ export const DateTimeFieldProperties: React.FC<{
 
   function applyChanges(values: propertiesSchemaType) {
     console.log("values", values)
-    const { label, required, helper_text, embedUrl } = values
+    const { label, required, helper_text, embedUrl, placeholder } = values
     updateElement(element.id, {
       ...element,
       label,
       required,
       helper_text,
       embedUrl,
+      placeholder,
     })
   }
 
@@ -243,6 +243,22 @@ export const DateTimeFieldProperties: React.FC<{
               {/* <FormDescription>
                 This is your public display name.
               </FormDescription> */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="placeholder"
+          render={({ field }) => (
+            <FormItem className="space-y-0">
+              <FormLabel>Placeholder</FormLabel>
+              <FormControl>
+                <Input placeholder="..." className="h-8" {...field} />
+              </FormControl>
+              {/* <FormDescription>
+                        This is your public display name.
+                      </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}

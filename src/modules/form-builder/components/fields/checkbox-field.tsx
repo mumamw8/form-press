@@ -40,7 +40,7 @@ export const CheckboxField: React.FC<{
   }, [isInvalid])
 
   return (
-    <div className="flex items-start space-x-2">
+    <div className="flex items-center space-x-2">
       <Checkbox
         id={checkboxId}
         checked={value}
@@ -79,7 +79,7 @@ export const CheckboxFieldDesigner: React.FC<{
   const { id, label, required, helper_text } = elementInstance as TCheckboxField
   const checkboxId = `checkbox-${id}`
   return (
-    <div className="flex items-start space-x-2">
+    <div className="flex items-center space-x-2">
       <Checkbox id={checkboxId} />
       <div className="grid gap-1.5 leading-none">
         <Label htmlFor={checkboxId}>

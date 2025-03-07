@@ -6,6 +6,7 @@ import { CheckCircle, CircleOff, Timer } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { FormSortKeySchema } from "@/lib/utils/types"
 import { formatDistance } from "date-fns"
+import Link from "next/link"
 
 export const statuses: {
   label: string
@@ -48,11 +49,14 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
       </div>
     ),
     cell: (info) => (
-      <div className="flex space-x-2">
+      <Link
+        href={`/dashboard/forms/${info.row.original.id}`}
+        className="flex space-x-2"
+      >
         <span className="max-w-[500px] truncate font-medium">
           {info.getValue<string>()}
         </span>
-      </div>
+      </Link>
     ),
   },
   {
@@ -72,22 +76,24 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
         : statuses.find((x) => x.value === String(false))
 
       return (
-        <span
-          className={cn(
-            "text-muted-foreground p-1 w-fit rounded-lg font-medium flex items-center",
-            info.getValue<boolean>() && "text-green-500"
-          )}
-        >
-          {status?.icon && (
-            <status.icon
-              className={cn(
-                "mr-2 h-4 w-4 text-muted-foreground",
-                info.getValue<boolean>() && "text-green-500"
-              )}
-            />
-          )}
-          <span>{status?.label}</span>
-        </span>
+        <Link href={`/dashboard/forms/${info.row.original.id}`}>
+          <span
+            className={cn(
+              "text-muted-foreground p-1 w-fit rounded-lg font-medium flex items-center",
+              info.getValue<boolean>() && "text-green-500"
+            )}
+          >
+            {status?.icon && (
+              <status.icon
+                className={cn(
+                  "mr-2 h-4 w-4 text-muted-foreground",
+                  info.getValue<boolean>() && "text-green-500"
+                )}
+              />
+            )}
+            <span>{status?.label}</span>
+          </span>
+        </Link>
       )
     },
   },
@@ -98,11 +104,13 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
       <DataTableColumnHeader column={column} title="Last Edited" />
     ),
     cell: (info) => (
-      <span>
-        {formatDistance(new Date(info.getValue<string>()), new Date(), {
-          addSuffix: true,
-        })}
-      </span>
+      <Link href={`/dashboard/forms/${info.row.original.id}`}>
+        <span>
+          {formatDistance(new Date(info.getValue<string>()), new Date(), {
+            addSuffix: true,
+          })}
+        </span>
+      </Link>
     ),
   },
   {
@@ -114,7 +122,12 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
       </div>
     ),
     cell: (info) => (
-      <span className="text-right">{info.getValue<string>()}</span>
+      <Link
+        className="flex justify-end"
+        href={`/dashboard/forms/${info.row.original.id}`}
+      >
+        <span className="text-right">{info.getValue<string>()}</span>
+      </Link>
     ),
   },
   {

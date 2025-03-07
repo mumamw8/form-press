@@ -116,11 +116,13 @@ export type TUrlField = z.infer<typeof ZUrlField>
 
 export const ZDateField = ZFormFieldBase.extend({
   type: z.literal("date"),
+  placeholder: z.string().optional(),
 })
 export type TDateField = z.infer<typeof ZDateField>
 
 export const ZDateTimeField = ZFormFieldBase.extend({
   type: z.literal("date_time"),
+  placeholder: z.string().optional(),
 })
 export type TDateTimeField = z.infer<typeof ZDateTimeField>
 

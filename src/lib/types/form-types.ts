@@ -119,6 +119,11 @@ export const ZDateField = ZFormFieldBase.extend({
 })
 export type TDateField = z.infer<typeof ZDateField>
 
+export const ZDateTimeField = ZFormFieldBase.extend({
+  type: z.literal("date_time"),
+})
+export type TDateTimeField = z.infer<typeof ZDateTimeField>
+
 // export const ZSelectOption = z.object({
 //   value: z.string(),
 //   label: z.string(),
@@ -173,6 +178,7 @@ export const ZFormField = z.union([
   // ZEmailField,
   // ZUrlField,
   ZDateField,
+  ZDateTimeField,
   ZSelectField,
   // ZFileUploadField,
   ZCheckboxField,

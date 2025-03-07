@@ -1,5 +1,6 @@
 import {
   TDateField,
+  TDateTimeField,
   TFormField,
   TLayoutElement,
   TLongTextField,
@@ -25,6 +26,7 @@ import { IoIosCheckboxOutline } from "react-icons/io"
 import {
   Bs123,
   BsFillCalendar2DateFill,
+  BsFillCalendarDateFill,
   BsTextareaResize,
 } from "react-icons/bs"
 import { LuHeading1, LuHeading2 } from "react-icons/lu"
@@ -68,6 +70,11 @@ import {
   SubtitleElementDesigner,
   SubtitleElementProperties,
 } from "./layout-elements/subtitle-element"
+import {
+  DateTimeField,
+  DateTimeFieldDesigner,
+  DateTimeFieldProperties,
+} from "./fields/date-field-time"
 
 export type SubmitFunction = (key: string, value: string) => void
 export type FormElement<T extends { type: string }> = {
@@ -215,6 +222,33 @@ export const FormElements: FormElementsType = {
       currentValue: string
     ): boolean => {
       const element = formElement as TDateField
+      if (element.required) {
+        return currentValue.length > 0
+      }
+      return true
+    },
+  },
+  date_time: {
+    type: "date_time",
+    construct: (id: string) => ({
+      id,
+      type: "date_time",
+      label: "Date Time Field",
+      required: false,
+      helper_text: "Set Date Time",
+    }),
+    designerBtnElement: {
+      icon: BsFillCalendarDateFill,
+      label: "Date Time Field",
+    },
+    designerComponent: DateTimeFieldDesigner,
+    formComponent: DateTimeField,
+    propertiesComponent: DateTimeFieldProperties,
+    validate: (
+      formElement: FormElementInstance,
+      currentValue: string
+    ): boolean => {
+      const element = formElement as TDateTimeField
       if (element.required) {
         return currentValue.length > 0
       }

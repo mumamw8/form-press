@@ -1,4 +1,4 @@
-import { TDateField, ZDateField } from "@/lib/types/form-types"
+import { TDateTimeField, ZDateTimeField } from "@/lib/types/form-types"
 import {
   FormElementInstance,
   FormElements,
@@ -32,15 +32,15 @@ import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
 
-export const DateField: React.FC<{
+export const DateTimeField: React.FC<{
   elementInstance: FormElementInstance
   submitValue?: SubmitFunction
   isInvalid?: boolean
   defaultValue?: string
 }> = ({ elementInstance, submitValue, isInvalid, defaultValue }) => {
-  const { id, label, required, helper_text } = elementInstance as TDateField
+  const { id, label, required, helper_text } = elementInstance as TDateTimeField
 
-  const [date, setDate] = useState<Date | undefined>(
+  const [dateTime, setDateTime] = useState<Date | undefined>(
     defaultValue ? new Date(defaultValue) : undefined
   )
   const [error, setError] = useState<boolean>(false)
@@ -61,23 +61,26 @@ export const DateField: React.FC<{
             variant={"outline"}
             className={cn(
               "w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground",
+              !dateTime && "text-muted-foreground",
               error && "border-red-500"
             )} // TODO: undefined date value and error value conditional styling
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Pick a Date</span>}
+            {dateTime ? (
+              format(dateTime, "PPP")
+            ) : (
+              <span>{"Set a Date and Time"}</span>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             mode="single"
-            selected={date}
+            selected={dateTime}
             onSelect={(date) => {
-              setDate(date)
+              setDateTime(date)
               if (!submitValue) return
               const value = date?.toISOString() ?? ""
-              console.log("DATE VAL: ", value)
               const valid = FormElements[elementInstance.type].validate(
                 elementInstance,
                 value
@@ -97,10 +100,10 @@ export const DateField: React.FC<{
   )
 }
 
-export const DateFieldDesigner: React.FC<{
+export const DateTimeFieldDesigner: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
-  const { label, required, helper_text } = elementInstance as TDateField
+  const { label, required, helper_text } = elementInstance as TDateTimeField
   return (
     <div className="flex flex-col w-full gap-2">
       <Label>
@@ -112,7 +115,7 @@ export const DateFieldDesigner: React.FC<{
         className="w-full justify-start text-left font-normal"
       >
         <CalendarIcon className="mr-2 h-4 w-4" />
-        <span>Pick a Date</span>
+        <span>{"Set a Date and Time"}</span>
       </Button>
       {helper_text && (
         <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
@@ -122,16 +125,16 @@ export const DateFieldDesigner: React.FC<{
   )
 }
 
-const propertiesSchema = ZDateField.omit({
+const propertiesSchema = ZDateTimeField.omit({
   type: true,
   id: true,
 })
 type propertiesSchemaType = z.infer<typeof propertiesSchema>
-export const DateFieldProperties: React.FC<{
+export const DateTimeFieldProperties: React.FC<{
   elementInstance: FormElementInstance
 }> = ({ elementInstance }) => {
   const { updateElement } = useFormBuilderStore((state) => state)
-  const element = elementInstance as TDateField
+  const element = elementInstance as TDateTimeField
   const form = useForm<propertiesSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",

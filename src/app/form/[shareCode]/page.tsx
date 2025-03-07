@@ -1,4 +1,4 @@
-import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
+import { FormElementInstance } from "@/modules/form-builder/fieldComponentsDefinition"
 import { FormSubmitComponent } from "./_components/form-submit-component"
 import { caller } from "@/trpc/server"
 

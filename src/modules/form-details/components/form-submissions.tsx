@@ -3,7 +3,7 @@ import useDataTablePagination from "@/hooks/use-data-table-pagination"
 import useDataTableSorting from "@/hooks/use-data-table-sorting"
 import { TForm } from "@/lib/types"
 import { TResponse } from "@/lib/utils/types"
-import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
+import { FormElementInstance } from "@/modules/form-builder/fieldComponentsDefinition"
 import { useTRPC } from "@/trpc/client"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { ColumnDef, Row } from "@tanstack/react-table"
@@ -76,7 +76,9 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
                 accessorKey: element.id,
                 header: element.label,
                 cell: ({ row }: { row: Row<TResponse> }) => (
-                  <span>{row.getValue(element.id)}</span>
+                  <span>
+                    {new Date(row.getValue(element.id)).toLocaleDateString()}
+                  </span>
                 ),
               }
             case "select":
@@ -106,6 +108,17 @@ export const FormSubmissions = ({ form }: { form: TForm }) => {
                 header: element.label,
                 cell: ({ row }: { row: Row<TResponse> }) => (
                   <span>{row.getValue(element.id)}</span>
+                ),
+              }
+            case "date_time":
+              return {
+                id: element.id,
+                accessorKey: element.id,
+                header: element.label,
+                cell: ({ row }: { row: Row<TResponse> }) => (
+                  <span>
+                    {new Date(row.getValue(element.id)).toLocaleString()}
+                  </span>
                 ),
               }
             default:

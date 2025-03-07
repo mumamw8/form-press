@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { UnpublishFormButton } from "@/components/buttons/UnpublishFormButton"
-import { FormElementInstance } from "./fieldComponents"
 import { useTRPC } from "@/trpc/client"
 import { useQuery } from "@tanstack/react-query"
+import { FormElementInstance } from "../fieldComponentsDefinition"
 
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()

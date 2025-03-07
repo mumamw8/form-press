@@ -1,5 +1,4 @@
 import { TSubtitleElement, ZSubtitleElement } from "@/lib/types/form-types"
-import { FormElementInstance } from "../fieldComponents"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const SubtitleElement: React.FC<{
   elementInstance: FormElementInstance

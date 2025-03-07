@@ -18,6 +18,7 @@ export const FormElementsSidebar = () => {
         <SidebarBtnElement formElement={FormElements.date} />
         <SidebarBtnElement formElement={FormElements.select} />
         <SidebarBtnElement formElement={FormElements.checkbox} />
+        <SidebarBtnElement formElement={FormElements.date_time} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center">
         <p className="text-sm text-muted-foreground col-span-1 md:col-span-2 my-2 place-self-start">

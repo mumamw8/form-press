@@ -1,9 +1,5 @@
 import { TLongTextField, ZLongTextField } from "@/lib/types/form-types"
-import {
-  FormElementInstance,
-  FormElements,
-  SubmitFunction,
-} from "../fieldComponents"
+import { FormElements, SubmitFunction } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -23,6 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const LongTextField: React.FC<{
   elementInstance: FormElementInstance
@@ -52,10 +49,11 @@ export const LongTextField: React.FC<{
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => {
           if (!submitValue) return
-          const valid = FormElements[elementInstance.type].validate(
-            elementInstance,
-            e.target.value
-          )
+          const valid =
+            FormElements[elementInstance.type]?.validate?.(
+              elementInstance,
+              e.target.value
+            ) ?? false
           setError(!valid)
           // if (!valid) return
           submitValue(id, e.target.value) // TODO: Still submit value even though there is an error

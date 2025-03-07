@@ -1,9 +1,5 @@
 import { TDateTimeField, ZDateTimeField } from "@/lib/types/form-types"
-import {
-  FormElementInstance,
-  FormElements,
-  SubmitFunction,
-} from "../fieldComponents"
+import { FormElements, SubmitFunction } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -30,7 +26,8 @@ import {
 } from "@/components/ui/modified-popover"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
-import { format } from "date-fns"
+import { format, setHours, setMinutes } from "date-fns"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const DateTimeField: React.FC<{
   elementInstance: FormElementInstance
@@ -40,10 +37,59 @@ export const DateTimeField: React.FC<{
 }> = ({ elementInstance, submitValue, isInvalid, defaultValue }) => {
   const { id, label, required, helper_text } = elementInstance as TDateTimeField
 
-  const [dateTime, setDateTime] = useState<Date | undefined>(
+  // const [dateTime, setDateTime] = useState<Date | undefined>(
+  //   defaultValue ? new Date(defaultValue) : undefined
+  // )
+
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone // ensure correct tz
+  // console.log("THE TIMEZONE", userTimeZone)
+  const [selected, setSelected] = useState<Date | undefined>(
     defaultValue ? new Date(defaultValue) : undefined
   )
+  const [timeValue, setTimeValue] = useState<string>("00:00")
   const [error, setError] = useState<boolean>(false)
+
+  const handleSubmitValue = (newDate: Date) => {
+    if (!submitValue) return
+    const value = newDate?.toISOString() ?? ""
+    const valid =
+      FormElements[elementInstance.type]?.validate?.(elementInstance, value) ??
+      false
+    setError(!valid)
+    submitValue(id, value)
+  }
+
+  const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const time = e.target.value
+    if (!selected) {
+      setTimeValue(time)
+      return
+    }
+    const [hours, minutes] = time.split(":").map((str) => parseInt(str, 10))
+    const newSelectedDate = setHours(setMinutes(selected, minutes), hours)
+    setSelected(newSelectedDate)
+    setTimeValue(time)
+    handleSubmitValue(newSelectedDate)
+  }
+
+  const handleDaySelect = (date: Date | undefined) => {
+    if (!timeValue || !date) {
+      setSelected(date)
+      return
+    }
+    const [hours, minutes] = timeValue
+      .split(":")
+      .map((str) => parseInt(str, 10))
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes
+    )
+    setSelected(newDate)
+    handleSubmitValue(newDate)
+  }
 
   useEffect(() => {
     setError(isInvalid === true)
@@ -61,35 +107,34 @@ export const DateTimeField: React.FC<{
             variant={"outline"}
             className={cn(
               "w-full justify-start text-left font-normal",
-              !dateTime && "text-muted-foreground",
+              !selected && "text-muted-foreground",
               error && "border-red-500"
             )} // TODO: undefined date value and error value conditional styling
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {dateTime ? (
-              format(dateTime, "PPP")
+            {selected ? (
+              format(selected, "Pp")
             ) : (
               <span>{"Set a Date and Time"}</span>
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-1" align="start">
+          <form className="flex justify-center">
+            {/* Set the time:{" "} */}
+            <Input
+              className="h-6 w-fit"
+              type="time"
+              value={timeValue}
+              onChange={handleTimeChange}
+            />
+          </form>
           <Calendar
             mode="single"
-            selected={dateTime}
-            onSelect={(date) => {
-              setDateTime(date)
-              if (!submitValue) return
-              const value = date?.toISOString() ?? ""
-              const valid = FormElements[elementInstance.type].validate(
-                elementInstance,
-                value
-              )
-              setError(!valid)
-              submitValue(id, value)
-            }}
+            selected={selected}
+            onSelect={handleDaySelect}
+            timeZone={userTimeZone}
           />
-          {/* TODO: onSelect that validates on every value change */}
         </PopoverContent>
       </Popover>
       {helper_text && (

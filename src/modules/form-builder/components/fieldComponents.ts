@@ -75,33 +75,12 @@ import {
   DateTimeFieldDesigner,
   DateTimeFieldProperties,
 } from "./fields/date-field-time"
+import {
+  FormElementInstance,
+  FormElementsType,
+} from "../fieldComponentsDefinition"
 
 export type SubmitFunction = (key: string, value: string) => void
-export type FormElement<T extends { type: string }> = {
-  type: T["type"] // Generic type is extracted from TFormField union type
-  // Way to create an instance of the FormElement object
-  // For each instance of the FormElement object we need a unqiue Id
-  // When we submit the form we need to save the answer for the specific field Id
-  construct: (id: string) => T // ReturnType FormElementInstance // The constructor returns a type within TFormField
-  designerComponent: React.FC<{ elementInstance: FormElementInstance }>
-  formComponent: React.FC<{
-    elementInstance: FormElementInstance
-    submitValue?: SubmitFunction
-    isInvalid?: boolean
-    defaultValue?: string
-  }>
-  designerBtnElement: { icon: React.ElementType; label: string }
-  propertiesComponent: React.FC<{ elementInstance: FormElementInstance }>
-  validate: (formElement: FormElementInstance, currentValue: string) => boolean
-}
-
-export type FormElementInstance = TFormField | TLayoutElement
-
-type FormElementsType = {
-  [key in FormElementInstance["type"]]: FormElement<
-    Extract<FormElementInstance, { type: key }>
-  >
-}
 
 export const FormElements: FormElementsType = {
   open_text: {
@@ -211,7 +190,6 @@ export const FormElements: FormElementsType = {
       type: "date",
       label: "Date Field",
       required: false,
-      helper_text: "Pick a Date",
     }),
     designerBtnElement: { icon: BsFillCalendar2DateFill, label: "Date Field" },
     designerComponent: DateFieldDesigner,
@@ -233,13 +211,13 @@ export const FormElements: FormElementsType = {
     construct: (id: string) => ({
       id,
       type: "date_time",
-      label: "Date Time Field",
+      label: "Date/Time Field",
       required: false,
-      helper_text: "Set Date Time",
+      helper_text: "",
     }),
     designerBtnElement: {
       icon: BsFillCalendarDateFill,
-      label: "Date Time Field",
+      label: "DateTime Field",
     },
     designerComponent: DateTimeFieldDesigner,
     formComponent: DateTimeField,

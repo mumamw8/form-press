@@ -1,9 +1,5 @@
 import { TDateField, ZDateField } from "@/lib/types/form-types"
-import {
-  FormElementInstance,
-  FormElements,
-  SubmitFunction,
-} from "../fieldComponents"
+import { FormElements, SubmitFunction } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -31,6 +27,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const DateField: React.FC<{
   elementInstance: FormElementInstance
@@ -40,6 +37,7 @@ export const DateField: React.FC<{
 }> = ({ elementInstance, submitValue, isInvalid, defaultValue }) => {
   const { id, label, required, helper_text } = elementInstance as TDateField
 
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone // ensure correct tz
   const [date, setDate] = useState<Date | undefined>(
     defaultValue ? new Date(defaultValue) : undefined
   )
@@ -73,15 +71,17 @@ export const DateField: React.FC<{
           <Calendar
             mode="single"
             selected={date}
+            timeZone={userTimeZone}
             onSelect={(date) => {
               setDate(date)
               if (!submitValue) return
               const value = date?.toISOString() ?? ""
               console.log("DATE VAL: ", value)
-              const valid = FormElements[elementInstance.type].validate(
-                elementInstance,
-                value
-              )
+              const valid =
+                FormElements[elementInstance.type]?.validate?.(
+                  elementInstance,
+                  value
+                ) ?? false
               setError(!valid)
               submitValue(id, value)
             }}

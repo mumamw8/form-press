@@ -1,9 +1,5 @@
 import { TSelectField, ZSelectField } from "@/lib/types/form-types"
-import {
-  FormElementInstance,
-  FormElements,
-  SubmitFunction,
-} from "../fieldComponents"
+import { FormElements, SubmitFunction } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -32,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai"
 import { cn } from "@/lib/utils"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const SelectField: React.FC<{
   elementInstance: FormElementInstance
@@ -60,10 +57,11 @@ export const SelectField: React.FC<{
         onValueChange={(value) => {
           setValue(value)
           if (!submitValue) return
-          const valid = FormElements[elementInstance.type].validate(
-            elementInstance,
-            value
-          )
+          const valid =
+            FormElements[elementInstance.type]?.validate?.(
+              elementInstance,
+              value
+            ) ?? false
           setError(!valid)
           submitValue(id, value)
         }}

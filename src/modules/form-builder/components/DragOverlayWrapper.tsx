@@ -1,9 +1,10 @@
 import { Active, DragOverlay, useDndMonitor } from "@dnd-kit/core"
 import { useState } from "react"
 import { SidebarBtnElementDragOverlay } from "./SidebarBtnElement"
-import { FormElementInstance, FormElements } from "./fieldComponents"
+import { FormElements } from "./fieldComponents"
 import { TFormField } from "@/lib/types/form-types"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
+import { FormElementInstance } from "../fieldComponentsDefinition"
 
 export const DragOverlayWrapper = () => {
   const { elements } = useFormBuilderStore((state) => state)

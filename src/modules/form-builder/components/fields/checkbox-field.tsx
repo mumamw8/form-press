@@ -1,9 +1,5 @@
 import { TCheckboxField, ZCheckboxField } from "@/lib/types/form-types"
-import {
-  FormElementInstance,
-  FormElements,
-  SubmitFunction,
-} from "../fieldComponents"
+import { FormElements, SubmitFunction } from "../fieldComponents"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -23,6 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const CheckboxField: React.FC<{
   elementInstance: FormElementInstance
@@ -54,10 +51,11 @@ export const CheckboxField: React.FC<{
           setValue(value)
           if (!submitValue) return
           const stringValue = value ? "yes" : "no"
-          const valid = FormElements[elementInstance.type].validate(
-            elementInstance,
-            stringValue
-          )
+          const valid =
+            FormElements[elementInstance.type]?.validate?.(
+              elementInstance,
+              stringValue
+            ) ?? false
           setError(!valid)
           submitValue(id, stringValue)
         }}

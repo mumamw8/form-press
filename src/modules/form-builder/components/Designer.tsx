@@ -7,11 +7,12 @@ import {
   useDroppable,
 } from "@dnd-kit/core"
 import { useState } from "react"
-import { FormElementInstance, FormElements } from "./fieldComponents"
+import { FormElements } from "./fieldComponents"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { generateFieldId } from "@/lib/utils/generate-field-id"
 import { Button } from "@/components/ui/button"
 import { BiSolidTrash } from "react-icons/bi"
+import { FormElementInstance } from "../fieldComponentsDefinition"
 
 export const Designer = (props: {}) => {
   const {

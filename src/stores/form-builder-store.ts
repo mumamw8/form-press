@@ -1,4 +1,4 @@
-import { FormElementInstance } from "@/modules/form-builder/components/fieldComponents"
+import { FormElementInstance } from "@/modules/form-builder/fieldComponentsDefinition"
 import { createStore } from "zustand/vanilla"
 
 type FormBuilderState = {

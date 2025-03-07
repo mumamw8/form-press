@@ -1,5 +1,4 @@
 import { TParagraphElement, ZParagraphElement } from "@/lib/types/form-types"
-import { FormElementInstance } from "../fieldComponents"
 import { z } from "zod"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { useForm } from "react-hook-form"
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
+import { FormElementInstance } from "../../fieldComponentsDefinition"
 
 export const ParagraphElement: React.FC<{
   elementInstance: FormElementInstance

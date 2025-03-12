@@ -2,7 +2,6 @@
 
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
-import { LoadingSpinner } from "../loading-spinner"
 import { useState } from "react"
 import { Modal } from "../modal"
 import { toast } from "sonner"
@@ -18,7 +17,9 @@ export const SaveFormButton = ({
   isPublished: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { elements } = useFormBuilderStore((state) => state)
+  const { elements, currentFormSettings } = useFormBuilderStore(
+    (state) => state
+  )
   const trpc = useTRPC()
   const queryClient = useQueryClient()
 
@@ -83,16 +84,11 @@ export const SaveFormButton = ({
                   id: id,
                   fields: elements,
                   isPublished: false,
+                  settings: currentFormSettings,
                 })
               }
             >
-              {formUpdater.isPending ? (
-                <>
-                  {"Saving..."} <LoadingSpinner />
-                </>
-              ) : (
-                "Yes"
-              )}
+              {formUpdater.isPending ? <>{"Saving..."}</> : "Yes"}
             </Button>
           </div>
         </Modal>
@@ -104,21 +100,18 @@ export const SaveFormButton = ({
     <Button
       variant={"outline"}
       className="gap-2"
+      disabled={formUpdater.isPending}
       onClick={() =>
         formUpdater.mutate({
           id: id,
           fields: elements,
           isPublished: false,
+          settings: currentFormSettings,
         })
       }
     >
-      {formUpdater.isPending ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <SaveIcon className="h-4 w-4" /> {"Save"}
-        </>
-      )}
+      <SaveIcon className="h-4 w-4" />{" "}
+      {formUpdater.isPending ? "Saving..." : "Save"}
     </Button>
   )
 }

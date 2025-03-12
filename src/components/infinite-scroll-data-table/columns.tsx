@@ -126,7 +126,9 @@ export const formsTableColumns: ColumnDef<TForm>[] = [
         className="flex justify-end"
         href={`/dashboard/forms/${info.row.original.id}`}
       >
-        <span className="text-right">{info.getValue<string>()}</span>
+        <span className="text-right flex flex-1 cursor-pointer justify-end">
+          {info.getValue<string>()}
+        </span>
       </Link>
     ),
   },

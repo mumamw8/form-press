@@ -1,9 +1,11 @@
+import { TFormSettings, TFormTheme } from "@/lib/types/settings-types"
 import { FormElementInstance } from "@/modules/form-builder/fieldComponentsDefinition"
 import { createStore } from "zustand/vanilla"
 
 type FormBuilderState = {
   elements: FormElementInstance[]
   selectedElement: FormElementInstance | null
+  currentFormSettings: TFormSettings | undefined
 }
 
 type FormBuilderActions = {
@@ -12,6 +14,9 @@ type FormBuilderActions = {
   selectElement: (element: FormElementInstance | null) => void
   updateElement: (id: string, element: FormElementInstance) => void
   setElements: (elements: FormElementInstance[]) => void
+  // setFormTheme: (theme: TFormTheme | null) => void
+  clearFormSettings: () => void
+  setFormSettings: (settings: TFormSettings) => void
 }
 
 export type FormBuilderStore = FormBuilderState & FormBuilderActions
@@ -19,6 +24,7 @@ export type FormBuilderStore = FormBuilderState & FormBuilderActions
 const defaultInitialState: FormBuilderState = {
   elements: [],
   selectedElement: null,
+  currentFormSettings: undefined,
 }
 
 export const createFormBuilderStore = (
@@ -49,12 +55,6 @@ export const createFormBuilderStore = (
     },
     updateElement: (id: string, updatedElement: FormElementInstance) => {
       set((state) => {
-        // const newElements = state.elements.map(e => {
-        //   if (e.id === id) {
-        //     return updatedElement
-        //   }
-        //   return e
-        // })
         const newElements = state.elements
         const index = newElements.findIndex((e) => e.id === id)
         newElements[index] = updatedElement
@@ -63,6 +63,23 @@ export const createFormBuilderStore = (
     },
     setElements: (elements: FormElementInstance[]) => {
       set({ elements })
+    },
+    // setFormTheme: (theme) => {
+    //   if (theme) {
+    //     console.log("FORM COLOR", theme.background)
+    //     set((state) => {
+    //       return {
+    //         ...state,
+    //         currentFormSettings: { ...state.currentFormSettings, theme: theme },
+    //       }
+    //     })
+    //   }
+    // },
+    clearFormSettings: () => {
+      set({ currentFormSettings: undefined })
+    },
+    setFormSettings: (settings) => {
+      set({ currentFormSettings: settings })
     },
   }))
 }

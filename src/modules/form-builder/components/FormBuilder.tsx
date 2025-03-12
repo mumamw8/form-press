@@ -22,16 +22,15 @@ import { UnpublishFormButton } from "@/components/buttons/UnpublishFormButton"
 import { useTRPC } from "@/trpc/client"
 import { useQuery } from "@tanstack/react-query"
 import { FormElementInstance } from "../fieldComponentsDefinition"
+import { TFormSettings } from "@/lib/types/settings-types"
 
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()
-  const { setElements } = useFormBuilderStore((state) => state)
-  const [isReady, setIsReady] = useState<boolean>(false)
-
-  // const { data: form, isPending: isFormLoading } =
-  //   trpc.form.getSingleForm.useQuery({ id: id })
-
   const trpc = useTRPC()
+  const { setElements, setFormSettings, clearFormSettings } =
+    useFormBuilderStore((state) => state)
+  const [formId, setFormId] = useState<string | null>(null)
+  const [showThemeSidebar, setShowThemeSidebar] = useState<boolean>(false)
 
   const { data: form, isPending: isFormLoading } = useQuery(
     trpc.form.getSingleForm.queryOptions({ id: id })
@@ -42,28 +41,27 @@ export default function FormBuilder({ id }: { id: string }) {
       distance: 10, // in px
     },
   })
-
   const touchSensor = useSensor(TouchSensor, {
     activationConstraint: {
       delay: 300, // in ms
       tolerance: 5, // in px
     },
   })
+  const sensors = useSensors(mouseSensor, touchSensor)
 
   useEffect(() => {
-    // if (isReady) return
+    if (formId === form?.id) return
     if (
       form?.fields &&
       typeof form.fields === "object" &&
       Array.isArray(form.fields)
     ) {
+      // console.log("RESET FORM ELEMENTS & SETTINGS", formId, form)
+      setFormId(form.id)
       setElements(form.fields as FormElementInstance[])
+      setFormSettings((form.settings as TFormSettings) ?? undefined)
     }
-    const isReadyTimeout = setTimeout(() => setIsReady(true), 500)
-    return () => clearTimeout(isReadyTimeout)
-  }, [form, setElements, isReady])
-
-  const sensors = useSensors(mouseSensor, touchSensor)
+  }, [form, formId, setElements, setFormSettings])
 
   if (isFormLoading) {
     return (
@@ -93,7 +91,7 @@ export default function FormBuilder({ id }: { id: string }) {
           >
             <ArrowLeftIcon className="size-4" />
           </Button>
-          <h3 className="">{isReady && form.title}</h3>
+          <h3 className="">{form.title}</h3>
           <div className="flex items-center gap-2">
             <PreviewDialogButton />
             <SaveFormButton id={form.id} isPublished={form.isPublished} />
@@ -105,11 +103,19 @@ export default function FormBuilder({ id }: { id: string }) {
                 isPublished={form.isPublished}
               />
             )}
+            <Button onClick={() => setShowThemeSidebar(true)}>Customize</Button>
           </div>
         </nav>
-        <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-blue-300">
+        <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-white">
           {/* Designer */}
-          {isReady ? <Designer /> : <LoadingSpinner />}
+          {formId ? (
+            <Designer
+              showSidebarTheme={showThemeSidebar}
+              onCloseThemeSidebar={() => setShowThemeSidebar(false)}
+            />
+          ) : (
+            <LoadingSpinner />
+          )}
         </div>
       </main>
       <DragOverlayWrapper />

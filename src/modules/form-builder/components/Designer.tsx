@@ -14,13 +14,17 @@ import { Button } from "@/components/ui/button"
 import { BiSolidTrash } from "react-icons/bi"
 import { FormElementInstance } from "../fieldComponentsDefinition"
 
-export const Designer = (props: {}) => {
+export const Designer = (props: {
+  showSidebarTheme: boolean
+  onCloseThemeSidebar: () => void
+}) => {
   const {
     elements,
     addElement,
     selectedElement,
     selectElement,
     removeElement,
+    currentFormSettings,
   } = useFormBuilderStore((state) => state)
 
   const droppable = useDroppable({
@@ -126,12 +130,15 @@ export const Designer = (props: {}) => {
             selectElement(null)
           }
         }}
-        className="p-4 w-full"
+        className="w-full"
       >
         <div
+          // style={{
+          //   background: currentFormSettings?.theme?.background ?? "#ffffff",
+          // }}
           ref={droppable.setNodeRef}
           className={cn(
-            "bg-background max-w-[920px] h-full m-auto rounded-xl flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
+            "max-w-[920px] border-x h-full m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
             droppable.isOver && "ring-2 ring-primary/20"
           )}
         >
@@ -155,7 +162,10 @@ export const Designer = (props: {}) => {
         </div>
       </div>
       {/* Designer Sidebar */}
-      <DesignerSidebar />
+      {/* <DesignerSidebar
+        showThemeSidebar={props.showSidebarTheme}
+        onCloseThemeSidebar={props.onCloseThemeSidebar}
+      /> */}
     </div>
   )
 }

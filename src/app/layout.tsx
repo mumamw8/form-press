@@ -31,9 +31,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={cn(inter.variable, barlow.variable)}>
-        <body className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-brand-50 text-brand-950 antialiased">
+        <head>
+          {/* <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js"/> */}
+        </head>
+        <body className="min-h-[calc(100vh-1px)] font-sans bg-brand-50 text-brand-950 antialiased">
           <NuqsAdapter>
-            <main className="relative flex-1 flex flex-col">
+            <main
+            // className="relative flex-1 flex flex-col"
+            >
               <NextTopLoader />
               <Providers>{children}</Providers>
             </main>

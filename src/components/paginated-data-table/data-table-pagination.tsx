@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
-import { INITIAL_SUBMISSIONS_FETCH_SIZE } from "@/modules/form-details/components/form-submissions"
+import { INITIAL_SUBMISSIONS_FETCH_SIZE } from "@/app/(with-active-org)/dashboard/forms/[formId]/_components/form-submissions"
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>

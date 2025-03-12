@@ -86,7 +86,7 @@ export const NumberFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Input readOnly disabled type="number" placeholder={placeholder} />
+      <Input readOnly type="number" placeholder={placeholder} />
       {helper_text && (
         <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
       )}

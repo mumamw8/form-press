@@ -1,6 +1,6 @@
 import { db } from "@/lib/prisma"
-import { FormDetailsView } from "@/components/views/form-details-view"
 import { TForm } from "@/lib/types"
+import { FormDetailsView } from "./_components/form-details-view"
 
 export default async function Page({
   params,

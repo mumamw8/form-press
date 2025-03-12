@@ -21,7 +21,7 @@ export const SidebarBtnElement = ({
     <Button
       ref={draggable.setNodeRef}
       className={cn(
-        "flex flex-col gap-2 h-[120px] w-[120px] cursor-grab",
+        "flex gap-2 w-[220px] min-h-[35px] cursor-grab",
         draggable.isDragging && "ring-2 ring-primary"
       )}
       variant="outline"
@@ -43,7 +43,7 @@ export const SidebarBtnElementDragOverlay = ({
 
   return (
     <Button
-      className={"flex flex-col gap-2 h-[120px] w-[120px] cursor-grab"}
+      className={"flex gap-2 w-[220px] min-h-[35px] cursor-grab"}
       variant="outline"
     >
       <Icon />

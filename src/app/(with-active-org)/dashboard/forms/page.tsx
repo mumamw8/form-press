@@ -1,6 +1,6 @@
-import { DashboardView } from "@/components/views/dashboard-view"
 import { FormSortKey } from "@/lib/utils/types"
 import { HydrateClient, prefetch, trpc } from "@/trpc/server"
+import { DashboardView } from "../_components/dashboard-view"
 
 export default async function Page() {
   prefetch(

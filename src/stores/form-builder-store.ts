@@ -6,6 +6,7 @@ type FormBuilderState = {
   elements: FormElementInstance[]
   selectedElement: FormElementInstance | null
   currentFormSettings: TFormSettings | undefined
+  formName: string | null
 }
 
 type FormBuilderActions = {
@@ -14,7 +15,7 @@ type FormBuilderActions = {
   selectElement: (element: FormElementInstance | null) => void
   updateElement: (id: string, element: FormElementInstance) => void
   setElements: (elements: FormElementInstance[]) => void
-  // setFormTheme: (theme: TFormTheme | null) => void
+  setFormName: (name: string | null) => void
   clearFormSettings: () => void
   setFormSettings: (settings: TFormSettings) => void
 }
@@ -25,6 +26,7 @@ const defaultInitialState: FormBuilderState = {
   elements: [],
   selectedElement: null,
   currentFormSettings: undefined,
+  formName: null,
 }
 
 export const createFormBuilderStore = (
@@ -64,22 +66,14 @@ export const createFormBuilderStore = (
     setElements: (elements: FormElementInstance[]) => {
       set({ elements })
     },
-    // setFormTheme: (theme) => {
-    //   if (theme) {
-    //     console.log("FORM COLOR", theme.background)
-    //     set((state) => {
-    //       return {
-    //         ...state,
-    //         currentFormSettings: { ...state.currentFormSettings, theme: theme },
-    //       }
-    //     })
-    //   }
-    // },
     clearFormSettings: () => {
       set({ currentFormSettings: undefined })
     },
     setFormSettings: (settings) => {
       set({ currentFormSettings: settings })
+    },
+    setFormName: (name) => {
+      set({ formName: name })
     },
   }))
 }

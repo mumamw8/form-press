@@ -1,4 +1,3 @@
-import { ColorPicker } from "@/components/inputs/color-picker"
 import { Sketch } from "@uiw/react-color"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import {

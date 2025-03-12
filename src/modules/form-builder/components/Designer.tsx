@@ -13,6 +13,15 @@ import { generateFieldId } from "@/lib/utils/generate-field-id"
 import { Button } from "@/components/ui/button"
 import { BiSolidTrash } from "react-icons/bi"
 import { FormElementInstance } from "../fieldComponentsDefinition"
+import {
+  CircleMinus,
+  CogIcon,
+  EllipsisVertical,
+  GripVertical,
+  SettingsIcon,
+  Trash2,
+} from "lucide-react"
+import React from "react"
 
 export const Designer = (props: {
   showSidebarTheme: boolean
@@ -25,6 +34,8 @@ export const Designer = (props: {
     selectElement,
     removeElement,
     currentFormSettings,
+    setFormName,
+    formName,
   } = useFormBuilderStore((state) => state)
 
   const droppable = useDroppable({
@@ -133,39 +144,71 @@ export const Designer = (props: {
         className="w-full"
       >
         <div
-          // style={{
-          //   background: currentFormSettings?.theme?.background ?? "#ffffff",
-          // }}
+          style={{
+            background: currentFormSettings?.theme?.background ?? "#ffffff",
+          }}
           ref={droppable.setNodeRef}
           className={cn(
-            "max-w-[920px] border-x h-full m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
+            "max-w-[920px] border rounded-xl h-full m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
             droppable.isOver && "ring-2 ring-primary/20"
           )}
         >
-          {!droppable.isOver && elements.length === 0 && (
-            <p className="text-3xl text-muted-foreground flex flex-grow items-center font-bold">
-              Drag and drop fields here
-            </p>
-          )}
-          {droppable.isOver && elements.length === 0 && (
-            <div className="p-4 w-full">
-              <div className="h-[120px] rounded-md bg-primary/5"></div>
-            </div>
-          )}
-          {elements.length > 0 && (
-            <div className="flex flex-col w-full gap-2 p-4">
-              {elements.map((element: FormElementInstance) => (
-                <DesignerElementWrapper key={element.id} element={element} />
-              ))}
-            </div>
-          )}
+          <div className="flex flex-col max-w-[620px] w-full p-4">
+            <EditableTitle />
+            {!droppable.isOver && elements.length === 0 && (
+              <p className="text-3xl text-muted-foreground flex flex-grow items-center font-bold">
+                Drag and drop fields here
+              </p>
+            )}
+            {droppable.isOver && elements.length === 0 && (
+              <div className="w-full">
+                <div className="h-[70px] rounded-md bg-gray-100"></div>
+              </div>
+            )}
+            {elements.length > 0 && (
+              <div className="flex flex-col w-full">
+                {elements.map((element: FormElementInstance) => (
+                  <DesignerElementWrapper key={element.id} element={element} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {/* Designer Sidebar */}
-      {/* <DesignerSidebar
+      <DesignerSidebar
         showThemeSidebar={props.showSidebarTheme}
         onCloseThemeSidebar={props.onCloseThemeSidebar}
-      /> */}
+      />
+    </div>
+  )
+}
+
+function EditableTitle() {
+  const { setFormName, formName } = useFormBuilderStore((state) => state)
+  const titleRef = React.useRef<HTMLDivElement>(null)
+
+  const handleTitleChange = (event: any) => {
+    console.log(event.target.innerText)
+    setFormName(event.target.innerText)
+  }
+
+  React.useEffect(() => {
+    if (titleRef.current) {
+      titleRef.current.innerText = formName ?? ""
+    }
+  }, [])
+
+  return (
+    <div
+      className="w-full px-4 py-4 text-2xl font-extrabold cursor-pointer rounded-md hover:bg-gray-100/50"
+      ref={titleRef}
+      contentEditable
+      onInput={handleTitleChange}
+      suppressContentEditableWarning
+      // style={{ outline: "none" }} // Optional: removes the default outline on focus
+    >
+      {/* Initial content is handled by the useState and useEffect */}
     </div>
   )
 }
@@ -174,7 +217,6 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
   const { removeElement, selectedElement, selectElement } = useFormBuilderStore(
     (state) => state
   )
-  const [mouseIsOver, setMouseIsOver] = useState<boolean>(false)
   const topHalf = useDroppable({
     id: `top-half-${element.id}`,
     data: {
@@ -205,31 +247,34 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
   if (draggable.isDragging) return null
 
   const DesignerElement = FormElements[element.type].designerComponent
+  // <div className="pl-[100px]" key={element.id}>
   return (
-    <div
-      ref={draggable.setNodeRef}
-      {...draggable.listeners}
-      {...draggable.attributes}
-      className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-blue-300 ring-inset"
-      onMouseEnter={() => setMouseIsOver(true)}
-      onMouseLeave={() => setMouseIsOver(false)}
-      onClick={(e) => {
-        e.stopPropagation()
-        selectElement(element)
-      }}
-    >
+    <div className="group">
       <div
-        ref={topHalf.setNodeRef}
-        className="absolute rounded-t-md w-full h-1/2"
-      />
-      <div
-        ref={bottomHalf.setNodeRef}
-        className="absolute rounded-b-md w-full h-1/2 bottom-0"
-      />
-      {mouseIsOver && (
+        ref={draggable.setNodeRef}
+        {...draggable.listeners}
+        {...draggable.attributes}
+        className={cn(
+          `relative flex flex-col text-foreground hover:cursor-grab rounded-md py-2 border border-transparent border-dashed 
+          group-hover:border-gray-200 group-hover:bg-gray-100/50`,
+          selectedElement?.id === element.id && "bg-blue-50"
+        )}
+        onClick={(e) => {
+          e.stopPropagation()
+          selectElement(element)
+        }}
+      >
+        <div
+          ref={topHalf.setNodeRef}
+          className="absolute rounded-t-md w-full h-1/2"
+        />
+        <div
+          ref={bottomHalf.setNodeRef}
+          className="absolute rounded-b-md w-full h-1/2 bottom-0"
+        />
         <>
-          <div className="absolute right-0 h-full">
-            <Button
+          <div className="hidden group-hover:flex absolute -left-[28px] p-[0.1rem] bg-white border rounded">
+            {/* <Button
               className="flex justify-center h-full border rounded-md rounded-l-none bg-red-300"
               variant={"outline"}
               onClick={(e) => {
@@ -238,31 +283,54 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
               }}
             >
               <BiSolidTrash className="h-6 w-6" />
-            </Button>
+            </Button> */}
+            <div className="flex flex-col items-center gap-2 text-muted-foreground">
+              <button
+                className="p-1 rounded hover:bg-red-500/15 hover:text-red-500"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  removeElement(element.id)
+                }}
+              >
+                <CircleMinus className="size-5" />
+              </button>
+              <button
+                className="p-1 rounded hover:bg-blue-500/15"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  selectElement(element)
+                }}
+              >
+                <CogIcon className="size-5 hover:text-blue-500" />
+              </button>
+              {/* <div className="cursor-grab">
+                  <GripVertical className="text-blue-300" />
+                </div> */}
+            </div>
           </div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
+          {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
             <p className="text-muted-foreground text-sm">
               Click for properties or drag to move
             </p>
-          </div>
+          </div> */}
         </>
-      )}
-      {topHalf.isOver && (
-        <div className="absolute top-0 w-full rounded-md h-[7px] bg-primary rounded-b-none" />
-      )}
-      <div
-        className={cn(
-          "flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none",
-          mouseIsOver && "opacity-30"
-          // topHalf.isOver && "border-t-4 border-t-foreground",
-          // bottomHalf.isOver && "border-b-4 border-b-foreground"
+        {topHalf.isOver && (
+          <div className="absolute top-0 w-full h-[7px] bg-blue-100/80" />
         )}
-      >
-        <DesignerElement elementInstance={element} />
+        <div
+          className={cn(
+            "flex w-full items-center rounded-md px-4 pointer-events-none"
+            // mouseIsOver && "opacity-30"
+            // topHalf.isOver && "border-t-4 border-t-foreground",
+            // bottomHalf.isOver && "border-b-4 border-b-foreground"
+          )}
+        >
+          <DesignerElement elementInstance={element} />
+        </div>
+        {bottomHalf.isOver && (
+          <div className="absolute bottom-0 w-full h-[7px] bg-blue-100/80" />
+        )}
       </div>
-      {bottomHalf.isOver && (
-        <div className="absolute bottom-0 w-full rounded-md h-[7px] bg-primary rounded-t-none" />
-      )}
     </div>
   )
 }

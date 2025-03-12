@@ -17,7 +17,7 @@ export const SaveFormButton = ({
   isPublished: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { elements, currentFormSettings } = useFormBuilderStore(
+  const { elements, currentFormSettings, formName } = useFormBuilderStore(
     (state) => state
   )
   const trpc = useTRPC()
@@ -45,12 +45,13 @@ export const SaveFormButton = ({
     return (
       <>
         <Button
-          className="gap-2"
-          variant={"outline"}
+          className="text-blue-600 hover:text-blue-600"
+          variant={"ghost"}
           // disabled={isPublished}
           onClick={() => setIsOpen(true)}
         >
-          <SaveIcon className="h-4 w-4" /> {"Save"}
+          {/* <SaveIcon className="size-4" /> */}
+          {"Save"}
         </Button>
         <Modal
           className="max-w-xl p-8"
@@ -85,6 +86,7 @@ export const SaveFormButton = ({
                   fields: elements,
                   isPublished: false,
                   settings: currentFormSettings,
+                  title: formName ?? "",
                 })
               }
             >
@@ -98,8 +100,9 @@ export const SaveFormButton = ({
 
   return (
     <Button
-      variant={"outline"}
-      className="gap-2"
+      variant={"ghost"}
+      size={"sm"}
+      className="text-blue-500 hover:text-blue-500 bg-blue-600/10 hover:bg-blue-600/10 hover:ring-1"
       disabled={formUpdater.isPending}
       onClick={() =>
         formUpdater.mutate({
@@ -107,11 +110,12 @@ export const SaveFormButton = ({
           fields: elements,
           isPublished: false,
           settings: currentFormSettings,
+          title: formName ?? "",
         })
       }
     >
-      <SaveIcon className="h-4 w-4" />{" "}
-      {formUpdater.isPending ? "Saving..." : "Save"}
+      {/* <SaveIcon className="size-4" />{" "} */}
+      {formUpdater.isPending ? "Saving..." : "Save Changes"}
     </Button>
   )
 }

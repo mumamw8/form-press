@@ -1,17 +1,17 @@
 "use client"
 
 import { TForm } from "@/lib/types"
-import { Button, buttonVariants } from "../ui/button"
 import { ChevronLeft, Edit2, EyeIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { formatDistance } from "date-fns"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FormShare } from "@/modules/form-details/components/form-share"
-import { FormSubmissions } from "@/modules/form-details/components/form-submissions"
-import { FormAnalytics } from "@/modules/form-details/components/form-analytics"
-import { FormSettings } from "@/modules/form-details/components/form-settings"
-import { FormIntegrations } from "@/modules/form-details/components/form-integrations"
+import { buttonVariants } from "@/components/ui/button"
+import { FormShare } from "./form-share"
+import { FormSubmissions } from "./form-submissions"
+import { FormAnalytics } from "./form-analytics"
+import { FormSettings } from "./form-settings"
+import { FormIntegrations } from "./form-integrations"
 
 export const FormDetailsView = ({ form }: { form: TForm }) => {
   const router = useRouter()

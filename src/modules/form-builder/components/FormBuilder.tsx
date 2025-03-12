@@ -27,7 +27,7 @@ import { TFormSettings } from "@/lib/types/settings-types"
 export default function FormBuilder({ id }: { id: string }) {
   const router = useRouter()
   const trpc = useTRPC()
-  const { setElements, setFormSettings, clearFormSettings } =
+  const { setElements, setFormSettings, setFormName, formName } =
     useFormBuilderStore((state) => state)
   const [formId, setFormId] = useState<string | null>(null)
   const [showThemeSidebar, setShowThemeSidebar] = useState<boolean>(false)
@@ -59,6 +59,7 @@ export default function FormBuilder({ id }: { id: string }) {
       // console.log("RESET FORM ELEMENTS & SETTINGS", formId, form)
       setFormId(form.id)
       setElements(form.fields as FormElementInstance[])
+      setFormName(form.title)
       setFormSettings((form.settings as TFormSettings) ?? undefined)
     }
   }, [form, formId, setElements, setFormSettings])
@@ -83,7 +84,7 @@ export default function FormBuilder({ id }: { id: string }) {
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
         {/* Header */}
-        <nav className="flex justify-between border-b p-2 px-8 gap-3 items-center">
+        <nav className="flex justify-between p-2 px-8 gap-3 items-center bg-white">
           <Button
             onClick={() => router.back()}
             className="w-fit bg-white"
@@ -91,10 +92,13 @@ export default function FormBuilder({ id }: { id: string }) {
           >
             <ArrowLeftIcon className="size-4" />
           </Button>
-          <h3 className="">{form.title}</h3>
-          <div className="flex items-center gap-2">
-            <PreviewDialogButton />
+          <h3 className="text-lg font-bold">{formName}</h3>
+          <div className="flex items-center gap-4">
             <SaveFormButton id={form.id} isPublished={form.isPublished} />
+            <PreviewDialogButton />
+            <Button variant={"ghost"} onClick={() => setShowThemeSidebar(true)}>
+              Customize
+            </Button>
             {!form.isPublished ? (
               <PublishFormButton id={form.id} isPublished={form.isPublished} />
             ) : (
@@ -103,10 +107,9 @@ export default function FormBuilder({ id }: { id: string }) {
                 isPublished={form.isPublished}
               />
             )}
-            <Button onClick={() => setShowThemeSidebar(true)}>Customize</Button>
           </div>
         </nav>
-        <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-white">
+        <div className="flex w-full flex-grow items-center justify-center relative h-[200px] overflow-y-auto bg-white py-2">
           {/* Designer */}
           {formId ? (
             <Designer

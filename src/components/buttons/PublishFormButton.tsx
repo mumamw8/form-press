@@ -43,7 +43,8 @@ export const PublishFormButton = ({
         disabled={isPublished}
         onClick={() => setIsOpen(true)}
       >
-        <CircleCheck className="h-4 w-4" /> {"Publish"}
+        {/* <CircleCheck className="h-4 w-4" />  */}
+        {"Publish"}
       </Button>
       <Modal
         className="max-w-xl p-8"

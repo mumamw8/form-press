@@ -10,8 +10,8 @@ export const PreviewDialogButton = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"outline"} className="gap-2">
-          <Fullscreen className="h-6 w-6" />
+        <Button variant={"ghost"} className="gap-2">
+          {/* <Fullscreen className="h-6 w-6" /> */}
           Preview
         </Button>
       </DialogTrigger>

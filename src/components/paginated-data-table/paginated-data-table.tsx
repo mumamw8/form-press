@@ -30,7 +30,7 @@ import useDataTablePagination from "@/hooks/use-data-table-pagination"
 import { DataTablePagination } from "./data-table-pagination"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { PAGE_SIZE_OPTIONS } from "@/modules/form-details/components/form-submissions"
+import { PAGE_SIZE_OPTIONS } from "@/app/(with-active-org)/dashboard/forms/[formId]/_components/form-submissions"
 
 // import { DataTablePagination } from "./data-table-pagination"
 // import { DataTableToolbar } from "./data-table-toolbar"

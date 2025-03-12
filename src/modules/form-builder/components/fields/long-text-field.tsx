@@ -86,7 +86,7 @@ export const LongTextFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Textarea readOnly disabled placeholder={placeholder} />
+      <Textarea readOnly placeholder={placeholder} />
       {helper_text && (
         <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
       )}

@@ -1,8 +1,8 @@
 "use client"
 
+import { FormsSection } from "@/components/sections/forms-section"
+import { Button } from "@/components/ui/button"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
-import { FormsSection } from "../sections/forms-section"
-import { Button } from "../ui/button"
 import { PlusCircle } from "lucide-react"
 
 export const DashboardView = () => {

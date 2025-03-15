@@ -3,20 +3,22 @@
 import { useTRPC } from "@/trpc/client"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { ErrorBoundary } from "react-error-boundary"
-import { FormsSectionSkeleton } from "../skeletons/form-section-skeleton"
+import {
+  FormsSectionSkeleton,
+  FormsSectionSkeletonTwo,
+} from "../skeletons/form-section-skeleton"
 import { InfiniteScroll } from "../infinite-scroll"
 import React from "react"
 import { TForm } from "@/lib/types"
 import { FormDeleteModal } from "../modals/form-delete-modal"
-import { DataTable } from "../infinite-scroll-data-table/data-table"
-import { formsTableColumns } from "../infinite-scroll-data-table/columns"
 import useDataTableSorting from "@/hooks/use-data-table-sorting"
 import { FormSortKey } from "@/lib/utils/types"
 import useDataTableFilters from "@/hooks/use-data-table-filters"
+import { AppFormItem } from "../app-form/app-form-item"
 
 export const FormsSection = () => {
   return (
-    <React.Suspense fallback={<FormsSectionSkeleton />}>
+    <React.Suspense fallback={<FormsSectionSkeletonTwo />}>
       <ErrorBoundary fallback={<p>Error</p>}>
         <FormsSectionSuspense />
       </ErrorBoundary>
@@ -64,14 +66,17 @@ const FormsSectionSuspense = () => {
   return (
     <>
       <div>
-        <DataTable
+        {flatFormsData.map((form) => (
+          <AppFormItem key={form.id} form={form} />
+        ))}
+        {/* <DataTable
           onColumnFiltersChange={onColumnFiltersChange}
           columnFilters={columnFilters}
           onSortingChange={onSortingChange}
           sorting={sorting}
           data={flatFormsData}
           columns={formsTableColumns}
-        />
+        /> */}
         <InfiniteScroll
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}

@@ -79,6 +79,7 @@ export const OpenTextFieldDesigner: React.FC<{
 }> = ({ elementInstance }) => {
   const { label, required, placeholder, helper_text } =
     elementInstance as TOpenTextField
+
   return (
     <div className="flex flex-col w-full gap-2">
       <Label>

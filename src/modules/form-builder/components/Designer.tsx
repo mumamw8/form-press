@@ -6,22 +6,14 @@ import {
   useDraggable,
   useDroppable,
 } from "@dnd-kit/core"
-import { useState } from "react"
 import { FormElements } from "./fieldComponents"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { generateFieldId } from "@/lib/utils/generate-field-id"
-import { Button } from "@/components/ui/button"
-import { BiSolidTrash } from "react-icons/bi"
 import { FormElementInstance } from "../fieldComponentsDefinition"
-import {
-  CircleMinus,
-  CogIcon,
-  EllipsisVertical,
-  GripVertical,
-  SettingsIcon,
-  Trash2,
-} from "lucide-react"
+import { CircleMinus, CogIcon } from "lucide-react"
 import React from "react"
+import { StyledFormContainerBase } from "@/styled-components/styled-form-container"
+import { TFormTheme } from "@/lib/types/settings-types"
 
 export const Designer = (props: {
   showSidebarTheme: boolean
@@ -34,8 +26,6 @@ export const Designer = (props: {
     selectElement,
     removeElement,
     currentFormSettings,
-    setFormName,
-    formName,
   } = useFormBuilderStore((state) => state)
 
   const droppable = useDroppable({
@@ -143,10 +133,9 @@ export const Designer = (props: {
         }}
         className="w-full"
       >
-        <div
-          style={{
-            background: currentFormSettings?.theme?.background ?? "#ffffff",
-          }}
+        <StyledFormContainerBase
+          // style={formStyle}
+          formTheme={currentFormSettings?.theme as TFormTheme}
           ref={droppable.setNodeRef}
           className={cn(
             "max-w-[920px] border rounded-xl h-full m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
@@ -173,7 +162,7 @@ export const Designer = (props: {
               </div>
             )}
           </div>
-        </div>
+        </StyledFormContainerBase>
       </div>
       {/* Designer Sidebar */}
       <DesignerSidebar
@@ -255,7 +244,7 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
         {...draggable.listeners}
         {...draggable.attributes}
         className={cn(
-          `relative flex flex-col text-foreground hover:cursor-grab rounded-md py-2 border border-transparent border-dashed 
+          `relative flex flex-col hover:cursor-grab rounded-md py-2 border border-transparent border-dashed 
           group-hover:border-gray-200 group-hover:bg-gray-100/50`,
           selectedElement?.id === element.id && "bg-blue-50"
         )}

@@ -50,6 +50,24 @@ export const FormsSectionSkeleton = () => {
 }
 
 export const FormsSectionSkeletonTwo = () => {
+  const skeletonItems = Array.from({ length: 15 }, (_, i) => i)
+
+  return (
+    <>
+      {skeletonItems.map((index) => (
+        <div
+          key={index}
+          className="flex items-center justify-between p-3 rounded-lg"
+        >
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-5 w-5 rounded" />
+            <Skeleton className="h-5 w-32 md:w-48" />
+          </div>
+          <Skeleton className="h-4 w-28 md:w-40" />
+        </div>
+      ))}
+    </>
+  )
   return (
     <div>
       <li className="group hover:bg-muted rounded-lg flex justify-between items-center">

@@ -4,9 +4,13 @@ import { useFormBuilderStore } from "@/components/providers/form-builder-store-p
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
 import { FormElements } from "@/modules/form-builder/components/fieldComponents"
 import { EyeIcon, Fullscreen } from "lucide-react"
+import { StyledFormContainerBase } from "@/styled-components/styled-form-container"
+import { TFormTheme } from "@/lib/types/settings-types"
 
 export const PreviewDialogButton = () => {
-  const { elements } = useFormBuilderStore((state) => state)
+  const { elements, currentFormSettings } = useFormBuilderStore(
+    (state) => state
+  )
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -22,8 +26,11 @@ export const PreviewDialogButton = () => {
           </p>
           <p></p>
         </div>
-        <div className="bg-accent flex flex-col flex-grow items-center justify-center p-4 overflow-y-auto">
-          <div className="max-w-[620px] flex flex-col flex-grow gap-4 bg-background h-full w-full rounded-2xl p-8 overflow-y-auto">
+        <StyledFormContainerBase
+          formTheme={currentFormSettings?.theme as TFormTheme}
+          className="bg-accent flex flex-col flex-grow items-center justify-center p-4 overflow-y-auto"
+        >
+          <div className="max-w-[620px] flex flex-col flex-grow gap-4 h-full w-full rounded-2xl p-8 overflow-y-auto">
             {elements.map((element) => {
               const FormComponent = FormElements[element.type].formComponent
 
@@ -32,7 +39,7 @@ export const PreviewDialogButton = () => {
               )
             })}
           </div>
-        </div>
+        </StyledFormContainerBase>
       </DialogContent>
     </Dialog>
   )

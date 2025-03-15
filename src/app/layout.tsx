@@ -8,6 +8,7 @@ import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
+import StyledComponentsRegistry from "@/lib/registry"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -35,15 +36,17 @@ export default function RootLayout({
           {/* <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js"/> */}
         </head>
         <body className="min-h-[calc(100vh-1px)] font-sans bg-brand-50 text-brand-950 antialiased">
-          <NuqsAdapter>
-            <main
-            // className="relative flex-1 flex flex-col"
-            >
-              <NextTopLoader />
-              <Providers>{children}</Providers>
-            </main>
-            <Toaster />
-          </NuqsAdapter>
+          <StyledComponentsRegistry>
+            <NuqsAdapter>
+              <main
+              // className="relative flex-1 flex flex-col"
+              >
+                <NextTopLoader />
+                <Providers>{children}</Providers>
+              </main>
+              <Toaster />
+            </NuqsAdapter>
+          </StyledComponentsRegistry>
         </body>
       </html>
     </ClerkProvider>

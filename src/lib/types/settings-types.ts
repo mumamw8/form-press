@@ -5,6 +5,7 @@ export const ZFormTheme = z.object({
   font: z.string().nullish(),
   background: z.string().nullish(),
   text: z.string().nullish(),
+  placeholder: z.string().nullish(),
   buttonBackground: z.string().nullish(),
   buttonText: z.string().nullish(),
   accent: z.string().nullish(),
@@ -13,6 +14,7 @@ export const ZFormTheme = z.object({
   inputHeight: z.string().nullish(),
 })
 export type TFormTheme = z.infer<typeof ZFormTheme>
+export type TFormThemeKeys = keyof TFormTheme
 
 export const ZFormSettings = z.object({
   theme: ZFormTheme.nullish(),

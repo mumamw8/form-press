@@ -1,4 +1,7 @@
-import { AppBreadcrumbList, BreadcrumbListItem } from "./app-breadcrumb-list"
+import {
+  AppBreadcrumbList,
+  BreadcrumbListItem,
+} from "./shared/app-breadcrumb-list"
 import { SidebarInset, SidebarTrigger } from "./ui/sidebar"
 import { Separator } from "./ui/separator"
 import { UserButton } from "@clerk/nextjs"

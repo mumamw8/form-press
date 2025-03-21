@@ -5,8 +5,10 @@ import { FormElements } from "@/modules/form-builder/components/fieldComponents"
 export const FormElementsSidebar = () => {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-sm text-foreground/70">Drag and drop elements</p>
-      <Separator className="my-2" />
+      <p className="text-sm text-foreground/70 mx-2 mt-2">
+        Drag and drop elements
+      </p>
+      <Separator className="mb-2" />
       <div className="flex flex-col gap-2 items-center">
         <p className="text-xs font-semibold text-muted-foreground">Fields</p>
         <SidebarBtnElement formElement={FormElements.open_text} />

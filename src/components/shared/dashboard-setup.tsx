@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card"
+} from "../ui/card"
 import { CreateTeamForm } from "./team/create-team-form"
 
 export const DashboardSetup = () => {

@@ -1,6 +1,6 @@
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
 import { useEffect } from "react"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { LoadingSpinner } from "./loading-spinner"
 
 interface InfiniteScrollProps {

@@ -7,16 +7,16 @@ import {
   FieldValues,
   UseFormRegister,
 } from "react-hook-form"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
-import { Switch } from "./ui/switch"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Switch } from "../ui/switch"
 import {
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
-} from "./ui/form"
+} from "../ui/form"
 
 type FormGeneratorProps = {
   // type?: "text" | "email" | "password" | "number"

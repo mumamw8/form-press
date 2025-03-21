@@ -44,7 +44,10 @@ export const CheckboxField: React.FC<{
       <Checkbox
         id={checkboxId}
         checked={value}
-        className={cn(error && "border-red-500")}
+        className={cn(
+          "form-theme-checkbox form-theme-rounded",
+          error && "border-red-500"
+        )}
         onCheckedChange={(checked) => {
           let value = false
           if (checked === true) value = true
@@ -65,9 +68,7 @@ export const CheckboxField: React.FC<{
           {label}
           {required && <span className="text-lg">{" " + "*"}</span>}
         </Label>
-        {helper_text && (
-          <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-        )}
+        {helper_text && <p className="text-xs">{helper_text}</p>}
       </div>
     </div>
   )
@@ -80,15 +81,16 @@ export const CheckboxFieldDesigner: React.FC<{
   const checkboxId = `checkbox-${id}`
   return (
     <div className="flex items-center space-x-2">
-      <Checkbox id={checkboxId} />
+      <Checkbox
+        id={checkboxId}
+        className="form-theme-checkbox form-theme-rounded"
+      />
       <div className="grid gap-1.5 leading-none">
         <Label htmlFor={checkboxId}>
           {label}
           {required && <span className="text-lg">{" " + "*"}</span>}
         </Label>
-        {helper_text && (
-          <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-        )}
+        {helper_text && <p className="text-xs">{helper_text}</p>}
       </div>
     </div>
   )

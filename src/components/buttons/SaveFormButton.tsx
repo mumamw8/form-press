@@ -3,9 +3,8 @@
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
 import { useState } from "react"
-import { Modal } from "../modal"
+import { Modal } from "../shared/modal"
 import { toast } from "sonner"
-import { SaveIcon } from "lucide-react"
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
@@ -24,6 +23,7 @@ export const SaveFormButton = ({
   const queryClient = useQueryClient()
 
   const getSingleFormQueryKey = trpc.form.getSingleForm.queryKey()
+  const getFormsPageQueryKey = trpc.form.getPage.queryKey()
 
   const formUpdater = useMutation(
     trpc.form.updateForm.mutationOptions({
@@ -31,6 +31,7 @@ export const SaveFormButton = ({
         console.log("Form saved")
         // utils.form.getSingleForm.invalidate()
         queryClient.invalidateQueries({ queryKey: getSingleFormQueryKey })
+        queryClient.invalidateQueries({ queryKey: getFormsPageQueryKey })
         setIsOpen(false)
         toast.success("Form saved")
       },

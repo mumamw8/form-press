@@ -1,5 +1,5 @@
 import React from "react"
-import { Modal } from "../modal"
+import { Modal } from "../shared/modal"
 import { Button } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"

@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils"
 import React from "react"
 import styled from "styled-components"
 
-const StyledInputBase = styled.input`
+const StyledTextAreaBase = styled.textarea`
   width: 100%;
   /* height: 36px; */
-  padding-top: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   padding-right: 10px;
   padding-left: 10px;
   font-size: 1rem;
@@ -24,16 +25,15 @@ const StyledInputBase = styled.input`
   /* background-color: rgba(255, 255, 255, 0.055); */
 `
 
-const StyledInput = React.forwardRef<
-  HTMLInputElement,
-  React.ComponentProps<"input">
->(({ className, type, ...props }, ref) => {
+const StyledTextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.ComponentProps<"textarea">
+>(({ className, ...props }, ref) => {
   return (
-    <StyledInputBase
-      type={type}
+    <StyledTextAreaBase
       className={cn(
-        "form-theme-input form-theme-box-shadow form-theme-rounded form-theme-input-height form-theme-input-bg",
-        // "flex h-9 w-full rounded-md border border-input/20 bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "form-theme-textarea form-theme-rounded form-theme-box-shadow form-theme-input-bg min-h-[108px]",
+        // "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         className
       )}
       ref={ref}
@@ -41,6 +41,6 @@ const StyledInput = React.forwardRef<
     />
   )
 })
-StyledInput.displayName = "StyledInput"
+StyledTextArea.displayName = "StyledTextArea"
 
-export { StyledInput }
+export { StyledTextArea }

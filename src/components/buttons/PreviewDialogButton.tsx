@@ -3,7 +3,7 @@ import { Button } from "../ui/button"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog"
 import { FormElements } from "@/modules/form-builder/components/fieldComponents"
-import { EyeIcon, Fullscreen } from "lucide-react"
+import { EyeIcon, Fullscreen, MoveRight } from "lucide-react"
 import { StyledFormContainerBase } from "@/styled-components/styled-form-container"
 import { TFormTheme } from "@/lib/types/settings-types"
 
@@ -30,7 +30,7 @@ export const PreviewDialogButton = () => {
           formTheme={currentFormSettings?.theme as TFormTheme}
           className="bg-accent flex flex-col flex-grow items-center justify-center p-4 overflow-y-auto"
         >
-          <div className="max-w-[620px] flex flex-col flex-grow gap-4 h-full w-full rounded-2xl p-8 overflow-y-auto">
+          <div className="form-width flex flex-col gap-4 w-full py-8 rounded-2xl">
             {elements.map((element) => {
               const FormComponent = FormElements[element.type].formComponent
 
@@ -38,6 +38,9 @@ export const PreviewDialogButton = () => {
                 <FormComponent elementInstance={element} key={element.id} />
               )
             })}
+            <button className="form-theme-button-bg h-10 px-4 form-theme-button-text self-start flex items-center justify-center gap-2 rounded-md font-semibold">
+              Submit <MoveRight />
+            </button>
           </div>
         </StyledFormContainerBase>
       </DialogContent>

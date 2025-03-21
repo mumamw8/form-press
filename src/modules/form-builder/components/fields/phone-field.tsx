@@ -19,6 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { FormElementInstance } from "../../fieldComponentsDefinition"
+import { StyledInput } from "@/styled-components/styled-input"
 
 export const PhoneField: React.FC<{
   elementInstance: FormElementInstance
@@ -42,7 +43,7 @@ export const PhoneField: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Input
+      <StyledInput
         type="tel"
         placeholder={placeholder}
         className={cn(error && "border-red-500")}
@@ -61,14 +62,7 @@ export const PhoneField: React.FC<{
         value={value}
       />
       {helper_text && (
-        <p
-          className={cn(
-            "text-muted-foreground text-[0.8rem]",
-            error && "text-red-500"
-          )}
-        >
-          {helper_text}
-        </p>
+        <p className={cn("text-xs", error && "text-red-500")}>{helper_text}</p>
       )}
       {}
     </div>
@@ -86,10 +80,8 @@ export const PhoneFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Input readOnly type="tel" placeholder={placeholder} />
-      {helper_text && (
-        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-      )}
+      <StyledInput readOnly type="tel" placeholder={placeholder} />
+      {helper_text && <p className="text-xs">{helper_text}</p>}
       {}
     </div>
   )

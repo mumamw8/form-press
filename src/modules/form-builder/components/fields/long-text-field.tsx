@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { FormElementInstance } from "../../fieldComponentsDefinition"
+import { StyledTextArea } from "@/styled-components/styled-text-area"
 
 export const LongTextField: React.FC<{
   elementInstance: FormElementInstance
@@ -43,7 +44,7 @@ export const LongTextField: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Textarea
+      <StyledTextArea
         placeholder={placeholder}
         className={cn(error && "border-red-500")}
         onChange={(e) => setValue(e.target.value)}
@@ -61,14 +62,7 @@ export const LongTextField: React.FC<{
         value={value}
       />
       {helper_text && (
-        <p
-          className={cn(
-            "text-muted-foreground text-[0.8rem]",
-            error && "text-red-500"
-          )}
-        >
-          {helper_text}
-        </p>
+        <p className={cn("text-xs", error && "text-red-500")}>{helper_text}</p>
       )}
       {}
     </div>
@@ -86,10 +80,8 @@ export const LongTextFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Textarea readOnly placeholder={placeholder} />
-      {helper_text && (
-        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-      )}
+      <StyledTextArea readOnly placeholder={placeholder} />
+      {helper_text && <p className="text-xs">{helper_text}</p>}
       {}
     </div>
   )

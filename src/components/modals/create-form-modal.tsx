@@ -3,7 +3,7 @@
 import React, { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Modal } from "../modal"
+import { Modal } from "../shared/modal"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"

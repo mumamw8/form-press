@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button"
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai"
 import { cn } from "@/lib/utils"
 import { FormElementInstance } from "../../fieldComponentsDefinition"
+import { SelectNative } from "@/styled-components/select-native"
 
 export const SelectField: React.FC<{
   elementInstance: FormElementInstance
@@ -45,6 +46,49 @@ export const SelectField: React.FC<{
   useEffect(() => {
     setError(isInvalid === true)
   }, [isInvalid])
+
+  useEffect(() => {
+    console.log("VALUE UPPED: ", value)
+  }, [value])
+
+  return (
+    <div className="flex flex-col w-full gap-2">
+      <Label className={cn(error && "text-red-500")}>
+        {label}
+        {required && <span className="text-lg">{" " + "*"}</span>}
+      </Label>
+      <SelectNative
+        defaultValue={value}
+        value={value}
+        className={cn(error && "border border-red-500")}
+        id={id}
+        // onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value
+          setValue(value)
+          if (!submitValue) return
+          const valid =
+            FormElements[elementInstance.type]?.validate?.(
+              elementInstance,
+              value
+            ) ?? false
+          setError(!valid)
+          submitValue(id, value)
+          console.log("BLUR: ", value)
+        }}
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((option: string) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </SelectNative>
+      {helper_text && <p className="text-xs">{helper_text}</p>}
+    </div>
+  )
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -66,12 +110,16 @@ export const SelectField: React.FC<{
           submitValue(id, value)
         }}
       >
-        <SelectTrigger className={cn("w-full", error && "border-red-500")}>
+        <SelectTrigger className={cn("ribCo", error && "border-red-500")}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className={cn("drpdnBg")}>
           {options.map((option: string) => (
-            <SelectItem key={option} value={option}>
+            <SelectItem
+              className="focus:bg-black/5 drpdnTxt"
+              key={option}
+              value={option}
+            >
               {option}
             </SelectItem>
           ))}
@@ -96,14 +144,12 @@ export const SelectFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Select>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-      </Select>
-      {helper_text && (
-        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-      )}
+      <SelectNative defaultValue={""}>
+        <option value="" disabled>
+          {placeholder}
+        </option>
+      </SelectNative>
+      {helper_text && <p className="text-xs">{helper_text}</p>}
       {}
     </div>
   )

@@ -10,7 +10,7 @@ import { FormElements } from "./fieldComponents"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { generateFieldId } from "@/lib/utils/generate-field-id"
 import { FormElementInstance } from "../fieldComponentsDefinition"
-import { CircleMinus, CogIcon } from "lucide-react"
+import { CircleMinus, CogIcon, MoveRight } from "lucide-react"
 import React from "react"
 import { StyledFormContainerBase } from "@/styled-components/styled-form-container"
 import { TFormTheme } from "@/lib/types/settings-types"
@@ -138,14 +138,14 @@ export const Designer = (props: {
           formTheme={currentFormSettings?.theme as TFormTheme}
           ref={droppable.setNodeRef}
           className={cn(
-            "max-w-[920px] border rounded-xl h-full m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto",
+            "border h-full rounded-xl m-auto flex flex-col flex-grow items-center justify-start flex-1 overflow-y-auto pb-8 mx-4",
             droppable.isOver && "ring-2 ring-primary/20"
           )}
         >
-          <div className="flex flex-col max-w-[620px] w-full p-4">
+          <div className="flex flex-col form-width w-full p-4">
             <EditableTitle />
             {!droppable.isOver && elements.length === 0 && (
-              <p className="text-3xl text-muted-foreground flex flex-grow items-center font-bold">
+              <p className="text-3xl text-muted-foreground flex flex-grow items-center justify-center font-medium">
                 Drag and drop fields here
               </p>
             )}
@@ -161,6 +161,11 @@ export const Designer = (props: {
                 ))}
               </div>
             )}
+          </div>
+          <div className="form-width px-8">
+            <button className="form-theme-button-bg h-10 px-4 form-theme-button-text self-start flex items-center justify-center gap-2 rounded-md font-semibold">
+              Submit <MoveRight />
+            </button>
           </div>
         </StyledFormContainerBase>
       </div>
@@ -245,8 +250,8 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
         {...draggable.attributes}
         className={cn(
           `relative flex flex-col hover:cursor-grab rounded-md py-2 border border-transparent border-dashed 
-          group-hover:border-gray-200 group-hover:bg-gray-100/50`,
-          selectedElement?.id === element.id && "bg-blue-50"
+          group-hover:border-gray-200 group-hover:bg-black/5`,
+          selectedElement?.id === element.id && "bg-blue-300/20"
         )}
         onClick={(e) => {
           e.stopPropagation()

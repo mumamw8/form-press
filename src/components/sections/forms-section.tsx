@@ -7,7 +7,7 @@ import {
   FormsSectionSkeleton,
   FormsSectionSkeletonTwo,
 } from "../skeletons/form-section-skeleton"
-import { InfiniteScroll } from "../infinite-scroll"
+import { InfiniteScroll } from "../shared/infinite-scroll"
 import React from "react"
 import { TForm } from "@/lib/types"
 import { FormDeleteModal } from "../modals/form-delete-modal"

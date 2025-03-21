@@ -104,17 +104,20 @@ export const DateTimeField: React.FC<{
       </Label>
       <Popover>
         <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
+          <button
             className={cn(
-              "w-full justify-start text-left font-normal",
-              !selected && "text-muted-foreground",
+              "form-theme-rounded form-theme-input-border form-theme-input-height form-theme-input-bg w-full flex items-center px-[10px] justify-start text-left hover:text-inherit",
+              !selected && "",
               error && "border-red-500"
             )} // TODO: undefined date value and error value conditional styling
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {selected ? format(selected, "Pp") : <span>{placeholder}</span>}
-          </Button>
+            {selected ? (
+              format(selected, "Pp")
+            ) : (
+              <span className="form-theme-placeholder">{placeholder}</span>
+            )}
+          </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-1" align="start">
           <form className="flex justify-center">
@@ -134,9 +137,7 @@ export const DateTimeField: React.FC<{
           />
         </PopoverContent>
       </Popover>
-      {helper_text && (
-        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-      )}
+      {helper_text && <p className="text-xs">{helper_text}</p>}
       {}
     </div>
   )
@@ -153,16 +154,11 @@ export const DateTimeFieldDesigner: React.FC<{
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
       </Label>
-      <Button
-        variant={"outline"}
-        className="w-full justify-start text-left font-normal"
-      >
+      <button className="form-theme-rounded form-theme-input-border form-theme-input-height form-theme-input-bg w-full flex items-center px-[10px] justify-start text-left hover:text-inherit">
         <CalendarIcon className="mr-2 h-4 w-4" />
-        <span>{placeholder}</span>
-      </Button>
-      {helper_text && (
-        <p className="text-muted-foreground text-[0.8rem]">{helper_text}</p>
-      )}
+        <span className="form-theme-placeholder">{placeholder}</span>
+      </button>
+      {helper_text && <p className="text-xs">{helper_text}</p>}
       {}
     </div>
   )

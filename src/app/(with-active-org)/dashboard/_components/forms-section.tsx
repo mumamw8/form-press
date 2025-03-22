@@ -3,18 +3,15 @@
 import { useTRPC } from "@/trpc/client"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { ErrorBoundary } from "react-error-boundary"
-import {
-  FormsSectionSkeleton,
-  FormsSectionSkeletonTwo,
-} from "../skeletons/form-section-skeleton"
-import { InfiniteScroll } from "../shared/infinite-scroll"
+import { FormsSectionSkeletonTwo } from "@/components/skeletons/form-section-skeleton"
+import { InfiniteScroll } from "@/components/shared/infinite-scroll"
 import React from "react"
 import { TForm } from "@/lib/types"
-import { FormDeleteModal } from "../modals/form-delete-modal"
+import { FormDeleteModal } from "@/components/modals/form-delete-modal"
 import useDataTableSorting from "@/hooks/use-data-table-sorting"
 import { FormSortKey } from "@/lib/utils/types"
 import useDataTableFilters from "@/hooks/use-data-table-filters"
-import { AppFormItem } from "../app-form/app-form-item"
+import { AppFormItem } from "@/components/app-form/app-form-item"
 
 export const FormsSection = () => {
   return (

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
 import { SidebarProvider } from "../ui/sidebar"
-import { AppSidebar } from "../sidebar/app-sidebar"
+import { AppSidebar } from "../shared/sidebar/app-sidebar"
 
 interface DashboardLayoutProps extends PropsWithChildren {}
 

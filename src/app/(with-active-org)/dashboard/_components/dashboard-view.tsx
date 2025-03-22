@@ -1,6 +1,6 @@
 "use client"
 
-import { FormsSection } from "@/components/sections/forms-section"
+import { FormsSection } from "@/app/(with-active-org)/dashboard/_components/forms-section"
 import { Button } from "@/components/ui/button"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
 import { PlusCircle } from "lucide-react"

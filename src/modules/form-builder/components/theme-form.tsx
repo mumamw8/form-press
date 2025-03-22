@@ -14,7 +14,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import {
+  ChevronDown,
+  ChevronDownIcon,
+  ChevronUp,
+  ChevronUpIcon,
+} from "lucide-react"
 import {
   DEFAULT_FORM_ACCENT,
   DEFAULT_FORM_BG,
@@ -22,6 +27,7 @@ import {
   DEFAULT_FORM_BUTTON_TEXT,
   DEFAULT_FORM_INPUT_BG,
   DEFAULT_FORM_INPUT_BORDER,
+  DEFAULT_FORM_INPUT_HEIGHT,
   DEFAULT_FORM_PLACEHOLDER,
   DEFAULT_FORM_TEXT,
 } from "@/styled-components/styled-form-container"
@@ -33,18 +39,43 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { InputNumeric } from "@/components/input-numeric"
 
 export const ThemeForm = () => {
   const { currentFormSettings, setFormSettings } = useFormBuilderStore(
     (state) => state
   )
+  const [inputHeightValue, setInputHeightValue] = React.useState<string>(
+    currentFormSettings?.theme?.inputHeight ?? DEFAULT_FORM_INPUT_HEIGHT
+  )
 
-  const handleHexChange = (propName: TFormThemeKeys, hex: string) => {
+  // inputheight increment and decrement functions
+  const increment = () => {
+    // empty input value has to be normalized to zero
+    const nextValue = Number(inputHeightValue || 0) + 1
+    if (nextValue) {
+      setInputHeightValue(nextValue.toString())
+      handleFormThemePropertyChange("inputHeight", nextValue.toString())
+    }
+  }
+
+  const decrement = () => {
+    const nextValue = Number(inputHeightValue || 0) - 1
+    if (nextValue >= 0) {
+      setInputHeightValue(nextValue.toString())
+      handleFormThemePropertyChange("inputHeight", nextValue.toString())
+    }
+  }
+
+  const handleFormThemePropertyChange = (
+    propName: TFormThemeKeys,
+    value: string
+  ) => {
     setFormSettings({
       ...(currentFormSettings as TFormSettings),
       theme: {
         ...currentFormSettings?.theme,
-        [propName]: hex,
+        [propName]: value,
         themeName: "custom",
       },
     })
@@ -113,19 +144,19 @@ export const ThemeForm = () => {
           <ColorSelector
             propName="background"
             label="Background"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={currentFormSettings?.theme?.background ?? DEFAULT_FORM_BG}
           />
           <ColorSelector
             propName="text"
             label="Text"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={currentFormSettings?.theme?.text ?? DEFAULT_FORM_TEXT}
           />
           <ColorSelector
             propName="accent"
             label="Accent"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={currentFormSettings?.theme?.accent ?? DEFAULT_FORM_ACCENT}
           />
         </div>
@@ -134,7 +165,7 @@ export const ThemeForm = () => {
           <ColorSelector
             propName="inputPlaceholder"
             label="Placeholder"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={
               currentFormSettings?.theme?.inputPlaceholder ??
               DEFAULT_FORM_PLACEHOLDER
@@ -143,7 +174,7 @@ export const ThemeForm = () => {
           <ColorSelector
             propName="inputBackground"
             label="Background"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={
               currentFormSettings?.theme?.inputBackground ??
               DEFAULT_FORM_INPUT_BG
@@ -152,20 +183,56 @@ export const ThemeForm = () => {
           <ColorSelector
             propName="inputBorder"
             label="Border"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={
               currentFormSettings?.theme?.inputBorder ??
               DEFAULT_FORM_INPUT_BORDER
             }
           />
-          <InputHeightField />
+          <div className="text-xs flex flex-col gap-1">
+            <label className="text-muted-foreground">Height</label>
+            <div className="relative">
+              <InputNumeric
+                placeholder="0"
+                className="invalid:bg-red-200 text-xs h-6 w-[160px] pe-7"
+                onBlur={(e) => {
+                  const value = e.target.value
+                  handleFormThemePropertyChange("inputHeight", value)
+                }}
+                onChange={(e) => {
+                  setInputHeightValue(e.target.value)
+                }}
+                value={inputHeightValue}
+                // defaultValue={currentFormSettings?.theme?.inputHeight ?? DEFAULT_FORM_INPUT_HEIGHT}
+              />
+              <div className="absolute left-0 top-0 h-full flex flex-col border-r border-border">
+                <button
+                  onClick={increment}
+                  className="flex items-center justify-center h-1/2 w-8 hover:bg-muted transition-colors rounded-tl-lg"
+                  aria-label="Increase value"
+                >
+                  <ChevronUp className="w-3 h-3 text-muted-foreground" />
+                </button>
+                <button
+                  onClick={decrement}
+                  className="flex items-center justify-center h-1/2 w-8 hover:bg-muted transition-colors rounded-bl-lg border-t border-border"
+                  aria-label="Decrease value"
+                >
+                  <ChevronDown className="w-3 h-3 text-muted-foreground" />
+                </button>
+              </div>
+              <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 peer-disabled:opacity-50">
+                px
+              </span>
+            </div>
+          </div>
         </div>
         <div className="flex flex-wrap gap-2 w-full">
           <h4 className="text-xs font-semibold w-full">Button</h4>
           <ColorSelector
             propName="buttonBackground"
             label="Background"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={
               currentFormSettings?.theme?.buttonBackground ??
               DEFAULT_FORM_BUTTON_BG
@@ -174,7 +241,7 @@ export const ThemeForm = () => {
           <ColorSelector
             propName="buttonText"
             label="Text"
-            onHexChange={handleHexChange}
+            onHexChange={handleFormThemePropertyChange}
             propHex={
               currentFormSettings?.theme?.buttonText ?? DEFAULT_FORM_BUTTON_TEXT
             }
@@ -194,7 +261,7 @@ function ColorSelector({
   propName: TFormThemeKeys
   propHex: string
   label: string
-  onHexChange: (propName: TFormThemeKeys, hex: string) => void
+  onHexChange: (propName: TFormThemeKeys, value: string) => void
 }) {
   const [hex, setHex] = useState<string>(propHex)
   const propHexRef = React.useRef<string>(propHex) // useRef to store the propHex value
@@ -212,8 +279,8 @@ function ColorSelector({
   }, [hex])
 
   return (
-    <div>
-      <label className="text-xs text-muted-foreground block">{label}</label>
+    <div className="flex flex-col gap-1">
+      <label className="text-xs text-muted-foreground">{label}</label>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -245,28 +312,6 @@ function ColorSelector({
           />
         </PopoverContent>
       </Popover>
-    </div>
-  )
-}
-
-function InputHeightField() {
-  const id = React.useId()
-  return (
-    <div className="text-xs w-1/2">
-      <label className="text-xs text-muted-foreground" htmlFor={id}>
-        Height
-      </label>
-      <div className="relative">
-        <Input
-          id={id}
-          className="pe-12 h-6 focus-visible:ring-muted"
-          placeholder="0"
-          type="text"
-        />
-        <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
-          px
-        </span>
-      </div>
     </div>
   )
 }

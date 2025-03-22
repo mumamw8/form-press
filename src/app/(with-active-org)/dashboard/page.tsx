@@ -1,5 +1,5 @@
 import { BreadcrumbListItem } from "@/components/shared/app-breadcrumb-list"
-import { WorkspacePage } from "@/components/workspace-page"
+import { WorkspacePage } from "@/components/layout/workspace-page"
 
 export default async function Page({ params }: { params: { teamId: string } }) {
   const breadcrumbs: BreadcrumbListItem[] = [

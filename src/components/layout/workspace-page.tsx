@@ -1,9 +1,9 @@
 import {
   AppBreadcrumbList,
   BreadcrumbListItem,
-} from "./shared/app-breadcrumb-list"
-import { SidebarInset, SidebarTrigger } from "./ui/sidebar"
-import { Separator } from "./ui/separator"
+} from "../shared/app-breadcrumb-list"
+import { Separator } from "../ui/separator"
+import { SidebarInset, SidebarTrigger } from "../ui/sidebar"
 import { UserButton } from "@clerk/nextjs"
 
 interface WorkspacePageProps {

@@ -97,7 +97,7 @@ export const DateTimeField: React.FC<{
   }, [isInvalid])
 
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className="form-theme-input-width flex flex-col w-full gap-2">
       <Label>
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
@@ -120,16 +120,17 @@ export const DateTimeField: React.FC<{
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-1" align="start">
-          <form className="flex justify-center">
+          <form className="form-theme-bg-with-opacity flex justify-center">
             {/* Set the time:{" "} */}
             <Input
-              className="h-6 w-fit"
+              className="form-theme-bg-with-opacity h-6 w-fit"
               type="time"
               value={timeValue}
               onChange={handleTimeChange}
             />
           </form>
           <Calendar
+            className="form-theme-bg-with-opacity"
             mode="single"
             selected={selected}
             onSelect={handleDaySelect}
@@ -149,7 +150,7 @@ export const DateTimeFieldDesigner: React.FC<{
   const { label, required, helper_text, placeholder } =
     elementInstance as TDateTimeField
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className="form-theme-input-width flex flex-col w-full gap-2">
       <Label>
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}

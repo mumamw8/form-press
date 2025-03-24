@@ -49,7 +49,7 @@ export const DateField: React.FC<{
   }, [isInvalid])
 
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className="form-theme-input-width flex flex-col w-full gap-2">
       <Label>
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}
@@ -73,7 +73,7 @@ export const DateField: React.FC<{
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-            className=""
+            className="form-theme-bg-with-opacity"
             mode="single"
             selected={date}
             timeZone={userTimeZone}
@@ -106,7 +106,7 @@ export const DateFieldDesigner: React.FC<{
   const { label, required, helper_text, placeholder } =
     elementInstance as TDateField
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className="form-theme-input-width flex flex-col w-full gap-2">
       <Label>
         {label}
         {required && <span className="text-lg">{" " + "*"}</span>}

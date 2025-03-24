@@ -4,7 +4,7 @@ import React from "react"
 import styled from "styled-components"
 
 const StyledInputBase = styled.input`
-  width: 100%;
+  /* width: 100%; */
   /* height: 36px; */
   padding-top: 0px;
   padding-right: 10px;
@@ -32,8 +32,7 @@ const StyledInput = React.forwardRef<
     <StyledInputBase
       type={type}
       className={cn(
-        "form-theme-input form-theme-box-shadow form-theme-rounded form-theme-input-height form-theme-input-bg",
-        // "flex h-9 w-full rounded-md border border-input/20 bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "form-theme-input form-theme-box-shadow form-theme-rounded form-theme-input-height form-theme-input-bg form-theme-input-width",
         className
       )}
       ref={ref}

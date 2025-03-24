@@ -4,7 +4,7 @@ import React from "react"
 import styled from "styled-components"
 
 const StyledTextAreaBase = styled.textarea`
-  width: 100%;
+  /* width: 100%; */
   /* height: 36px; */
   padding-top: 5px;
   padding-bottom: 5px;
@@ -32,7 +32,7 @@ const StyledTextArea = React.forwardRef<
   return (
     <StyledTextAreaBase
       className={cn(
-        "form-theme-textarea form-theme-rounded form-theme-box-shadow form-theme-input-bg min-h-[108px]",
+        "form-theme-textarea form-theme-input-width form-theme-rounded form-theme-box-shadow form-theme-input-bg min-h-[108px]",
         // "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         className
       )}

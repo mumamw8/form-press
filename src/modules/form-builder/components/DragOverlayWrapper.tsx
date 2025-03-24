@@ -6,9 +6,13 @@ import { TFormField } from "@/lib/types/form-types"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { FormElementInstance } from "../fieldComponentsDefinition"
 import { GripVertical } from "lucide-react"
+import { StyledFormContainerBase } from "@/styled-components/styled-form-container"
+import { TFormTheme } from "@/lib/types/settings-types"
 
 export const DragOverlayWrapper = () => {
-  const { elements } = useFormBuilderStore((state) => state)
+  const { elements, currentFormSettings } = useFormBuilderStore(
+    (state) => state
+  )
   const [draggedItem, setDraggedItem] = useState<Active | null>(null)
 
   useDndMonitor({
@@ -43,11 +47,19 @@ export const DragOverlayWrapper = () => {
       const DesignerElementComponent =
         FormElements[element.type].designerComponent
       node = (
-        <div className="flex w-full cursor-grab">
+        <StyledFormContainerBase
+          formTheme={
+            {
+              ...currentFormSettings?.theme,
+              background: "transparent",
+            } as TFormTheme
+          }
+          className="flex w-full cursor-grab"
+        >
           <div className="flex bg-gray-100/50 border items-center rounded-md w-full py-2 px-4 opacity-80 pointer-events-none">
             <DesignerElementComponent elementInstance={element} />
           </div>
-        </div>
+        </StyledFormContainerBase>
       )
     }
   }

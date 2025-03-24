@@ -1,4 +1,3 @@
-import { Sketch } from "@uiw/react-color"
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import {
   darkFormTheme,
@@ -7,19 +6,7 @@ import {
   TFormTheme,
   TFormThemeKeys,
 } from "@/lib/types/settings-types"
-import React, { useEffect, useState } from "react"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import {
-  ChevronDown,
-  ChevronDownIcon,
-  ChevronUp,
-  ChevronUpIcon,
-} from "lucide-react"
+import React from "react"
 import {
   DEFAULT_FORM_ACCENT,
   DEFAULT_FORM_BG,
@@ -28,6 +15,7 @@ import {
   DEFAULT_FORM_INPUT_BG,
   DEFAULT_FORM_INPUT_BORDER,
   DEFAULT_FORM_INPUT_HEIGHT,
+  DEFAULT_FORM_INPUT_WIDTH,
   DEFAULT_FORM_PLACEHOLDER,
   DEFAULT_FORM_TEXT,
 } from "@/styled-components/styled-form-container"
@@ -38,34 +26,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { InputNumeric } from "@/components/input-numeric"
+import { ColorSelector } from "@/components/color-selector"
+import { FormThemeNumberPropertyField } from "@/components/form-theme-number-property-field"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useId } from "react"
+import { CheckIcon, MinusIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export const ThemeForm = () => {
   const { currentFormSettings, setFormSettings } = useFormBuilderStore(
     (state) => state
   )
-  const [inputHeightValue, setInputHeightValue] = React.useState<string>(
-    currentFormSettings?.theme?.inputHeight ?? DEFAULT_FORM_INPUT_HEIGHT
-  )
-
-  // inputheight increment and decrement functions
-  const increment = () => {
-    // empty input value has to be normalized to zero
-    const nextValue = Number(inputHeightValue || 0) + 1
-    if (nextValue) {
-      setInputHeightValue(nextValue.toString())
-      handleFormThemePropertyChange("inputHeight", nextValue.toString())
-    }
-  }
-
-  const decrement = () => {
-    const nextValue = Number(inputHeightValue || 0) - 1
-    if (nextValue >= 0) {
-      setInputHeightValue(nextValue.toString())
-      handleFormThemePropertyChange("inputHeight", nextValue.toString())
-    }
-  }
 
   const handleFormThemePropertyChange = (
     propName: TFormThemeKeys,
@@ -189,43 +161,30 @@ export const ThemeForm = () => {
               DEFAULT_FORM_INPUT_BORDER
             }
           />
-          <div className="text-xs flex flex-col gap-1">
-            <label className="text-muted-foreground">Height</label>
-            <div className="relative">
-              <InputNumeric
-                placeholder="0"
-                className="invalid:bg-red-200 text-xs h-6 w-[160px] pe-7"
-                onBlur={(e) => {
-                  const value = e.target.value
-                  handleFormThemePropertyChange("inputHeight", value)
-                }}
-                onChange={(e) => {
-                  setInputHeightValue(e.target.value)
-                }}
-                value={inputHeightValue}
-                // defaultValue={currentFormSettings?.theme?.inputHeight ?? DEFAULT_FORM_INPUT_HEIGHT}
-              />
-              <div className="absolute left-0 top-0 h-full flex flex-col border-r border-border">
-                <button
-                  onClick={increment}
-                  className="flex items-center justify-center h-1/2 w-8 hover:bg-muted transition-colors rounded-tl-lg"
-                  aria-label="Increase value"
-                >
-                  <ChevronUp className="w-3 h-3 text-muted-foreground" />
-                </button>
-                <button
-                  onClick={decrement}
-                  className="flex items-center justify-center h-1/2 w-8 hover:bg-muted transition-colors rounded-bl-lg border-t border-border"
-                  aria-label="Decrease value"
-                >
-                  <ChevronDown className="w-3 h-3 text-muted-foreground" />
-                </button>
-              </div>
-              <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 peer-disabled:opacity-50">
-                px
-              </span>
-            </div>
-          </div>
+          <FormThemeNumberPropertyField
+            propName="inputWidth"
+            label="Width"
+            propValue={
+              currentFormSettings?.theme?.inputWidth ?? DEFAULT_FORM_INPUT_WIDTH
+            }
+            hasStaticValueOption
+            onValueChange={handleFormThemePropertyChange}
+          />
+          <FormThemeNumberPropertyField
+            propName="inputHeight"
+            label="Height"
+            propValue={
+              currentFormSettings?.theme?.inputHeight ??
+              DEFAULT_FORM_INPUT_HEIGHT
+            }
+            onValueChange={handleFormThemePropertyChange}
+          />
+          <FormThemeInputRadiusControl
+            propName="inputBorderRadius"
+            label="Border Radius"
+            propValue={currentFormSettings?.theme?.inputBorderRadius ?? "5"}
+            onValueChange={handleFormThemePropertyChange}
+          />
         </div>
         <div className="flex flex-wrap gap-2 w-full">
           <h4 className="text-xs font-semibold w-full">Button</h4>
@@ -252,66 +211,86 @@ export const ThemeForm = () => {
   )
 }
 
-function ColorSelector({
+const items = [
+  { value: "0", label: "none", image: "/ui-light.png" },
+  { value: "5", label: "round", image: "/ui-dark.png" },
+  { value: "10", label: "very-round", image: "/ui-system.png" },
+]
+export function FormThemeInputRadiusControl({
   propName,
-  propHex,
+  propValue,
   label,
-  onHexChange,
+  onValueChange,
 }: {
   propName: TFormThemeKeys
-  propHex: string
+  propValue: string
   label: string
-  onHexChange: (propName: TFormThemeKeys, value: string) => void
+  onValueChange: (propName: TFormThemeKeys, value: string) => void
 }) {
-  const [hex, setHex] = useState<string>(propHex)
-  const propHexRef = React.useRef<string>(propHex) // useRef to store the propHex value
+  const [value, setValue] = React.useState<string>(propValue)
+  const id = React.useId()
 
-  useEffect(() => {
-    propHexRef.current = propHex // Update the ref with the latest propHex
-    setHex(propHex)
-  }, [propHex])
+  const propValueRef = React.useRef<string>(propValue)
 
-  useEffect(() => {
-    // Only call onHexChange if the hex value is different from the propHex
-    if (hex !== propHexRef.current) {
-      onHexChange(propName, hex)
+  React.useEffect(() => {
+    propValueRef.current = propValue
+    setValue(propValue)
+    console.log("PROP CHANGED: ", propValue)
+  }, [propValue])
+
+  React.useEffect(() => {
+    if (value !== propValueRef.current) {
+      onValueChange(propName, value)
     }
-  }, [hex])
+  }, [value])
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-xs text-muted-foreground">{label}</label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size={"sm"}
-            className="w-[160px] justify-start text-left font-normal"
+    <fieldset className="w-full">
+      <label className="text-muted-foreground text-xs">{label}</label>
+      <RadioGroup
+        className="flex gap-5 bg-gray-200 border shadow-lg justify-center py-1 rounded-md"
+        value={value}
+        onValueChange={setValue}
+      >
+        {items.map((item) => (
+          <label
+            key={`${id}-${item.value}`}
+            className={cn(
+              "flex flex-col items-center cursor-pointer border border-transparent p-1 rounded-md",
+              item.value === value && "bg-white"
+            )}
           >
-            <div
-              className="w-4 h-4 rounded-full mr-2 shadow-sm"
-              style={{ backgroundColor: hex }}
+            <RadioGroupItem
+              id={`${id}-${item.value}`}
+              value={item.value}
+              className="peer sr-only after:absolute after:inset-0"
             />
-            <span className="flex-grow">{hex}</span>
-            <ChevronDownIcon className="h-4 w-4 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="p-0 w-fit">
-          <Sketch
-            color={hex}
-            onChange={(color) => {
-              setHex(color.hex)
-            }}
-            presetColors={[
-              "#AEDEAE",
-              "#FFD3B6",
-              "#FFB6B9",
-              "#FFC0CB",
-              "#FFD1DC",
-            ]}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+            <div
+              className={cn(
+                "border-2 h-7 w-7 border-muted-foreground border-b-0 border-r-0",
+                item.value === "5" && "rounded-tl-[5px]",
+                item.value === "10" && "rounded-tl-[10px]"
+              )}
+            />
+            <span className="group peer-data-[state=unchecked]:text-muted-foreground/70 mt-2 flex items-center gap-1">
+              {item.value === value ? (
+                <CheckIcon
+                  size={16}
+                  className="group-peer-data-[state=unchecked]:hidden"
+                  aria-hidden="true"
+                />
+              ) : (
+                <MinusIcon
+                  size={16}
+                  className="group-peer-data-[state=checked]:hidden"
+                  aria-hidden="true"
+                />
+              )}
+              <span className="text-xs font-medium">{item.label}</span>
+            </span>
+          </label>
+        ))}
+      </RadioGroup>
+    </fieldset>
   )
 }

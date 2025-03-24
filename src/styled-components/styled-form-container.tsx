@@ -10,10 +10,12 @@ export const DEFAULT_FORM_BUTTON_TEXT = "#FFFFFF"
 export const DEFAULT_FORM_INPUT_BORDER = "#d2d2d229"
 export const DEFAULT_FORM_INPUT_BG = "#ffffff0e"
 export const DEFAULT_FORM_INPUT_HEIGHT = "36"
+export const DEFAULT_FORM_INPUT_WIDTH = "400"
+export const DEFAULT_FORM_WIDTH = "720"
 
 export const StyledFormContainerBase = styled.div<{ formTheme?: TFormTheme }>`
   .form-width {
-    width: 720px;
+    width: ${DEFAULT_FORM_WIDTH}px;
   }
   background-color: ${(props) =>
     props.formTheme?.background ? props.formTheme.background : DEFAULT_FORM_BG};
@@ -33,12 +35,17 @@ export const StyledFormContainerBase = styled.div<{ formTheme?: TFormTheme }>`
         0px 0px 0px 4px,
       rgba(1, 5, 1, 0.16) 0px 0px 0px 1px;
   } */
-
   .form-theme-bg {
     background-color: ${(props) =>
       props.formTheme?.background
         ? props.formTheme.background
         : DEFAULT_FORM_BG};
+  }
+  .form-theme-bg-with-opacity {
+    background-color: ${(props) =>
+      props.formTheme?.background
+        ? props.formTheme.background
+        : DEFAULT_FORM_BG}2f;
   }
   .form-theme-box-shadow:not([disabled]):focus {
     box-shadow: ${(props) =>
@@ -91,13 +98,19 @@ export const StyledFormContainerBase = styled.div<{ formTheme?: TFormTheme }>`
     border-radius: ${(props) =>
       props.formTheme?.inputBorderRadius
         ? props.formTheme.inputBorderRadius
-        : "5px"};
+        : "5"}px;
   }
   .form-theme-input-height {
     height: ${(props) =>
       props.formTheme?.inputHeight
         ? props.formTheme.inputHeight
         : DEFAULT_FORM_INPUT_HEIGHT}px;
+  }
+  .form-theme-input-width {
+    width: ${(props) =>
+      props.formTheme?.inputWidth
+        ? props.formTheme.inputWidth
+        : DEFAULT_FORM_INPUT_WIDTH}px;
   }
   .form-theme-input-border {
     border: 1px solid

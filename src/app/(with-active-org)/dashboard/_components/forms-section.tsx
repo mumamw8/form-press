@@ -62,9 +62,9 @@ const FormsSectionSuspense = () => {
 
   return (
     <>
-      <div>
-        {flatFormsData.map((form) => (
-          <AppFormItem key={form.id} form={form} />
+      <div className="border rounded-3xl my-4">
+        {flatFormsData.map((form, index) => (
+          <AppFormItem isAtEnd={index === 0} key={form.id} form={form} />
         ))}
         {/* <DataTable
           onColumnFiltersChange={onColumnFiltersChange}

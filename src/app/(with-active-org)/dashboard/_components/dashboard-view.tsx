@@ -9,7 +9,7 @@ export const DashboardView = () => {
   const { onOpen } = useCreateFormModal()
 
   return (
-    <>
+    <div>
       <header className="flex justify-between py-1">
         <div className="" />
         <Button
@@ -34,6 +34,6 @@ export const DashboardView = () => {
           <FormsSection />
         </div>
       </div>
-    </>
+    </div>
   )
 }

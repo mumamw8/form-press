@@ -3,7 +3,7 @@
 import { useFormBuilderStore } from "@/components/providers/form-builder-store-provider"
 import { Button } from "../ui/button"
 import { useState } from "react"
-import { Modal } from "../shared/modal"
+import { Modal } from "../general/modal"
 import { toast } from "sonner"
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

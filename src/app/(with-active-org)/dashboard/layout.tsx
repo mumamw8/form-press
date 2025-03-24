@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
-import { CreateFormModal } from "@/components/modals/create-form-modal"
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
+import { DashboardLayout } from "@/app/(with-active-org)/dashboard/_components/dashboard-layout"
+import { CreateFormModal } from "@/components/general/modals/create-form-modal"
 
 interface LayoutProps extends PropsWithChildren {}
 

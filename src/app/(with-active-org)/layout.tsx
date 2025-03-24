@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { Navbar } from "@/components/navigation/navbar"
 import { Button } from "@/components/ui/button"
 import {
   Card,

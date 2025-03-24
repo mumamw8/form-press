@@ -1,6 +1,8 @@
 import { PropsWithChildren } from "react"
-import { SidebarProvider } from "../ui/sidebar"
-import { AppSidebar } from "../shared/sidebar/app-sidebar"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/general/sidebar/app-sidebar"
+import { FormDeleteModal } from "@/components/general/modals/form-delete-modal"
+import { CreateFormModal } from "@/components/general/modals/create-form-modal"
 
 interface DashboardLayoutProps extends PropsWithChildren {}
 
@@ -10,7 +12,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div className="w-full bg-white">
         <div className="flex min-h-screen">
           <AppSidebar />
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <SidebarInset>{children}</SidebarInset>
         </div>
       </div>
     </SidebarProvider>

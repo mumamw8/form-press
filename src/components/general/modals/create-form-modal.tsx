@@ -3,15 +3,15 @@
 import React, { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Modal } from "../shared/modal"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { Button } from "../ui/button"
 import { toast } from "sonner"
 import { CreateFormSchema, CreateFormType } from "@/lib/types"
 import useCreateFormModal from "@/hooks/use-create-form-modal"
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Modal } from "../modal"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 interface CreateFormModalProps extends PropsWithChildren {}
 

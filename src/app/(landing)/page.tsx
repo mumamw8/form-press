@@ -1,12 +1,12 @@
-import { Heading } from "@/components/shared/heading"
-import { MaxWidthWrapper } from "@/components/shared/max-width-wrapper"
+import { Heading } from "@/components/general/heading"
+import { MaxWidthWrapper } from "@/components/general/max-width-wrapper"
 import { ShinyButton } from "@/components/buttons/shiny-button"
 import { Check, Star } from "lucide-react"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import Image from "next/image"
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
-import { Icons } from "@/components/shared/icons"
-import { FlipWords } from "@/components/shared/flip-words"
+import { Icons } from "@/components/general/icons"
+import { FlipWords } from "@/components/general/flip-words"
 
 export default function Page() {
   const codeSnippet = `await fetch("http://localhost:3000/api/v1/events", {

@@ -1,6 +1,6 @@
 import { Button } from "../ui/button"
 import { useState } from "react"
-import { Modal } from "../shared/modal"
+import { Modal } from "../general/modal"
 import { toast } from "sonner"
 import { CircleCheck } from "lucide-react"
 import { useTRPC } from "@/trpc/client"

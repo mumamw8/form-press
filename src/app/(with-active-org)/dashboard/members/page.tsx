@@ -1,4 +1,4 @@
-import { BreadcrumbListItem } from "@/components/shared/app-breadcrumb-list"
+import { BreadcrumbListItem } from "@/components/general/app-breadcrumb-list"
 import { WorkspacePage } from "@/components/workspace-page"
 import { trpc } from "@/trpc/server"
 

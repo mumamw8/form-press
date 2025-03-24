@@ -1,10 +1,10 @@
 import React from "react"
-import { Modal } from "../shared/modal"
-import { Button } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useTRPC } from "@/trpc/client"
 import useDeleteFormModal from "@/hooks/use-delete-form-modal"
+import { Modal } from "../modal"
+import { Button } from "@/components/ui/button"
 
 export const FormDeleteModal = () => {
   const { deleteFormData, onClose } = useDeleteFormModal()

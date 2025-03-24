@@ -1,6 +1,6 @@
 "use client"
 
-import { LoadingSpinner } from "@/components/shared/loading-spinner"
+import { LoadingSpinner } from "@/components/general/loading-spinner"
 import { Designer } from "./Designer"
 import {
   DndContext,

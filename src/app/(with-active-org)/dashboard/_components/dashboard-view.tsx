@@ -23,14 +23,15 @@ export const DashboardView = () => {
         </Button>
         <div className="" />
       </header>
-      <div className="flex flex-col gap-y-6">
+      <div className="flex flex-col p-16">
         <div className="px-4">
-          <h1 className="text-2xl font-semibold">All forms</h1>
+          <h1 className="text-xl font-bold">All forms</h1>
           <p className="text-xs text-muted-foreground">
             All organization forms
           </p>
+          <hr className="mt-4" />
         </div>
-        <div className="px-4">
+        <div className="">
           <FormsSection />
         </div>
       </div>

@@ -1,51 +1,41 @@
 import { TForm } from "@/lib/types"
-import { format, formatDistance, formatRelative } from "date-fns"
+import { format, formatRelative } from "date-fns"
 import Link from "next/link"
-import {
-  DotIcon,
-  FileIcon,
-  FileTextIcon,
-  PencilLine,
-  Trash,
-} from "lucide-react"
+import { FileIcon, FileTextIcon, PencilLine, Trash } from "lucide-react"
 import useDeleteFormModal from "@/hooks/use-delete-form-modal"
 import { cn } from "@/lib/utils"
 
 interface AppFormItemProps {
   form: TForm
-  isAtEnd: boolean
 }
 
-export function AppFormItem({ form, isAtEnd }: AppFormItemProps) {
+export function AppFormItem({ form }: AppFormItemProps) {
   const { onOpen } = useDeleteFormModal()
 
   return (
     <div
       key={form.id}
-      className={cn(
-        "group hover:bg-muted flex border-b py-4 px-8 items-center",
-        isAtEnd && "rounded-t-3xl"
-      )}
+      className={cn("group hover:bg-gray-100 flex p-4 rounded-md items-center")}
     >
       <Link
         href={`/dashboard/forms/${form.id}`}
-        className="flex flex-col flex-1 gap-1"
+        className="flex flex-col flex-1 gap-2"
       >
-        <h3 className="text-sm font-semibold">{form.title || "New form"}</h3>
-        <div className="text-gray-400 text-xs flex flex-col gap-0.5">
-          <div className="flex gap-1">
-            <span className="">
-              {/* {format(new Date(form.updatedAt), "MMMM d, yyyy h:mm a")} */}
-              Edited {formatRelative(new Date(form.updatedAt), new Date())}
+        <h3 className="leading-[18px] font-semibold">
+          {form.title || "New form"}
+        </h3>
+
+        <div className="text-[#91908d] text-sm flex items-center gap-2">
+          {form.submissions_count > 0 && (
+            <span className="underline">
+              {form.submissions_count}{" "}
+              {form.submissions_count > 1 ? "responses" : "response"}
             </span>
-            <span>{"|"}</span>
-            {form.submissions_count > 0 && (
-              <span className="text-xs">
-                {form.submissions_count}{" "}
-                {form.submissions_count > 1 ? "responses" : "response"}
-              </span>
-            )}
-          </div>
+          )}
+          <span className="">
+            {/* {format(new Date(form.updatedAt), "MMMM d, yyyy h:mm a")} */}
+            Edited {formatRelative(new Date(form.updatedAt), new Date())}
+          </span>
           <span
             className={cn(
               "text-xs w-fit bg-muted-foreground/10 h-fit px-1 py-0.5 rounded",
@@ -58,7 +48,7 @@ export function AppFormItem({ form, isAtEnd }: AppFormItemProps) {
       </Link>
       <div />
       {/* Action Buttons */}
-      <div>
+      <div className="hidden group-hover:flex">
         {/* Delete Edit Preview */}
         <div className="flex text-muted-foreground border rounded-lg bg-white">
           {/* Navigate to form editor */}

@@ -43,7 +43,7 @@ export const InfiniteScroll = ({
           </Button>
         )
       ) : (
-        <p className="text-xl text-muted-foreground">...</p>
+        <p className="text-sm text-gray-400">No more results</p>
       )}
     </div>
   )

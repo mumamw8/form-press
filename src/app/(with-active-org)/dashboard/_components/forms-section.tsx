@@ -27,7 +27,6 @@ const FormsSectionSuspense = () => {
   const trpc = useTRPC()
 
   const { sorting, onSortingChange } = useDataTableSorting("updatedAt", "DESC")
-  const { columnFilters, onColumnFiltersChange } = useDataTableFilters()
 
   React.useEffect(() => {
     const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
@@ -56,24 +55,16 @@ const FormsSectionSuspense = () => {
     )
 
   const flatFormsData: TForm[] = React.useMemo(
-    () => data.pages.flatMap((page) => page.forms as TForm[]) ?? [],
+    () => data.pages.flatMap((page) => page.forms as unknown as TForm[]) ?? [], // TODO: Fix data shape
     [data]
   )
 
   return (
     <>
-      <div className="border rounded-3xl my-4">
-        {flatFormsData.map((form, index) => (
-          <AppFormItem isAtEnd={index === 0} key={form.id} form={form} />
+      <div className="my-4">
+        {flatFormsData.map((form) => (
+          <AppFormItem key={form.id} form={form} />
         ))}
-        {/* <DataTable
-          onColumnFiltersChange={onColumnFiltersChange}
-          columnFilters={columnFilters}
-          onSortingChange={onSortingChange}
-          sorting={sorting}
-          data={flatFormsData}
-          columns={formsTableColumns}
-        /> */}
         <InfiniteScroll
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
@@ -84,4 +75,14 @@ const FormsSectionSuspense = () => {
       <FormDeleteModal />
     </>
   )
+}
+{
+  /* <DataTable
+          onColumnFiltersChange={onColumnFiltersChange}
+          columnFilters={columnFilters}
+          onSortingChange={onSortingChange}
+          sorting={sorting}
+          data={flatFormsData}
+          columns={formsTableColumns}
+        /> */
 }
